@@ -99,7 +99,7 @@
             <form action="${pageContext.request.contextPath}/login.action" name="loginForm" method="post" >
                 <div class="form-group">
                     <label>用户</label>
-                    <input name="username" type="text" class="form-control span12"/>
+                    <input name="tName" type="text" class="form-control span12"/>
                 </div>
                 <div class="form-group">
                 <label>密码</label>

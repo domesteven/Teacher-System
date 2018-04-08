@@ -47,7 +47,11 @@
 			        <list>    
 			          <!-- 如果请求中包含以下路径，则不进行拦截 -->    
 			          <value>/resources</value>    
-			          <value>/login</value>    
+			          <value>/login</value>
+			          <value>/images</value>
+			          <value>/js</value>
+			          <value>/lib</value> 
+			          <value>/stylesheets</value>   
 			        </list>    
       			</property> 
       			

@@ -72,7 +72,7 @@ public class LoginController{
 		try {
 			if(bindingResult.hasErrors()){
 			}
-			String username = teacher.getUsername();
+			String username = teacher.gettName();
 			String password = teacher.getPassword();
 			if(check(teacher)!=null){
 				resResult.put("data", teacher);
@@ -99,7 +99,7 @@ public class LoginController{
 	        String password = (String) data.get("password");  
 	        request.getSession().setAttribute("username", username);
 	        Teacher teacher = new Teacher();
-	        teacher.setUsername(username);
+	        teacher.settName(username);
 	        teacher.setPassword(password);
 	        
 	        Map result = new HashMap();

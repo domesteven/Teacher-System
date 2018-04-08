@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.mapper.RewardMapper" >
+  <resultMap id="BaseResultMap" type="cn.bean.Reward" >
+    <id column="r_id" property="rId" jdbcType="INTEGER" />
+    <result column="r_name" property="rName" jdbcType="VARCHAR" />
+    <result column="ranking" property="ranking" jdbcType="VARCHAR" />
+    <result column="form_achievements" property="formAchievements" jdbcType="VARCHAR" />
+    <result column="win_categories" property="winCategories" jdbcType="VARCHAR" />
+    <result column="award_unit" property="awardUnit" jdbcType="VARCHAR" />
+    <result column="award_time" property="awardTime" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    r_id, r_name, ranking, form_achievements, win_categories, award_unit, award_time, 
+    remark, modify_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.bean.RewardExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from reward
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from reward
+    where r_id = #{rId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from reward
+    where r_id = #{rId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.bean.RewardExample" >
+    delete from reward
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.bean.Reward" >
+    insert into reward (r_id, r_name, ranking, 
+      form_achievements, win_categories, award_unit, 
+      award_time, remark, modify_time
+      )
+    values (#{rId,jdbcType=INTEGER}, #{rName,jdbcType=VARCHAR}, #{ranking,jdbcType=VARCHAR}, 
+      #{formAchievements,jdbcType=VARCHAR}, #{winCategories,jdbcType=VARCHAR}, #{awardUnit,jdbcType=VARCHAR}, 
+      #{awardTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{modifyTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.bean.Reward" >
+    insert into reward
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rId != null" >
+        r_id,
+      </if>
+      <if test="rName != null" >
+        r_name,
+      </if>
+      <if test="ranking != null" >
+        ranking,
+      </if>
+      <if test="formAchievements != null" >
+        form_achievements,
+      </if>
+      <if test="winCategories != null" >
+        win_categories,
+      </if>
+      <if test="awardUnit != null" >
+        award_unit,
+      </if>
+      <if test="awardTime != null" >
+        award_time,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rId != null" >
+        #{rId,jdbcType=INTEGER},
+      </if>
+      <if test="rName != null" >
+        #{rName,jdbcType=VARCHAR},
+      </if>
+      <if test="ranking != null" >
+        #{ranking,jdbcType=VARCHAR},
+      </if>
+      <if test="formAchievements != null" >
+        #{formAchievements,jdbcType=VARCHAR},
+      </if>
+      <if test="winCategories != null" >
+        #{winCategories,jdbcType=VARCHAR},
+      </if>
+      <if test="awardUnit != null" >
+        #{awardUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="awardTime != null" >
+        #{awardTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.bean.RewardExample" resultType="java.lang.Integer" >
+    select count(*) from reward
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update reward
+    <set >
+      <if test="record.rId != null" >
+        r_id = #{record.rId,jdbcType=INTEGER},
+      </if>
+      <if test="record.rName != null" >
+        r_name = #{record.rName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ranking != null" >
+        ranking = #{record.ranking,jdbcType=VARCHAR},
+      </if>
+      <if test="record.formAchievements != null" >
+        form_achievements = #{record.formAchievements,jdbcType=VARCHAR},
+      </if>
+      <if test="record.winCategories != null" >
+        win_categories = #{record.winCategories,jdbcType=VARCHAR},
+      </if>
+      <if test="record.awardUnit != null" >
+        award_unit = #{record.awardUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.awardTime != null" >
+        award_time = #{record.awardTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modifyTime != null" >
+        modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update reward
+    set r_id = #{record.rId,jdbcType=INTEGER},
+      r_name = #{record.rName,jdbcType=VARCHAR},
+      ranking = #{record.ranking,jdbcType=VARCHAR},
+      form_achievements = #{record.formAchievements,jdbcType=VARCHAR},
+      win_categories = #{record.winCategories,jdbcType=VARCHAR},
+      award_unit = #{record.awardUnit,jdbcType=VARCHAR},
+      award_time = #{record.awardTime,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      modify_time = #{record.modifyTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bean.Reward" >
+    update reward
+    <set >
+      <if test="rName != null" >
+        r_name = #{rName,jdbcType=VARCHAR},
+      </if>
+      <if test="ranking != null" >
+        ranking = #{ranking,jdbcType=VARCHAR},
+      </if>
+      <if test="formAchievements != null" >
+        form_achievements = #{formAchievements,jdbcType=VARCHAR},
+      </if>
+      <if test="winCategories != null" >
+        win_categories = #{winCategories,jdbcType=VARCHAR},
+      </if>
+      <if test="awardUnit != null" >
+        award_unit = #{awardUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="awardTime != null" >
+        award_time = #{awardTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where r_id = #{rId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.bean.Reward" >
+    update reward
+    set r_name = #{rName,jdbcType=VARCHAR},
+      ranking = #{ranking,jdbcType=VARCHAR},
+      form_achievements = #{formAchievements,jdbcType=VARCHAR},
+      win_categories = #{winCategories,jdbcType=VARCHAR},
+      award_unit = #{awardUnit,jdbcType=VARCHAR},
+      award_time = #{awardTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+    where r_id = #{rId,jdbcType=INTEGER}
+  </update>
+</mapper>
