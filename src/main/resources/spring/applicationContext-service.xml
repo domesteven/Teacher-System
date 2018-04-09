@@ -8,4 +8,5 @@
 	
 	<bean id="MytableService" class="cn.tdog.service.impl.MytableServiceImpl"/>
 	<bean id="LoginServiceIfc" class="cn.teacher.login.service.impl.LoginServiceImpl"/>
+	<bean id="infoServiceIfc" class="cn.teacher.info.service.impl.infoServiceImpl"/>
 </beans>

@@ -130,6 +130,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<%@include file="menu.jsp"%>
 	
 	<div class="content">
+	
+		<form action="${pageContext.request.contextPath}/saveInfo.action" method="post" enctype="multipart/form-data">
 		<table class="table table-striped table-bordered table-condensed list">
         	<tbody>
             	<tr>
@@ -138,7 +140,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     	<input id="tName" name="tName" type="text" value="${userinfo.tName}"/>
                 	</td>
                 	<td width="500" rowspan="2" colspan="2">
-                		<img id="img" alt="" src="./images/123.jpg">
+                		<img id="img" alt="" src="/file/${userinfo.image}">
+                		<input type="file" name="file"></input>
+                		
                 	</td>
                 	
             	</tr>
@@ -202,6 +206,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 	
             	</tr>
         	</tbody>
+        	<input id="tId" name="tId" value="${userinfo.tId}" type="hidden" />
         	<tfoot>
             	<tr>
                 	<td colspan="4">
@@ -210,6 +215,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             	</tr>
         	</tfoot>
     	</table>
+    	</form>
 		</div>
 	</div>
 
