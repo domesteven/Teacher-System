@@ -42,7 +42,7 @@ public class HandInterceptor1 implements HandlerInterceptor {
         String sessionid=request.getSession().getId();//获取登录的SESSIONID  
         String requestPath=request.getServletPath();//获取客户请求页面  
         System.out.println("=============="+requestPath);
-        Teacher teacher = (Teacher) session.getAttribute("userinfo");//获取登录的用户 
+        Teacher userinfo = (Teacher) session.getAttribute("userinfo");//获取登录的用户 
  
         
       //先过滤掉不需要判断SESSION的请求  
@@ -52,7 +52,7 @@ public class HandInterceptor1 implements HandlerInterceptor {
             }  
         }
       //判断用户名是否有效
-        Teacher userinfo = LoginController.check(teacher);
+        
         if(userinfo!=null){ 
         	for(String url : adminUrls) {     
                 if(requestPath.contains(url)) {  

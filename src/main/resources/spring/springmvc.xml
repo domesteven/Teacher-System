@@ -36,6 +36,7 @@
 	 <!-- 4.扫描web相关的bean -->
 	 <context:component-scan base-package="cn.tdog.controller" />
 	 <context:component-scan base-package="cn.teacher.login.controller" />
+	 <context:component-scan base-package="cn.teacher.info.controller" />
 	 
 	 
 	 <!-- 自定义拦截器 -->
@@ -95,5 +96,7 @@
     <bean id="user" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="location" value="classpath:user.properties"/>
     </bean>
-	
+	<bean id="myconfig" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="location" value="classpath:myconfig.properties"/>
+    </bean>
 </beans>
