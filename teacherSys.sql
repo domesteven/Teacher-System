@@ -64,7 +64,7 @@ CREATE TABLE `teacher` (
   `school_year` int(20) NOT NULL DEFAULT '1' COMMENT '入校年份',
   `education` varchar(20) DEFAULT NULL COMMENT '学历',
   `title` varchar(20) DEFAULT NULL COMMENT '职称',
-  `sex` tinyint(1) NOT NULL DEFAULT '1' COMMENT '(1:男;2：女)',
+  `sex` int(10) NOT NULL DEFAULT '1' COMMENT '(1:男;2：女)',
   `native_place` varchar(100) DEFAULT NULL COMMENT '籍贯',
   `certificate_number` varchar(100) NOT NULL COMMENT '身份证号码',
   `image` varchar(200) DEFAULT NULL COMMENT '照片',
