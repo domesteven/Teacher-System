@@ -9,5 +9,7 @@ public interface LoginServiceIfc {
 	Teacher check(Teacher teacher);
 
 	Boolean register(Teacher teacher);
+
+	Boolean checkNameAndNumber(Teacher teacher);
 	
 }

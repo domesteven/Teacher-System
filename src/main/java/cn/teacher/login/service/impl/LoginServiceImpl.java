@@ -36,10 +36,25 @@ public class LoginServiceImpl implements LoginServiceIfc {
 		}
 		return null;
 	}
-
+	
+	public Boolean checkNameAndNumber(Teacher teacher){
+		Boolean res = false;
+		
+		String certificateNumber = teacher.getCertificateNumber();
+		TeacherExample bean = new TeacherExample();
+		TeacherExample.Criteria criteria = bean.createCriteria();
+		
+		criteria.andCertificateNumberEqualTo(certificateNumber);
+		List<Teacher> teachers = teacherMapper.selectByExample(bean);
+		if(teachers.size()==0){
+			res = true;
+		}
+		return res;
+	}
 	public Boolean register(Teacher teacher) {
 		Boolean res = false;
 		if(teacher != null){
+			
 			int num = teacherMapper.insert(teacher);
 			if(num > 0){
 				res = true;
