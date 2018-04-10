@@ -1,5 +1,4 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<!doctype html>
 <html lang="en"><head>
     <meta charset="utf-8">
     <title>Bootstrap Admin</title>
@@ -57,7 +56,7 @@
         	var password = $("#password").val();
         	var schoolYear = $("#schoolYear").val();
         	var certificateNumber = $("#certificateNumber").val();
-        	var sex = $(".sex:checked").val();
+        	var sex = $('input:radio[name="sex"]:checked').val();
         	if(tName == undefined || tName == ""){
         		toastr.warning("姓名不能为空");
         		return;
@@ -89,8 +88,8 @@
                 		return;
                 	}else{
                 		$.ajax({
-                            type: "get",
-                            url: "${pageContext.request.contextPath}/register.do",
+                            type: "post",
+                            url: "${pageContext.request.contextPath}/register.do", 
                             data: {tName:tName,password:password,schoolYear:schoolYear,certificateNumber:certificateNumber,sex:sex},
                             dataType: "json",
                             success: function(data){
@@ -210,11 +209,11 @@
                 </div>
                 <div class="form-group">
                     <label>入校年份</label>
-                    <input type="text" id="schoolYear" name="schoolYear" class="form-controlspan12 form-control">
+                    <input type="text" id="schoolYear" name="schoolYear" class="form-controlspan12 form-control"/>
                 </div>
                 <div class="form-group">
                     <label>身份证号码</label>
-                    <input type="text" name="certificateNumber" id="certificateNumber" onchange="checkNum()"  class="form-controlspan12 form-control">
+                    <input type="text" name="certificateNumber" id="certificateNumber" onchange="checkNum()"  class="form-controlspan12 form-control"/>
                 </div>
                 <div class="form-group">
                     <label>性别</label><br/>

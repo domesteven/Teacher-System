@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.InvalidAlgorithmParameterException;
 import java.util.ArrayList;
@@ -150,6 +151,7 @@ public class LoginController{
 	@RequestMapping(value="/register")
 	@ResponseBody
 	public ModelAndView register(@Validated Teacher teacher,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+		String name = (String) req.getAttribute("tName");
 		ModelAndView modelAndView = new ModelAndView();
 		Map resResult = new HashMap();
 		Map data = new HashMap();
@@ -162,6 +164,7 @@ public class LoginController{
 			if(teacher != null){
 				Boolean hasName = loginService.checkNameAndNumber(teacher);
 				if(hasName){
+					teacher.setAuthorlever(2);
 					Boolean bar = loginService.register(teacher);
 					if(bar){
 						modelAndView.setViewName("sign-in");
