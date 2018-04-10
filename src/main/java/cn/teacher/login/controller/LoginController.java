@@ -95,6 +95,14 @@ public class LoginController{
 		return modelAndView;
 	}
 	
+	@RequestMapping(value="/goRegist")
+	@ResponseBody
+	public ModelAndView goRegist(@Validated Teacher teacher,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("regist");
+		return modelAndView;
+	}
+	
 	@RequestMapping(value="/login1")
 	@ResponseBody
 	public Map login1(HttpServletRequest request,HttpServletResponse response) throws Exception {
@@ -147,24 +155,42 @@ public class LoginController{
 		Map data = new HashMap();
 		resResult.put("errcode","-1");
 		resResult.put("errmsg","register请求失败");
-		modelAndView.setViewName("sign-up");
+		modelAndView.setViewName("regist");
 		try {
 			if(bindingResult.hasErrors()){
 			}
 			if(teacher != null){
-				teacher.setAuthorlever(2);
-				Boolean bar = loginService.register(teacher);
-				if(bar){
-					modelAndView.setViewName("sign-in");
+				Boolean hasName = loginService.checkNameAndNumber(teacher);
+				if(hasName){
+					Boolean bar = loginService.register(teacher);
+					if(bar){
+						modelAndView.setViewName("sign-in");
+					}
+				}else{
+					modelAndView.addObject("error",resResult);
 				}
 			}
-			
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("register-->"+"errormsg:"+e.getMessage());
 		}
 		return modelAndView;
 	}
+	
+	@RequestMapping(value="/checkNum")
+	@ResponseBody
+	public Map checkNum(@Validated Teacher teacher,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		Boolean hasName = loginService.checkNameAndNumber(teacher);
+		if(!hasName){
+			data.put("errcode", "-1");
+			data.put("errmsg", "身份证号码重复");
+		}else{
+			data.put("errcode", "0");
+		}
+		return data;
+	}
+	
 	@RequestMapping(value="/goLoginPage")
 	@ResponseBody
 	public ModelAndView goLoginPage(@Validated Teacher teacher,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {

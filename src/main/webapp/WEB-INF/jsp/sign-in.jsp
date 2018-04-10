@@ -96,7 +96,7 @@
     <div class="panel panel-default">
         <p class="panel-heading no-collapse">登录</p>
         <div class="panel-body">
-            <form action="${pageContext.request.contextPath}/login.action" name="loginForm" method="post" >
+            <form action="${pageContext.request.contextPath}/login.do" name="loginForm" method="post" >
                 <div class="form-group">
                     <label>用户</label>
                     <input name="tName" type="text" class="form-control span12"/>
@@ -112,7 +112,7 @@
         </div>
     </div>
     
-    <p><a href="reset-password.html">忘记密码？</a></p>
+    <p><a href="${pageContext.request.contextPath}/goRegist.do">注册</a></p>
 </div>
 
 
