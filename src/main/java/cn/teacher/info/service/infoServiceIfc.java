@@ -16,5 +16,7 @@ public interface infoServiceIfc {
 	List<TaskTeaching> selectTaskTeachingByPage(TaskTeaching bean,int startRow, int pageSize);
 
 	void delTaskTeaching(TaskTeaching taskTeaching);
+
+	void insert(TaskTeaching taskTeaching);
 	
 }

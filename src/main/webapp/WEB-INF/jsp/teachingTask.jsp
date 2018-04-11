@@ -59,28 +59,41 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         });
        
         function up(){
-        	
+        	var name = $("#tName").val();
+        	var url  = "${pageContext.request.contextPath}/goTeachingTask.action?page=${currentPage-1}";
+        	if(isNaN(name)){
+        		url += "&name="+encodeURI(encodeURI(name));
+        	}
         	if("${currentPage-1}">0){
-        		window.location.href="${pageContext.request.contextPath}/goTeachingTask.action?page=${currentPage-1}";	
+        		window.location.href= url;	
         	}
         	
         }
         
         function down(){
-        	
+        	debugger
+        	var name = $("#tName").val();
+        	var url = "${pageContext.request.contextPath}/goTeachingTask.action?page=${currentPage+1}";
         	var max = eval("${pageTimes}");
-        	
+        	if(isNaN(name)){
+        		url += "&name="+encodeURI(encodeURI(name));
+        	}
         	if(eval("${currentPage+1}") <= max){
-        		window.location.href="${pageContext.request.contextPath}/goTeachingTask.action?page=${currentPage+1}";	
+        		window.location.href=url;	
         	}
         	
         }
         
         function search(){
+        	var name = $("#tName").val();
+        	var url = "${pageContext.request.contextPath}/goTeachingTask.action?page="+num;
         	var num =  eval($("#searchPage").val());
         	var max = eval("${pageTimes}");
+        	if(isNaN(name)){
+        		url += "&name="+encodeURI(encodeURI(name));
+        	}
         	if(num>0  && num <= max){
-        		window.location.href="${pageContext.request.contextPath}/goTeachingTask.action?page="+num;
+        		window.location.href=url;
         	}else{
         		toastr.warning("请输入正确的页码");
         		$("#searchPage").val("${currentPage}");
@@ -90,6 +103,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	
         	$("#recordId").val(id);
             $('#myModal').modal('show');    
+        }
+        function showCreateModel(){
+        	$('#myModal1').modal('show');   
         }
         function delRecord(){
         	debugger
@@ -109,8 +125,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 }
             });
         }
-        
-        
+        function insert(){
+        	$("#form1").submit();
+        }
+        function reset(){
+        	$("#tName").val("");
+        }
+        function searchByName(){
+        	var name = $("#tName").val();
+        	window.location.href="${pageContext.request.contextPath}/goTeachingTask.action?name="+encodeURI(encodeURI(name));
+        }
     </script>
 	<style type="text/css">
 #main {
@@ -136,6 +160,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 #total{
 	margin-left:50px;
 }
+#tName{
+	width:100px;
+	float:right;
+}
+#toSearch{
+	float:right;
+}
+#reset {
+	float:right;
+}
+#seaName{
+	font-size:16px;
+	margin-top:5px;
+	margin-right:10px;
+	float:right;
+}
+
 .navbar-default .navbar-brand,.navbar-default .navbar-brand:hover {
 	color: #fff;
 }
@@ -178,62 +219,67 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	<div class="content">
 		<div class="btn-toolbar list-toolbar">
-			<button class="btn btn-primary">
+			<button class="btn btn-primary" onclick="showCreateModel()">
 				<i class="fa fa-plus"></i> 新增
 			</button>
 			<button class="btn btn-default">导出</button>
-			<div class="btn-group"></div>
+			<button id="reset" class="btn btn-default" onclick="reset()">重置</button>
+			<button id="toSearch" class="btn btn-primary" onclick="searchByName()">查询</button>
+			<input type="text" id="tName" name="tName" class="form-control" value="${searchName }"/>
+			<label id="seaName">课程名称:</label>
 		</div>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>课程名称</th>
-					<th>课程所属专业</th>
-					<th>课程性质</th>
-					<th>课时</th>
-					<th>人数</th>
-					<th>考核方式</th>
-					<th>所属教学改革课题</th>
-					<th style="width: 3.5em;"></th>
-				</tr>
-			</thead>
-			<tbody>
-
-				<c:forEach items="${list}" var="item">
+		<div id="info">
+			<table class="table">
+				<thead>
 					<tr>
-						<td>${item.name}</td>
-						<td>${item.major}</td>
-						<td>${item.property}</td>
-						<td>${item.hour}</td>
-						<td>${item.countMan}</td>
-						<td>${item.assessmentMethod}</td>
-						<td>${item.teachingSubject}</td>
-						<td><a href="user.html"><i class="fa fa-pencil"></i></a> <a onclick="setRecordId(${item.id})"><i
-								class="fa fa-trash-o"></i></a></td>
+						<th>课程名称</th>
+						<th>课程所属专业</th>
+						<th>课程性质</th>
+						<th>课时</th>
+						<th>人数</th>
+						<th>考核方式</th>
+						<th>所属教学改革课题</th>
+						<th style="width: 3.5em;"></th>
 					</tr>
-				</c:forEach>
-
-
-			</tbody>
-		</table>
-		<div class="pagination">
-			<button id="but1" type="button" class="btn btn-primary"
-				data-toggle="button" onclick="up()">&laquo;</button>
-
-			<div class="input-group">
-				<input type="text" id="searchPage" class="form-control"
-					value="${currentPage}" /> <span class="input-group-btn">
-					<button id="but3" class="btn btn-default" type="button"
-						onclick="search()">Go!</button>
-				</span>
+				</thead>
+				<tbody>
+	
+					<c:forEach items="${list}" var="item">
+						<tr>
+							<td>${item.name}</td>
+							<td>${item.major}</td>
+							<td>${item.property}</td>
+							<td>${item.hour}</td>
+							<td>${item.countMan}</td>
+							<td>${item.assessmentMethod}</td>
+							<td>${item.teachingSubject}</td>
+							<td><a href="user.html"><i class="fa fa-pencil"></i></a> <a onclick="setRecordId(${item.id})"><i
+									class="fa fa-trash-o"></i></a></td>
+						</tr>
+					</c:forEach>
+	
+	
+				</tbody>
+			</table>
+			<div class="pagination">
+				<button id="but1" type="button" class="btn btn-primary"
+					data-toggle="button" onclick="up()">&laquo;</button>
+	
+				<div class="input-group">
+					<input type="text" id="searchPage" class="form-control"
+						value="${currentPage}" /> <span class="input-group-btn">
+						<button id="but3" class="btn btn-default" type="button"
+							onclick="search()">Go!</button>
+					</span>
+				</div>
+				<!-- /input-group -->
+	
+				<button id="but2" type="button" class="btn btn-primary"
+					data-toggle="button" onclick="down()">&raquo;</button>
+				 
+				<span id="total" class="btn btn-primary">${userNum}条，共${pageTimes}页</span>
 			</div>
-			<!-- /input-group -->
-
-			<button id="but2" type="button" class="btn btn-primary"
-				data-toggle="button" onclick="down()">&raquo;</button>
-			 
-			<span id="total" class="btn btn-primary">${userNum}条，共${pageTimes}页</span>
-		</div>
+		</div>	
 	</div>
 	<!-- 模态框（Modal） -->
 	<div class="modal small fade" id="myModal" tabindex="-1" role="dialog"
@@ -255,6 +301,71 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<button class="btn btn-default" data-dismiss="modal"
 						aria-hidden="true">取消</button>
 					<button class="btn btn-danger" onclick="delRecord()">删除</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="myModal1" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog" style="width: 700px;height:250px;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+					<h3 id="myModalLabel">删除</h3>
+				</div>
+				<div class="modal-body">
+				<div style="height:300px;width:500px,overflow:auto; ">
+					<form id="form1" action="${pageContext.request.contextPath}/saveTaskTeaching.action"
+			method="post" enctype="multipart/form-data">
+			<table id="table1"
+				class="table table-striped table-bordered table-condensed list">
+				<tbody>
+					<tr>
+						<td width="15%">课程名称<font color="FF0000">*</font></td>
+						<td width="500"><input id="name" name="name" type="text"
+							value="" /></td>
+						<td width="15%">课程所属专业<font color="FF0000">*</font></td>
+						<td width="500"><input id="major" name="major" type="text"
+							value="" /></td>
+
+					</tr>
+					<tr>
+						<td>课程性质<font color="FF0000">*</font></td>
+						<td><input id="property" name="property"
+							type="text" value="" /></td>
+						<td>课时<font color="FF0000">*</font></td>
+						<td><input id="hour" name="hour"
+							type="text" value="" /></td>
+
+					</tr>
+					<tr>
+						<td>人数<font color="FF0000">*</font></td>
+						<td><input id="countMan" name="countMan"
+							value="" type="text" /></td>
+						<td>考核方式<font color="FF0000">*</font></td>
+						<td><input id="assessmentMethod" name="assessmentMethod" type="text"
+							value="" /></td>
+					</tr>
+
+					<tr>
+						<td width="15%">所属教学改革课题<font color="FF0000">*</font></td>
+						<td><input id="teachingSubject" name="teachingSubject"
+							type="text" value="" /></td>
+						
+					</tr>
+
+				</tbody>
+				<input id="tId" name="tId" value="${userinfo.tId}" type="hidden" />
+			</table>
+		</form>
+		</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default" data-dismiss="modal"
+						aria-hidden="true">取消</button>
+					<button class="btn btn-danger" onclick="insert()">新增</button>
 				</div>
 			</div>
 		</div>

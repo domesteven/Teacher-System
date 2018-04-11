@@ -247,7 +247,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         });
         function toAction(){
         	$("#form1").submit();
-        }?orderId=123?orderId=123?orderId=123?orderId=123?orderId=123?orderId=123
+        }
     </script>
 
 

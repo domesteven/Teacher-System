@@ -4,11 +4,13 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -104,19 +106,36 @@ public class infoController {
 			// TODO: handle exception
 			log.info(e.getMessage());
 		}
-		
 		return data; 
 	}
 	
+	@RequestMapping(value="/saveTaskTeaching")	
+	public String saveTaskTeaching(@Validated TaskTeaching taskTeaching,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+		
+		try {
+			String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+			taskTeaching.setCode(uuid);
+			infoService.insert(taskTeaching);
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return "redirect:/goTeachingTask"; 
+	}
 	@RequestMapping(value="/goTeachingTask")
 	@ResponseBody	
-	public ModelAndView goTeachingTask(String page,HttpServletRequest req,HttpServletResponse res) throws Exception {
+	public ModelAndView goTeachingTask(@Validated TaskTeaching bean,String page,HttpServletRequest req,HttpServletResponse res) throws Exception {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("teachingTask");
 		try {
+			String parameter = req.getParameter("name");
+			if(StringUtils.isNotBlank(parameter)){  
+	            String keyword=java.net.URLDecoder.decode(parameter,"UTF-8");  
+	            bean.setName(keyword);
+	            modelAndView.addObject("searchName", keyword);
+	        }  
 			Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
 			int tId = teacher.gettId();
-			TaskTeaching bean = new TaskTeaching();
 			bean.settId(tId);
 			//每页显示条数
 			int pageSize = Integer.parseInt(myconfig.get("pageSize"));

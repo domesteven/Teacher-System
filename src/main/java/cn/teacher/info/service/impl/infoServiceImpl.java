@@ -52,6 +52,9 @@ public class infoServiceImpl implements infoServiceIfc {
 			TaskTeachingExample example = new TaskTeachingExample();
 			TaskTeachingExample.Criteria criteria = example.createCriteria();
 			criteria.andTIdEqualTo(bean.gettId());
+			if(bean.getName()!=null && bean.getName()!=""){
+				criteria.andNameLike("%"+bean.getName()+"%");
+			}
 			list = taskTeachingMapper.selectByExample(example);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -70,6 +73,9 @@ public class infoServiceImpl implements infoServiceIfc {
 			example.setPageSize(pageSize);
 			TaskTeachingExample.Criteria criteria = example.createCriteria();
 			criteria.andTIdEqualTo(bean.gettId());
+			if(bean.getName()!=null && bean.getName()!=""){
+				criteria.andNameLike("%"+bean.getName()+"%");
+			}
 			list = taskTeachingMapper.selectByExample(example);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -85,6 +91,12 @@ public class infoServiceImpl implements infoServiceIfc {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
+
+	@Override
+	public void insert(TaskTeaching taskTeaching) {
+		// TODO Auto-generated method stub
+		taskTeachingMapper.insert(taskTeaching);
 	}
 
 }
