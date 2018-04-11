@@ -1,6 +1,8 @@
 package cn.teacher.info.controller;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.bean.TaskTeaching;
 import cn.bean.Teacher;
 import cn.teacher.info.service.infoServiceIfc;
 
@@ -88,4 +91,71 @@ public class infoController {
 		modelAndView.setViewName("upload");
 		return modelAndView;
 	}
+	@RequestMapping(value="/delTaskTeaching")
+	@ResponseBody	
+	public Map delTaskTeaching(@Validated TaskTeaching taskTeaching,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		data.put("errcode", "-1");
+		data.put("errmsg", "失败");
+		try {
+			infoService.delTaskTeaching(taskTeaching);
+			data.put("errcode", "0");
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		
+		return data; 
+	}
+	
+	@RequestMapping(value="/goTeachingTask")
+	@ResponseBody	
+	public ModelAndView goTeachingTask(String page,HttpServletRequest req,HttpServletResponse res) throws Exception {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("teachingTask");
+		try {
+			Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
+			int tId = teacher.gettId();
+			TaskTeaching bean = new TaskTeaching();
+			bean.settId(tId);
+			//每页显示条数
+			int pageSize = Integer.parseInt(myconfig.get("pageSize"));
+			
+			List<TaskTeaching> list = infoService.selectAllTaskTeaching(bean);
+			modelAndView.addObject("userNum",list.size());
+			
+			//总页数
+			int pageTimes;
+			if(list.size()>pageSize){
+				if(list.size() % pageSize == 0){
+					pageTimes = list.size()/pageSize;
+				}else{
+					pageTimes = list.size()/pageSize+1;
+				}
+			}else{
+				pageTimes = 1;
+			}
+			
+			
+			modelAndView.addObject("pageTimes", pageTimes);
+			//页面初始的时候page没有值
+	         if(null == page)
+	         {
+	             page = "1";
+	         }
+	         
+	         int startRow = (Integer.parseInt(page)-1) * pageSize;
+	         list = infoService.selectTaskTeachingByPage(bean,startRow, pageSize);
+	         
+	         modelAndView.addObject("currentPage", Integer.parseInt(page));
+	         modelAndView.addObject("list", list);
+	         
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		
+		return modelAndView;
+	}
+	
 }

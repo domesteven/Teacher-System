@@ -54,44 +54,49 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         });
     </script>
 	<style type="text/css">
-
-#main{
-	margin-left: auto; margin-right: auto;
-	width:800px;
-	height:500px;
+#main {
+	margin-left: auto;
+	margin-right: auto;
+	width: 800px;
+	height: 500px;
 	border: 1px solid black;
 }
+
 #line-chart {
 	height: 300px;
 	width: 800px;
 	margin: 0px auto;
 	margin-top: 1em;
 }
-#name{
-	float:right;
-	width:300px;
+
+#name {
+	float: right;
+	width: 300px;
 }
-#sex{
-	float:right;
-	width:300px;
+
+#sex {
+	float: right;
+	width: 300px;
 }
-#education{
-	float:right;
-	width:300px;
+
+#education {
+	float: right;
+	width: 300px;
 }
-#image{
-	float:right;
-	margin-right:200px;
-	
+
+#image {
+	float: right;
+	margin-right: 200px;
 }
-#img{
-	width:100px;
-	height:120px;
+
+#img {
+	width: 100px;
+	height: 120px;
 }
+
 .navbar-default .navbar-brand,.navbar-default .navbar-brand:hover {
 	color: #fff;
 }
-
 </style>
 
 	<script type="text/javascript">
@@ -128,97 +133,105 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--<![endif]-->
 
 	<%@include file="menu.jsp"%>
-	
-	<div class="content">
-	
-		<form action="${pageContext.request.contextPath}/saveInfo.action" method="post" enctype="multipart/form-data">
-		<table class="table table-striped table-bordered table-condensed list">
-        	<tbody>
-            	<tr>
-                	<td width="15%">姓名<font color="FF0000">*</font></td>
-                	<td width="500">
-                    	<input id="tName" name="tName" type="text" value="${userinfo.tName}"/>
-                	</td>
-                	<td width="500" rowspan="2" colspan="2">
-                		<img id="img" alt="" src="/file/${userinfo.image}">
-                		<input type="file" name="file"></input>
-                		
-                	</td>
-                	
-            	</tr>
-            	<tr>
-                	<td>身份证号码<font color="FF0000">*</font></td>
-                	<td>
-                    	<input id="certificateNumber" name="certificateNumber" type="text" value="${userinfo.certificateNumber}"/></td>
-                	
-            	</tr>
-            	<tr>
-                	<td>入校年份<font color="FF0000">*</font></td>
-                	<td>
-                    	<input id="schoolYear" name="schoolYear" value="${userinfo.schoolYear}" type="text" />
-                	</td>
-                	<td>职称<font color="FF0000">*</font></td>
-                	<td>
-                    	<input id="title" name="title" type="text" value="${userinfo.title}"/></td>
-            	</tr>
-            
-            	<tr>
-                	<td width="15%">毕业院校<font color="FF0000">*</font></td>
-                	<td>
-                    	<input id="graduateSchool" name="graduateSchool" type="text" value="${userinfo.graduateSchool}"/>
-                	</td>
-                	<td width="500">学历学位</td>
-                	<td width="500">
-                    	<select name="education" class="education">
-							<option value="高中">高中</option>
-							<option value="本科">本科</option>
-							<option value="硕士">硕士</option>
-							<option value="博士">博士</option>
-						</select>
-                	</td>
-            	</tr>
-           		<tr>
-                	<td>籍贯<font color="FF0000">*</font></td>
-                	<td>
-                    	<input id="native_place" name="native_place" value="${userinfo.nativePlace}" type="text" />
-                	</td>
-                	<td>性别<font color="FF0000">*</font></td>
-                	<td>
-                    	<input id="male" type="radio" name="sex" value="1">男</input>
-						<input id="female" type="radio" name="sex" value="2">女</input>
-					</td>
-            	</tr>
-            	<tr>
-                	<td>专业<font color="FF0000">*</font></td>
-                	<td>
-                    	<input id="major" name="major" value="${userinfo.major}" type="text" />
-                	</td>
-                	<td>所属教研室<font color="FF0000">*</font></td>
-                	<td>
-                		<input id="teaching_research" name="teaching_research" value="${userinfo.teachingResearch}" type="text" />
-                    	</td>
-            	</tr>
-            	<tr>
-                	<td>密码<font color="FF0000">*</font></td>
-                	<td>
-                    	<input id="password" name="password" value="${userinfo.password}" type="password" />
-                	</td>
-                	
-            	</tr>
-        	</tbody>
-        	<input id="tId" name="tId" value="${userinfo.tId}" type="hidden" />
-        	<tfoot>
-            	<tr>
-                	<td colspan="4">
-                    	<input class="btn btn-inverse" id="find" type="submit" value="保存" />
-                    	<input class="btn btn-inverse" type="reset" value="取消" /></td>
-            	</tr>
-        	</tfoot>
-    	</table>
-    	</form>
-		</div>
-	</div>
 
+	<div class="content">
+
+		<form id="form1" action="${pageContext.request.contextPath}/saveInfo.action"
+			method="post" enctype="multipart/form-data">
+			<table
+				class="table table-striped table-bordered table-condensed list">
+				<tbody>
+					<tr>
+						<td width="15%">姓名<font color="FF0000">*</font></td>
+						<td width="500"><input id="tName" name="tName" type="text"
+							value="${userinfo.tName}" /></td>
+						<td width="500" rowspan="2" colspan="2"><img id="img" alt=""
+							src="/file/${userinfo.image}"> <input type="file"
+							name="file"></input></td>
+
+					</tr>
+					<tr>
+						<td>身份证号码<font color="FF0000">*</font></td>
+						<td><input id="certificateNumber" name="certificateNumber"
+							type="text" value="${userinfo.certificateNumber}" /></td>
+
+					</tr>
+					<tr>
+						<td>入校年份<font color="FF0000">*</font></td>
+						<td><input id="schoolYear" name="schoolYear"
+							value="${userinfo.schoolYear}" type="text" /></td>
+						<td>职称<font color="FF0000">*</font></td>
+						<td><input id="title" name="title" type="text"
+							value="${userinfo.title}" /></td>
+					</tr>
+
+					<tr>
+						<td width="15%">毕业院校<font color="FF0000">*</font></td>
+						<td><input id="graduateSchool" name="graduateSchool"
+							type="text" value="${userinfo.graduateSchool}" /></td>
+						<td width="500">学历学位</td>
+						<td width="500"><select name="education" class="education">
+								<option value="高中">高中</option>
+								<option value="本科">本科</option>
+								<option value="硕士">硕士</option>
+								<option value="博士">博士</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td>籍贯<font color="FF0000">*</font></td>
+						<td><input id="native_place" name="native_place"
+							value="${userinfo.nativePlace}" type="text" /></td>
+						<td>性别<font color="FF0000">*</font></td>
+						<td><input id="male" type="radio" name="sex" value="1">男</input>
+							<input id="female" type="radio" name="sex" value="2">女</input></td>
+					</tr>
+					<tr>
+						<td>专业<font color="FF0000">*</font></td>
+						<td><input id="major" name="major" value="${userinfo.major}"
+							type="text" /></td>
+						<td>所属教研室<font color="FF0000">*</font></td>
+						<td><input id="teaching_research" name="teaching_research"
+							value="${userinfo.teachingResearch}" type="text" /></td>
+					</tr>
+					<tr>
+						<td>密码<font color="FF0000">*</font></td>
+						<td><input id="password" name="password"
+							value="${userinfo.password}" type="password" /></td>
+
+					</tr>
+				</tbody>
+				<input id="tId" name="tId" value="${userinfo.tId}" type="hidden" />
+				<tfoot>
+					<tr>
+						<td colspan="4">
+						<input class="btn btn-inverse" type="button" data-toggle="modal" data-target="#myModal" value="保存" />  
+						<input class="btn btn-inverse" type="reset" value="取消" /></td>
+					</tr>
+				</tfoot>
+			</table>
+		</form>
+	</div>
+	</div>
+	<!-- 模态框（Modal） -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">确定修改</h4>
+				</div>
+				<div class="modal-body">你将修改你的个人信息</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button type="button" class="btn btn-primary" onclick="toAction()">确定</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
 
 	<script src="lib/bootstrap/js/bootstrap.js"></script>
 	<script type="text/javascript">
@@ -232,6 +245,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         $(function() {
             $('.demo-cancel-click').click(function(){return false;});
         });
+        function toAction(){
+        	$("#form1").submit();
+        }?orderId=123?orderId=123?orderId=123?orderId=123?orderId=123?orderId=123
     </script>
 
 

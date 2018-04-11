@@ -54,7 +54,7 @@
     <li data-popover="true" data-content="Items in this group require a <strong><a href='http://portnine.com/bootstrap-themes/aircraft' target='blank'>premium license</a><strong>." rel="popover" data-placement="right"><a href="#" data-target=".premium-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-fighter-jet"></i> 教学<i class="fa fa-collapse"></i></a></li>
         <li><ul class="premium-menu nav nav-list collapse">
                 <li class="visible-xs visible-sm"><a href="#">- Premium features require a license -</a></span>
-            <li ><a href="premium-profile.html"><span class="fa fa-caret-right"></span> 教学任务列表</a></li>
+            <li ><a href="${pageContext.request.contextPath}/goTeachingTask.action"><span class="fa fa-caret-right"></span> 教学任务</a></li>
             <li ><a href="premium-blog.html"><span class="fa fa-caret-right"></span> 教学任务新增</a></li>
             <li ><a href="premium-blog-item.html"><span class="fa fa-caret-right"></span> 教学任务修改</a></li>
     </ul></li>
