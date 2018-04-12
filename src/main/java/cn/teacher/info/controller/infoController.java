@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.bean.TaskCompany;
 import cn.bean.TaskTeaching;
 import cn.bean.Teacher;
 import cn.teacher.info.service.infoServiceIfc;
@@ -109,6 +110,22 @@ public class infoController {
 		return data; 
 	}
 	
+	@RequestMapping(value="/delTaskCompany")
+	@ResponseBody	
+	public Map delTaskCompany(@Validated TaskCompany taskCompany,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		data.put("errcode", "-1");
+		data.put("errmsg", "失败");
+		try {
+			infoService.delTaskCompany(taskCompany);
+			data.put("errcode", "0");
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return data; 
+	}
+	
 	@RequestMapping(value="/saveTaskTeaching")	
 	public String saveTaskTeaching(@Validated TaskTeaching taskTeaching,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
 		
@@ -122,6 +139,19 @@ public class infoController {
 		}
 		return "redirect:/goTeachingTask"; 
 	}
+	
+	@RequestMapping(value="/saveTaskCompany")	
+	public String saveTaskCompany(@Validated TaskCompany taskCompany,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+		
+		try {
+			
+			infoService.insert(taskCompany);
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return "redirect:/goTaskCompany"; 
+	}
 	@RequestMapping(value="/editTaskTeaching")	
 	public String editTaskTeaching(@Validated TaskTeaching taskTeaching,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
 		
@@ -134,6 +164,19 @@ public class infoController {
 		}
 		return "redirect:/goTeachingTask"; 
 	}
+	
+	@RequestMapping(value="/editTaskCompany")	
+	public String editTaskCompany(@Validated TaskCompany taskCompany,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+		
+		try {
+			
+			infoService.update(taskCompany);
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return "redirect:/goTaskCompany"; 
+	}
 	@RequestMapping(value="/selectTaskTeachingById")
 	@ResponseBody
 	public Map selectTaskTeachingById(@Validated TaskTeaching taskTeaching,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
@@ -142,6 +185,24 @@ public class infoController {
 		data.put("errmsg", "失败");
 		try {
 			TaskTeaching bean = infoService.selectTaskTeachingById(taskTeaching);
+			data.put("errcode", "0");
+			data.put("errmsg", "成功");
+			data.put("data", bean);
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return data; 
+	}
+	
+	@RequestMapping(value="/selectTaskCompanyById")
+	@ResponseBody
+	public Map selectTaskCompanyById(@Validated TaskCompany taskCompany,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		data.put("errcode", "-1");
+		data.put("errmsg", "失败");
+		try {
+			TaskCompany bean = infoService.selectTaskCompanyById(taskCompany);
 			data.put("errcode", "0");
 			data.put("errmsg", "成功");
 			data.put("data", bean);
@@ -195,6 +256,55 @@ public class infoController {
 	         
 	         int startRow = (Integer.parseInt(page)-1) * pageSize;
 	         list = infoService.selectTaskTeachingByPage(bean,startRow, pageSize);
+	         
+	         modelAndView.addObject("currentPage", Integer.parseInt(page));
+	         modelAndView.addObject("list", list);
+	         
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		
+		return modelAndView;
+	}
+	@RequestMapping(value="/goTaskCompany")
+	@ResponseBody	
+	public ModelAndView goTaskCompany(@Validated TaskCompany bean,String page,HttpServletRequest req,HttpServletResponse res) throws Exception {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("taskCompany");
+		try {
+			
+			Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
+			int tId = teacher.gettId();
+			bean.settId(tId);
+			//每页显示条数
+			int pageSize = Integer.parseInt(myconfig.get("pageSize"));
+			
+			List<TaskCompany> list = infoService.selectAllTaskCompany(bean);
+			modelAndView.addObject("userNum",list.size());
+			
+			//总页数
+			int pageTimes;
+			if(list.size()>pageSize){
+				if(list.size() % pageSize == 0){
+					pageTimes = list.size()/pageSize;
+				}else{
+					pageTimes = list.size()/pageSize+1;
+				}
+			}else{
+				pageTimes = 1;
+			}
+			
+			
+			modelAndView.addObject("pageTimes", pageTimes);
+			//页面初始的时候page没有值
+	         if(null == page)
+	         {
+	             page = "1";
+	         }
+	         
+	         int startRow = (Integer.parseInt(page)-1) * pageSize;
+	         list = infoService.selectTaskCompanyByPage(bean,startRow, pageSize);
 	         
 	         modelAndView.addObject("currentPage", Integer.parseInt(page));
 	         modelAndView.addObject("list", list);

@@ -4,10 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import cn.bean.TaskCompany;
+import cn.bean.TaskCompanyExample;
 import cn.bean.TaskTeaching;
 import cn.bean.TaskTeachingExample;
 import cn.bean.Teacher;
 import cn.bean.TeacherExample;
+import cn.mapper.TaskCompanyMapper;
 import cn.mapper.TaskTeachingMapper;
 import cn.mapper.TeacherMapper;
 import cn.teacher.info.service.infoServiceIfc;
@@ -18,6 +21,9 @@ public class infoServiceImpl implements infoServiceIfc {
 	
 	@Autowired
 	private TaskTeachingMapper taskTeachingMapper;
+	
+	@Autowired
+	private TaskCompanyMapper taskCompanyMapper;
 	
 	@Override
 	public void updateInfo(Teacher teacher) {
@@ -116,6 +122,78 @@ public class infoServiceImpl implements infoServiceIfc {
 	public void update(TaskTeaching taskTeaching) {
 		// TODO Auto-generated method stub
 		taskTeachingMapper.updateByPrimaryKey(taskTeaching);
+	}
+
+	@Override
+	public List<TaskCompany> selectAllTaskCompany(TaskCompany bean) {
+		List<TaskCompany> list = null;
+		try {
+			TaskCompanyExample example = new TaskCompanyExample();
+			TaskCompanyExample.Criteria criteria = example.createCriteria();
+			criteria.andTIdEqualTo(bean.gettId());
+			if(bean.getName()!=null && bean.getName()!=""){
+				criteria.andNameLike("%"+bean.getName()+"%");
+			}
+			list = taskCompanyMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+
+	@Override
+	public List<TaskCompany> selectTaskCompanyByPage(TaskCompany bean,
+			int startRow, int pageSize) {
+		List<TaskCompany> list = null;
+		try {
+			TaskCompanyExample example = new TaskCompanyExample();
+			example.setOrderByClause("modify_time desc");
+			example.setStartRow(startRow);
+			example.setPageSize(pageSize);
+			TaskCompanyExample.Criteria criteria = example.createCriteria();
+			criteria.andTIdEqualTo(bean.gettId());
+			if(bean.getName()!=null && bean.getName()!=""){
+				criteria.andNameLike("%"+bean.getName()+"%");
+			}
+			list = taskCompanyMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+
+	@Override
+	public void delTaskCompany(TaskCompany taskCompany) {
+		// TODO Auto-generated method stub
+		try {
+			taskCompanyMapper.deleteByPrimaryKey(taskCompany.getId());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	@Override
+	public void insert(TaskCompany taskCompany) {
+		// TODO Auto-generated method stub
+		taskCompanyMapper.insert(taskCompany);
+	}
+
+	@Override
+	public void update(TaskCompany taskCompany) {
+		// TODO Auto-generated method stub
+		taskCompanyMapper.updateByPrimaryKey(taskCompany);
+	}
+
+	@Override
+	public TaskCompany selectTaskCompanyById(TaskCompany taskCompany) {
+		// TODO Auto-generated method stub
+		TaskCompany bean = null;
+		try {
+			bean = taskCompanyMapper.selectByPrimaryKey(taskCompany.getId());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return bean;
 	}
 
 }

@@ -142,7 +142,7 @@ CREATE TABLE `task_teaching` (
   `id` int(20) NOT NULL AUTO_INCREMENT,
   `t_id` int(20) NOT NULL COMMENT '教师ID',
   `name` varchar(200) NOT NULL COMMENT '课程名称',
-  `code` varchar(100) NOT NULL COMMENT '编码',
+  `code` varchar(100) DEFAULT NULL COMMENT '编码',
   `major` varchar(100) DEFAULT NULL COMMENT '所属专业',
   `property` varchar(100) DEFAULT NULL COMMENT '课程所属性质',
   `hour` varchar(100) DEFAULT NULL COMMENT '课时',
