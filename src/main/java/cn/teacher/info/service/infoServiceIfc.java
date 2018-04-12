@@ -18,5 +18,9 @@ public interface infoServiceIfc {
 	void delTaskTeaching(TaskTeaching taskTeaching);
 
 	void insert(TaskTeaching taskTeaching);
+
+	TaskTeaching selectTaskTeachingById(TaskTeaching taskTeaching);
+
+	void update(TaskTeaching taskTeaching);
 	
 }

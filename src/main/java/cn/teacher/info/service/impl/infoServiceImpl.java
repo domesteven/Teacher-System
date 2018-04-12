@@ -69,6 +69,7 @@ public class infoServiceImpl implements infoServiceIfc {
 		List<TaskTeaching> list = null;
 		try {
 			TaskTeachingExample example = new TaskTeachingExample();
+			example.setOrderByClause("modify_time desc");
 			example.setStartRow(startRow);
 			example.setPageSize(pageSize);
 			TaskTeachingExample.Criteria criteria = example.createCriteria();
@@ -97,6 +98,24 @@ public class infoServiceImpl implements infoServiceIfc {
 	public void insert(TaskTeaching taskTeaching) {
 		// TODO Auto-generated method stub
 		taskTeachingMapper.insert(taskTeaching);
+	}
+
+	@Override
+	public TaskTeaching selectTaskTeachingById(TaskTeaching taskTeaching) {
+		// TODO Auto-generated method stub
+		TaskTeaching bean = null;
+		try {
+			bean = taskTeachingMapper.selectByPrimaryKey(taskTeaching.getId());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return bean;
+	}
+
+	@Override
+	public void update(TaskTeaching taskTeaching) {
+		// TODO Auto-generated method stub
+		taskTeachingMapper.updateByPrimaryKey(taskTeaching);
 	}
 
 }

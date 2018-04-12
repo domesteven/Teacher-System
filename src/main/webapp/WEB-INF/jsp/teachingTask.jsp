@@ -61,7 +61,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         function up(){
         	var name = $("#tName").val();
         	var url  = "${pageContext.request.contextPath}/goTeachingTask.action?page=${currentPage-1}";
-        	if(isNaN(name)){
+        	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
         	}
         	if("${currentPage-1}">0){
@@ -75,7 +75,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	var name = $("#tName").val();
         	var url = "${pageContext.request.contextPath}/goTeachingTask.action?page=${currentPage+1}";
         	var max = eval("${pageTimes}");
-        	if(isNaN(name)){
+        	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
         	}
         	if(eval("${currentPage+1}") <= max){
@@ -89,7 +89,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	var url = "${pageContext.request.contextPath}/goTeachingTask.action?page="+num;
         	var num =  eval($("#searchPage").val());
         	var max = eval("${pageTimes}");
-        	if(isNaN(name)){
+        	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
         	}
         	if(num>0  && num <= max){
@@ -126,14 +126,47 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             });
         }
         function insert(){
+        	
+        	var id = $("#id").val();
+        	if(id != null && id != ""){
+        		$("#form1").attr('action',"${pageContext.request.contextPath}/editTaskTeaching.action"); 
+        	}
         	$("#form1").submit();
         }
         function reset(){
         	$("#tName").val("");
         }
+        function resetForm(){
+        	document.getElementById("form1").reset();
+        }
         function searchByName(){
         	var name = $("#tName").val();
         	window.location.href="${pageContext.request.contextPath}/goTeachingTask.action?name="+encodeURI(encodeURI(name));
+        }
+        function editTaskInfo(id){
+        	
+        	$.ajax({
+                type: "post",
+                url: "${pageContext.request.contextPath}/selectTaskTeachingById.action", 
+                data: {id:id},
+                dataType: "json",
+                success: function(data){
+                	if(data.errcode == "-1"){
+                		toastr.error(data.errmsg);
+                	}else{
+                		$("#id").val(data.data.id);
+                		$("#name").val(data.data.name);
+                		$("#major").val(data.data.major);
+                		$("#property").val(data.data.property);
+                		$("#hour").val(data.data.hour);
+                		$("#countMan").val(data.data.countMan);
+                		$("#assessmentMethod").val(data.data.assessmentMethod);
+                		$("#teachingSubject").val(data.data.teachingSubject);
+                		$('#myModal1').modal('show');   
+                	}
+                	
+                }
+            });
         }
     </script>
 	<style type="text/css">
@@ -253,7 +286,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<td>${item.countMan}</td>
 							<td>${item.assessmentMethod}</td>
 							<td>${item.teachingSubject}</td>
-							<td><a href="user.html"><i class="fa fa-pencil"></i></a> <a onclick="setRecordId(${item.id})"><i
+							<td><a onclick="editTaskInfo(${item.id})"><i class="fa fa-pencil"></i></a> <a onclick="setRecordId(${item.id})"><i
 									class="fa fa-trash-o"></i></a></td>
 						</tr>
 					</c:forEach>
@@ -312,8 +345,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">×</button>
-					<h3 id="myModalLabel">删除</h3>
+						aria-hidden="true" onclick="resetForm()">×</button>
+					<h3 id="myModalLabel">教学任务</h3>
 				</div>
 				<div class="modal-body">
 				<div style="height:300px;width:500px,overflow:auto; ">
@@ -358,14 +391,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 				</tbody>
 				<input id="tId" name="tId" value="${userinfo.tId}" type="hidden" />
+				<input id="id" name="id" value="" type="hidden"/>
 			</table>
 		</form>
 		</div>
 				</div>
 				<div class="modal-footer">
+					
 					<button class="btn btn-default" data-dismiss="modal"
-						aria-hidden="true">取消</button>
-					<button class="btn btn-danger" onclick="insert()">新增</button>
+						aria-hidden="true" onclick="resetForm()">取消</button>
+					<button class="btn btn-primary" onclick="insert()">保存</button>
 				</div>
 			</div>
 		</div>

@@ -122,6 +122,36 @@ public class infoController {
 		}
 		return "redirect:/goTeachingTask"; 
 	}
+	@RequestMapping(value="/editTaskTeaching")	
+	public String editTaskTeaching(@Validated TaskTeaching taskTeaching,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+		
+		try {
+			
+			infoService.update(taskTeaching);
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return "redirect:/goTeachingTask"; 
+	}
+	@RequestMapping(value="/selectTaskTeachingById")
+	@ResponseBody
+	public Map selectTaskTeachingById(@Validated TaskTeaching taskTeaching,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		data.put("errcode", "-1");
+		data.put("errmsg", "失败");
+		try {
+			TaskTeaching bean = infoService.selectTaskTeachingById(taskTeaching);
+			data.put("errcode", "0");
+			data.put("errmsg", "成功");
+			data.put("data", bean);
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return data; 
+	}
+	
 	@RequestMapping(value="/goTeachingTask")
 	@ResponseBody	
 	public ModelAndView goTeachingTask(@Validated TaskTeaching bean,String page,HttpServletRequest req,HttpServletResponse res) throws Exception {
