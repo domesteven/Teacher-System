@@ -6,11 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.bean.TaskCompany;
 import cn.bean.TaskCompanyExample;
+import cn.bean.TaskDirectortournament;
+import cn.bean.TaskDirectortournamentExample;
+import cn.bean.TaskGraduation;
+import cn.bean.TaskGraduationExample;
 import cn.bean.TaskTeaching;
 import cn.bean.TaskTeachingExample;
 import cn.bean.Teacher;
 import cn.bean.TeacherExample;
 import cn.mapper.TaskCompanyMapper;
+import cn.mapper.TaskDirectortournamentMapper;
+import cn.mapper.TaskGraduationMapper;
 import cn.mapper.TaskTeachingMapper;
 import cn.mapper.TeacherMapper;
 import cn.teacher.info.service.infoServiceIfc;
@@ -24,6 +30,12 @@ public class infoServiceImpl implements infoServiceIfc {
 	
 	@Autowired
 	private TaskCompanyMapper taskCompanyMapper;
+	
+	@Autowired
+	private TaskDirectortournamentMapper taskDirectortournamentMapper;
+	
+	@Autowired
+	private TaskGraduationMapper taskGraduationMapper;
 	
 	@Override
 	public void updateInfo(Teacher teacher) {
@@ -57,7 +69,9 @@ public class infoServiceImpl implements infoServiceIfc {
 		try {
 			TaskTeachingExample example = new TaskTeachingExample();
 			TaskTeachingExample.Criteria criteria = example.createCriteria();
-			criteria.andTIdEqualTo(bean.gettId());
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
 			if(bean.getName()!=null && bean.getName()!=""){
 				criteria.andNameLike("%"+bean.getName()+"%");
 			}
@@ -79,7 +93,9 @@ public class infoServiceImpl implements infoServiceIfc {
 			example.setStartRow(startRow);
 			example.setPageSize(pageSize);
 			TaskTeachingExample.Criteria criteria = example.createCriteria();
-			criteria.andTIdEqualTo(bean.gettId());
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
 			if(bean.getName()!=null && bean.getName()!=""){
 				criteria.andNameLike("%"+bean.getName()+"%");
 			}
@@ -130,7 +146,9 @@ public class infoServiceImpl implements infoServiceIfc {
 		try {
 			TaskCompanyExample example = new TaskCompanyExample();
 			TaskCompanyExample.Criteria criteria = example.createCriteria();
-			criteria.andTIdEqualTo(bean.gettId());
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
 			if(bean.getName()!=null && bean.getName()!=""){
 				criteria.andNameLike("%"+bean.getName()+"%");
 			}
@@ -151,7 +169,9 @@ public class infoServiceImpl implements infoServiceIfc {
 			example.setStartRow(startRow);
 			example.setPageSize(pageSize);
 			TaskCompanyExample.Criteria criteria = example.createCriteria();
-			criteria.andTIdEqualTo(bean.gettId());
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
 			if(bean.getName()!=null && bean.getName()!=""){
 				criteria.andNameLike("%"+bean.getName()+"%");
 			}
@@ -190,6 +210,161 @@ public class infoServiceImpl implements infoServiceIfc {
 		TaskCompany bean = null;
 		try {
 			bean = taskCompanyMapper.selectByPrimaryKey(taskCompany.getId());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return bean;
+	}
+
+	@Override
+	public void insert(TaskGraduation taskBean) {
+		// TODO Auto-generated method stub
+		taskGraduationMapper.insert(taskBean);
+	}
+
+	@Override
+	public void update(TaskGraduation taskBean) {
+		// TODO Auto-generated method stub
+		taskGraduationMapper.updateByPrimaryKey(taskBean);
+		
+	}
+
+	@Override
+	public TaskGraduation selectTaskCompanyById(TaskGraduation taskBean) {
+		TaskGraduation bean = null;
+		try {
+			bean = taskGraduationMapper.selectByPrimaryKey(taskBean.getId());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return bean;
+	}
+
+	@Override
+	public List<TaskGraduation> selectAllTaskCompany(TaskGraduation bean) {
+		List<TaskGraduation> list = null;
+		try {
+			TaskGraduationExample example = new TaskGraduationExample();
+			TaskGraduationExample.Criteria criteria = example.createCriteria();
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
+			if(bean.getName()!=null && bean.getName()!=""){
+				criteria.andNameLike("%"+bean.getName()+"%");
+			}
+			list = taskGraduationMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+
+	@Override
+	public List<TaskGraduation> selectTaskCompanyByPage(TaskGraduation bean,
+			int startRow, int pageSize) {
+		// TODO Auto-generated method stub
+		List<TaskGraduation> list = null;
+		try {
+			TaskGraduationExample example = new TaskGraduationExample();
+			example.setOrderByClause("modify_time desc");
+			example.setStartRow(startRow);
+			example.setPageSize(pageSize);
+			TaskGraduationExample.Criteria criteria = example.createCriteria();
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
+			if(bean.getName()!=null && bean.getName()!=""){
+				criteria.andNameLike("%"+bean.getName()+"%");
+			}
+			list = taskGraduationMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+
+	@Override
+	public void delTaskGraduation(TaskGraduation taskBean) {
+		// TODO Auto-generated method stub
+		try {
+			taskGraduationMapper.deleteByPrimaryKey(taskBean.getId());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	@Override
+	public List<TaskDirectortournament> selectAllTask(
+			TaskDirectortournament bean) {
+		// TODO Auto-generated method stub
+		List<TaskDirectortournament> list = null;
+		try {
+			TaskDirectortournamentExample example = new TaskDirectortournamentExample();
+			TaskDirectortournamentExample.Criteria criteria = example.createCriteria();
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
+			if(bean.getName()!=null && bean.getName()!=""){
+				criteria.andNameLike("%"+bean.getName()+"%");
+			}
+			list = taskDirectortournamentMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+
+	@Override
+	public List<TaskDirectortournament> selectTaskByPage(
+			TaskDirectortournament bean, int startRow, int pageSize) {
+		// TODO Auto-generated method stub
+		List<TaskDirectortournament> list = null;
+		try {
+			TaskDirectortournamentExample example = new TaskDirectortournamentExample();
+			example.setOrderByClause("modify_time desc");
+			example.setStartRow(startRow);
+			example.setPageSize(pageSize);
+			TaskDirectortournamentExample.Criteria criteria = example.createCriteria();
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
+			if(bean.getName()!=null && bean.getName()!=""){
+				criteria.andNameLike("%"+bean.getName()+"%");
+			}
+			list = taskDirectortournamentMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+
+	@Override
+	public void delTask(TaskDirectortournament taskBean) {
+		// TODO Auto-generated method stub
+		try {
+			taskDirectortournamentMapper.deleteByPrimaryKey(taskBean.getId());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	@Override
+	public void insert(TaskDirectortournament taskBean) {
+		// TODO Auto-generated method stub
+		taskDirectortournamentMapper.insert(taskBean);
+	}
+
+	@Override
+	public void update(TaskDirectortournament taskBean) {
+		// TODO Auto-generated method stub
+		taskDirectortournamentMapper.updateByPrimaryKey(taskBean);
+	}
+
+	@Override
+	public TaskDirectortournament selectTaskById(TaskDirectortournament taskBean) {
+		TaskDirectortournament bean = null;
+		try {
+			bean = taskDirectortournamentMapper.selectByPrimaryKey(taskBean.getId());
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

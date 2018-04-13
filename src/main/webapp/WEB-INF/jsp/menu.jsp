@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -7,6 +8,18 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<script type="text/javascript">
+		function changeAuthor(){
+			$.ajax({
+                type: "post",
+                url: "${pageContext.request.contextPath}/changeAuthor.do", 
+                dataType: "json",
+                success: function(data){
+                	location.reload();
+                }
+            });
+		}
+	</script>
 	<div class="navbar navbar-default" role="navigation">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed"
@@ -29,9 +42,15 @@
 				</a>
 
 					<ul class="dropdown-menu">
-						<li><a
-							href="${pageContext.request.contextPath}/goPersonInfoPage.action">账户</a></li>
-						<li class="divider"></li>
+						<c:if test="${userinfo.authorlever == 1}">
+							<li><a onclick="changeAuthor()">切换权限  (当前: <c:choose> <c:when test='${openAuthor == "false"}'>普通  </c:when>
+										<c:otherwise>
+											管理员
+										</c:otherwise>
+									</c:choose> )
+							</a></li>
+							<li class="divider"></li>
+						</c:if>
 
 						<li><a tabindex="-1"
 							href="${pageContext.request.contextPath}/loginOut.action">登出</a></li>
@@ -56,7 +75,8 @@
                 <li class="visible-xs visible-sm"><a href="#">- Premium features require a license -</a></span>
             <li ><a href="${pageContext.request.contextPath}/goTeachingTask.action"><span class="fa fa-caret-right"></span> 教学任务</a></li>
             <li ><a href="${pageContext.request.contextPath}/goTaskCompany.action"><span class="fa fa-caret-right"></span> 校企合作任务</a></li>
-            <li ><a href="premium-blog-item.html"><span class="fa fa-caret-right"></span> 教学任务修改</a></li>
+            <li ><a href="${pageContext.request.contextPath}/goTaskGraduation.action"><span class="fa fa-caret-right"></span> 毕业综合实践项目</a></li>
+            <li ><a href="${pageContext.request.contextPath}/goTaskDirectortournament.action"><span class="fa fa-caret-right"></span> 学科竞赛指导任务</a></li>
     </ul></li>
 
         <li><a href="#" data-target=".accounts-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-briefcase"></i> 科研 <span class="label label-info">+3</span></a></li>

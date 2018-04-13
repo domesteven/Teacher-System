@@ -3,6 +3,8 @@ package cn.teacher.info.service;
 import java.util.List;
 
 import cn.bean.TaskCompany;
+import cn.bean.TaskDirectortournament;
+import cn.bean.TaskGraduation;
 import cn.bean.TaskTeaching;
 import cn.bean.Teacher;
 
@@ -36,5 +38,32 @@ public interface infoServiceIfc {
 	void update(TaskCompany taskCompany);
 
 	TaskCompany selectTaskCompanyById(TaskCompany taskCompany);
+
+	void insert(TaskGraduation taskBean);
+
+	void update(TaskGraduation taskBean);
+
+	TaskGraduation selectTaskCompanyById(TaskGraduation taskBean);
+
+	List<TaskGraduation> selectAllTaskCompany(TaskGraduation bean);
+
+	List<TaskGraduation> selectTaskCompanyByPage(TaskGraduation bean,
+			int startRow, int pageSize);
+
+	void delTaskGraduation(TaskGraduation taskBean);
+
+	List<TaskDirectortournament> selectAllTask(TaskDirectortournament bean);
+
+	List<TaskDirectortournament> selectTaskByPage(TaskDirectortournament bean,
+			int startRow, int pageSize);
+
+	void delTask(TaskDirectortournament taskBean);
+
+	void insert(TaskDirectortournament taskBean);
+
+	void update(TaskDirectortournament taskBean);
+
+	TaskDirectortournament selectTaskById(TaskDirectortournament taskBean);
+
 	
 }

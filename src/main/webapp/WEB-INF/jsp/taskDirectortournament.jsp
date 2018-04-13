@@ -44,6 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	<script type="text/javascript">
 		toastr.options.positionClass = 'toast-bottom-center';
+		var baseurl  = "${pageContext.request.contextPath}/goTaskDirectortournament.action";
         $(function() {
             var match = document.cookie.match(new RegExp('color=([^;]+)'));
             if(match) var color = match[1];
@@ -59,8 +60,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         });
        
         function up(){
-        	var name = $("#tName").val();
-        	var url  = "${pageContext.request.contextPath}/goTeachingTask.action?page=${currentPage-1}";
+        	var name = $("#searchName").val();
+        	var url  = baseurl+"?page=${currentPage-1}";
         	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
         	}
@@ -72,8 +73,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         
         function down(){
         	debugger
-        	var name = $("#tName").val();
-        	var url = "${pageContext.request.contextPath}/goTeachingTask.action?page=${currentPage+1}";
+        	var name = $("#searchName").val();
+        	var url = baseurl+"?page=${currentPage+1}";
         	var max = eval("${pageTimes}");
         	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
@@ -85,10 +86,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
         
         function search(){
-        	var name = $("#tName").val();
         	var num =  eval($("#searchPage").val());
-        	var url = "${pageContext.request.contextPath}/goTeachingTask.action?page="+num;
+        	var url = baseurl+"?page="+num;
         	var max = eval("${pageTimes}");
+        	var name = $("#searchName").val();
         	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
         	}
@@ -112,42 +113,41 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	var id= $("#recordId").val();
         	$.ajax({
                 type: "post",
-                url: "${pageContext.request.contextPath}/delTaskTeaching.do", 
+                url: "${pageContext.request.contextPath}/delTaskCompany.do", 
                 data: {id:id},
                 dataType: "json",
                 success: function(data){
                 	if(data.errcode == "-1"){
                 		toastr.error(data.errmsg);
                 	}else{
-                		window.location.href="${pageContext.request.contextPath}/goTeachingTask.action?page=${currentPage}";
+                		window.location.href=baseurl+"?page=${currentPage}";
                 	}
                 	
                 }
             });
         }
         function insert(){
-        	
         	var id = $("#id").val();
         	if(id != null && id != ""){
-        		$("#form1").attr('action',"${pageContext.request.contextPath}/editTaskTeaching.action"); 
+        		$("#form1").attr('action',"${pageContext.request.contextPath}/editTaskDirectortournament.action"); 
         	}
         	$("#form1").submit();
         }
         function reset(){
-        	$("#tName").val("");
+        	$("#searchName").val("");
         }
         function resetForm(){
         	document.getElementById("form1").reset();
         }
         function searchByName(){
-        	var name = $("#tName").val();
-        	window.location.href="${pageContext.request.contextPath}/goTeachingTask.action?name="+encodeURI(encodeURI(name));
+        	var name = $("#searchName").val();
+        	window.location.href=baseurl+"?name="+encodeURI(encodeURI(name));
         }
         function editTaskInfo(id){
         	
         	$.ajax({
                 type: "post",
-                url: "${pageContext.request.contextPath}/selectTaskTeachingById.action", 
+                url: "${pageContext.request.contextPath}/selectTaskCompanyById.action", 
                 data: {id:id},
                 dataType: "json",
                 success: function(data){
@@ -156,17 +156,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 	}else{
                 		$("#id").val(data.data.id);
                 		$("#name").val(data.data.name);
-                		$("#major").val(data.data.major);
-                		$("#property").val(data.data.property);
-                		$("#hour").val(data.data.hour);
-                		$("#countMan").val(data.data.countMan);
-                		$("#assessmentMethod").val(data.data.assessmentMethod);
-                		$("#teachingSubject").val(data.data.teachingSubject);
+                		$("#phone").val(data.data.phone);
+                		$("#place").val(data.data.place);
+                		
                 		$('#myModal1').modal('show');   
                 	}
                 	
                 }
             });
+        }
+        
+        function excel(){
+        	var url = "${pageContext.request.contextPath}/TaskCompanyExcel.action";
+        	var name = $("#searchName").val();
+        	if(name != null && name != ""){
+        		url += "?name="+encodeURI(encodeURI(name));
+        	}
+        	window.location.href = url;
         }
     </script>
 	<style type="text/css">
@@ -193,7 +199,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 #total{
 	margin-left:50px;
 }
-#tName{
+#searchName{
 	width:100px;
 	float:right;
 }
@@ -255,23 +261,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<button class="btn btn-primary" onclick="showCreateModel()">
 				<i class="fa fa-plus"></i> 新增
 			</button>
-			<button class="btn btn-default">导出</button>
+			<button class="btn btn-default" onclick="excel()">导出</button>
 			<button id="reset" class="btn btn-default" onclick="reset()">重置</button>
 			<button id="toSearch" class="btn btn-primary" onclick="searchByName()">查询</button>
-			<input type="text" id="tName" name="tName" class="form-control" value="${searchName }"/>
-			<label id="seaName">课程名称:</label>
+			<input type="text" id="searchName" name="searchName" class="form-control" value="${searchName }"/>
+			<label id="seaName">企业名称:</label>
 		</div>
 		<div id="info">
 			<table class="table">
 				<thead>
 					<tr>
-						<th>课程名称</th>
-						<th>课程所属专业</th>
-						<th>课程性质</th>
-						<th>课时</th>
-						<th>人数</th>
-						<th>考核方式</th>
-						<th>所属教学改革课题</th>
+						<th>项目名</th>
+						<th>指导老师姓名</th>
+						<th>学生姓名</th>
+						<th>获奖荣誉</th>
+						<th>获奖时间</th>
 						<th style="width: 3.5em;"></th>
 					</tr>
 				</thead>
@@ -280,12 +284,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<c:forEach items="${list}" var="item">
 						<tr>
 							<td>${item.name}</td>
-							<td>${item.major}</td>
-							<td>${item.property}</td>
-							<td>${item.hour}</td>
-							<td>${item.countMan}</td>
-							<td>${item.assessmentMethod}</td>
-							<td>${item.teachingSubject}</td>
+							<td>${item.tName}</td>
+							<td>${item.studentName}</td>
+							<td>${item.attach}</td>
+							<td>${item.time}</td>
 							<td><a onclick="editTaskInfo(${item.id})"><i class="fa fa-pencil"></i></a> <a onclick="setRecordId(${item.id})"><i
 									class="fa fa-trash-o"></i></a></td>
 						</tr>
@@ -339,54 +341,58 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	</div>
 	
-	<div class="modal fade" id="myModal1" tabindex="-1" role="dialog"
+	<div class="modal small fade" id="myModal1" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
 		<div class="modal-dialog" style="width: 700px;height:250px;">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true" onclick="resetForm()">×</button>
-					<h3 id="myModalLabel">教学任务</h3>
+					<h3 id="myModalLabel">校企合作任务</h3>
 				</div>
 				<div class="modal-body">
 				<div style="height:300px;width:500px,overflow:auto; ">
-					<form id="form1" action="${pageContext.request.contextPath}/saveTaskTeaching.action"
+					<form id="form1" action="${pageContext.request.contextPath}/saveTaskDirectortournament.action"
 			method="post" enctype="multipart/form-data">
 			<table id="table1"
 				class="table table-striped table-bordered table-condensed list">
 				<tbody>
 					<tr>
-						<td width="15%">课程名称<font color="FF0000">*</font></td>
+						
+						<td width="30%">项目名<font color="FF0000">*</font></td>
 						<td width="500"><input id="name" name="name" type="text"
 							value="" /></td>
-						<td width="15%">课程所属专业<font color="FF0000">*</font></td>
-						<td width="500"><input id="major" name="major" type="text"
-							value="" /></td>
 
 					</tr>
+					
 					<tr>
-						<td>课程性质<font color="FF0000">*</font></td>
-						<td><input id="property" name="property"
-							type="text" value="" /></td>
-						<td>课时<font color="FF0000">*</font></td>
-						<td><input id="hour" name="hour"
-							type="text" value="" /></td>
-
-					</tr>
-					<tr>
-						<td>人数<font color="FF0000">*</font></td>
-						<td><input id="countMan" name="countMan"
-							value="" type="text" /></td>
-						<td>考核方式<font color="FF0000">*</font></td>
-						<td><input id="assessmentMethod" name="assessmentMethod" type="text"
-							value="" /></td>
-					</tr>
-
-					<tr>
-						<td width="15%">所属教学改革课题<font color="FF0000">*</font></td>
-						<td><input id="teachingSubject" name="teachingSubject"
-							type="text" value="" /></td>
+						<td>指导老师姓名<font color="FF0000">*</font></td>
+						<td><input id="tName1" name="tName1"
+							type="text" value="${userinfo.tName}" disabled="disabled"/>
+							<input id="tName" name="tName"
+							type="hidden" value="${userinfo.tName}" /></td>
 						
+
+					</tr>
+					<tr>
+						<td>学生姓名<font color="FF0000">*</font></td>
+						<td><input id="studentName" name="studentName"
+							type="text" value="" /></td>
+
+					</tr>
+					
+					<tr>
+						<td>获奖荣誉<font color="FF0000">*</font></td>
+						<td><input id="attach" name="attach"
+							type="text" value="" /></td>
+
+					</tr>
+					
+					<tr>
+						<td>获奖时间<font color="FF0000">*</font></td>
+						<td><input id="time" name="time"
+							type="date" value="" /></td>
+
 					</tr>
 
 				</tbody>

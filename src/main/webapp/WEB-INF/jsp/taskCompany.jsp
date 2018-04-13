@@ -44,6 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	<script type="text/javascript">
 		toastr.options.positionClass = 'toast-bottom-center';
+		var baseurl  = "${pageContext.request.contextPath}/goTeachingTask.action";
         $(function() {
             var match = document.cookie.match(new RegExp('color=([^;]+)'));
             if(match) var color = match[1];
@@ -60,7 +61,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
        
         function up(){
         	var name = $("#tName").val();
-        	var url  = "${pageContext.request.contextPath}/goTeachingTask.action?page=${currentPage-1}";
+        	var url  = baseurl+"?page=${currentPage-1}";
         	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
         	}
@@ -73,7 +74,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         function down(){
         	debugger
         	var name = $("#tName").val();
-        	var url = "${pageContext.request.contextPath}/goTeachingTask.action?page=${currentPage+1}";
+        	var url = baseurl+"?page=${currentPage+1}";
         	var max = eval("${pageTimes}");
         	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
@@ -85,10 +86,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
         
         function search(){
-        	var name = $("#tName").val();
         	var num =  eval($("#searchPage").val());
-        	var url = "${pageContext.request.contextPath}/goTeachingTask.action?page="+num;
+        	var url = baseurl+"?page="+num;
         	var max = eval("${pageTimes}");
+        	var name = $("#tName").val();
         	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
         	}
@@ -119,7 +120,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 	if(data.errcode == "-1"){
                 		toastr.error(data.errmsg);
                 	}else{
-                		window.location.href="${pageContext.request.contextPath}/goTaskCompany.action?page=${currentPage}";
+                		window.location.href=baseurl+"?page=${currentPage}";
                 	}
                 	
                 }
@@ -141,7 +142,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
         function searchByName(){
         	var name = $("#tName").val();
-        	window.location.href="${pageContext.request.contextPath}/goTaskCompany.action?name="+encodeURI(encodeURI(name));
+        	window.location.href=baseurl+"?name="+encodeURI(encodeURI(name));
         }
         function editTaskInfo(id){
         	
@@ -164,6 +165,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 	
                 }
             });
+        }
+        
+        function excel(){
+        	var url = "${pageContext.request.contextPath}/TaskCompanyExcel.action";
+        	var name = $("#tName").val();
+        	if(name != null && name != ""){
+        		url += "?name="+encodeURI(encodeURI(name));
+        	}
+        	window.location.href = url;
         }
     </script>
 	<style type="text/css">
@@ -252,7 +262,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<button class="btn btn-primary" onclick="showCreateModel()">
 				<i class="fa fa-plus"></i> 新增
 			</button>
-			<button class="btn btn-default">导出</button>
+			<button class="btn btn-default" onclick="excel()">导出</button>
 			<button id="reset" class="btn btn-default" onclick="reset()">重置</button>
 			<button id="toSearch" class="btn btn-primary" onclick="searchByName()">查询</button>
 			<input type="text" id="tName" name="tName" class="form-control" value="${searchName }"/>
@@ -329,7 +339,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	
 	<div class="modal small fade" id="myModal1" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
+		aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
 		<div class="modal-dialog" style="width: 700px;height:250px;">
 			<div class="modal-content">
 				<div class="modal-header">

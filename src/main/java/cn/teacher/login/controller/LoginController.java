@@ -85,6 +85,9 @@ public class LoginController{
 				resResult.put("data", teacher);
 				HttpSession session=req.getSession();
 				session.setAttribute("userinfo", bean);
+				if(bean.getAuthorlever() == 1 && session.getAttribute("openAuthor") == null){
+					session.setAttribute("openAuthor", "false");
+				}
 				modelAndView.setViewName("index");
 				log.info("loginSuccess-->");
 			}
@@ -180,6 +183,22 @@ public class LoginController{
 		return modelAndView;
 	}
 	
+	@RequestMapping(value="/changeAuthor")
+	@ResponseBody
+	public Map changeAuthor(HttpServletRequest req,HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		String openAuthor = (String) req.getSession().getAttribute("openAuthor");
+		if(openAuthor != null){
+			if(openAuthor == "true"){
+				req.getSession().setAttribute("openAuthor", "false");
+			}else{
+				req.getSession().setAttribute("openAuthor", "true");
+			}
+			data.put("errcode", "0");
+			data.put("msg", "切换成功");
+		}
+		return data;
+	}
 	@RequestMapping(value="/checkNum")
 	@ResponseBody
 	public Map checkNum(@Validated Teacher teacher,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
