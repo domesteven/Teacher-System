@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -289,26 +290,35 @@ public class LoginController{
 	
 	@RequestMapping(value="/down")
 	@ResponseBody
-	public void down(HttpServletRequest request,HttpServletResponse response) throws Exception {
-		//模拟文件，myfile.txt为需要下载的文件  
-        String fileName = request.getSession().getServletContext().getRealPath("upload")+"/密码.txt";  
-        //获取输入流  
-        InputStream bis = new BufferedInputStream(new FileInputStream(new File(fileName)));  
-        //假如以中文名下载的话  
-        String filename = "下载文件.txt";  
-        //转码，免得文件名中文乱码  
-        filename = URLEncoder.encode(filename,"UTF-8");  
-        //设置文件下载头  
-        response.addHeader("Content-Disposition", "attachment;filename=" + filename);    
-        //1.设置文件ContentType类型，这样设置，会自动判断下载文件类型    
-        response.setContentType("multipart/form-data");   
-        BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());  
-        int len = 0;  
-        while((len = bis.read()) != -1){  
-            out.write(len);  
-            out.flush();  
-        }  
-        out.close();  
-	}
+	public HttpServletResponse down(String attach,HttpServletRequest request,HttpServletResponse response) throws Exception {
+		try {
+			String path = myconfig.get("pic_download")+ attach.trim();
+            // path是指欲下载的文件的路径。
+            File file = new File(path);
+            // 取得文件名。
+            String filename = file.getName();
+            // 取得文件的后缀名。
+            String ext = filename.substring(filename.lastIndexOf(".") + 1).toUpperCase();
+
+            // 以流的形式下载文件。
+            InputStream fis = new BufferedInputStream(new FileInputStream(path));
+            byte[] buffer = new byte[fis.available()];
+            fis.read(buffer);
+            fis.close();
+            // 清空response
+            response.reset();
+            // 设置response的Header
+            response.addHeader("Content-Disposition", "attachment;filename=" + new String(filename.getBytes()));
+            response.addHeader("Content-Length", "" + file.length());
+            OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
+            response.setContentType("application/octet-stream");
+            toClient.write(buffer);
+            toClient.flush();
+            toClient.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return response;
+    }
 }
 

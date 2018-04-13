@@ -564,9 +564,20 @@ public class infoController {
 	}
 	
 	@RequestMapping(value="/saveTaskDirectortournament")	
-	public String saveTaskDirectortournament(@Validated TaskDirectortournament taskBean,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
-		
+	public String saveTaskDirectortournament(@RequestParam(value = "file", required = false) MultipartFile file,@Validated TaskDirectortournament taskBean,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+		String fileName = null;
 		try {
+			if(!file.isEmpty()){
+				String path = myconfig.get("pic_download");   //request.getSession().getServletContext().getRealPath("upload");  
+				fileName = file.getOriginalFilename();    
+		        File dir = new File(path,fileName);          
+		        if(!dir.exists()){  
+		            dir.mkdirs();  
+		        }  
+		        //MultipartFile自带的解析方法  
+		        file.transferTo(dir);  
+		        taskBean.setAttach(fileName);
+			}
 			infoService.insert(taskBean);
 		} catch (Exception e) {
 			// TODO: handle exception

@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -143,11 +144,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	var name = $("#searchName").val();
         	window.location.href=baseurl+"?name="+encodeURI(encodeURI(name));
         }
+        
+        
+        Date.prototype.Format = function (fmt) { //author: meizz   
+            var o = {  
+                "M+": this.getMonth() + 1, //月份   
+                "d+": this.getDate(), //日   
+                "h+": this.getHours(), //小时   
+                "m+": this.getMinutes(), //分   
+                "s+": this.getSeconds(), //秒   
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度   
+                "S": this.getMilliseconds() //毫秒   
+            };  
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));  
+            for (var k in o)  
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));  
+            return fmt;  
+        }  
+        
+        
         function editTaskInfo(id){
         	
         	$.ajax({
                 type: "post",
-                url: "${pageContext.request.contextPath}/selectTaskCompanyById.action", 
+                url: "${pageContext.request.contextPath}/selectTaskDirectortournamentById.action", 
                 data: {id:id},
                 dataType: "json",
                 success: function(data){
@@ -156,9 +176,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 	}else{
                 		$("#id").val(data.data.id);
                 		$("#name").val(data.data.name);
-                		$("#phone").val(data.data.phone);
-                		$("#place").val(data.data.place);
+                		$("#studentName").val(data.data.studentName);
+                		$("#tName").val(data.data.tName);
+                		$("#tName1").val(data.data.tName);
+                		$("#attach1").val(data.data.attach);
                 		
+                		var date = data.data.time;
+                		var time = new Date(date).Format("yyyy-MM-dd");    
+                		$("#time").attr("value",time);
+
                 		$('#myModal1').modal('show');   
                 	}
                 	
@@ -173,6 +199,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         		url += "?name="+encodeURI(encodeURI(name));
         	}
         	window.location.href = url;
+        }
+        
+        function downfile(filename){
+        	debugger
+        	window.location.href = "${pageContext.request.contextPath}/down.action"+"?attach="+filename;
         }
     </script>
 	<style type="text/css">
@@ -286,8 +317,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<td>${item.name}</td>
 							<td>${item.tName}</td>
 							<td>${item.studentName}</td>
-							<td>${item.attach}</td>
-							<td>${item.time}</td>
+							<td><c:if test="${item.attach  != null}"><a  onclick="downfile(&quot;${item.attach}&quot;)"><i  class="glyphicon glyphicon-save"></i></a></c:if>${item.attach}</td>
+							<td><fmt:formatDate value="${item.time}" type="date" pattern="yyyy-MM-dd"/></td>
 							<td><a onclick="editTaskInfo(${item.id})"><i class="fa fa-pencil"></i></a> <a onclick="setRecordId(${item.id})"><i
 									class="fa fa-trash-o"></i></a></td>
 						</tr>
@@ -383,8 +414,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					
 					<tr>
 						<td>获奖荣誉<font color="FF0000">*</font></td>
-						<td><input id="attach" name="attach"
-							type="text" value="" /></td>
+						<td><input id="attach1" name="file"
+							type="text" value="" disabled="disabled"/><input id="attach" name="file"
+							type="file" value="" /></td>
 
 					</tr>
 					
