@@ -59,7 +59,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         });
        
         function up(){
-        	var name = $("#tName").val();
+        	var name = $("#searchName").val();
         	var url  = "${pageContext.request.contextPath}/goTeachingTask.action?page=${currentPage-1}";
         	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
@@ -72,7 +72,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         
         function down(){
         	debugger
-        	var name = $("#tName").val();
+        	var name = $("#searchName").val();
         	var url = "${pageContext.request.contextPath}/goTeachingTask.action?page=${currentPage+1}";
         	var max = eval("${pageTimes}");
         	if(name != null && name != ""){
@@ -85,7 +85,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
         
         function search(){
-        	var name = $("#tName").val();
+        	var name = $("#searchName").val();
         	var num =  eval($("#searchPage").val());
         	var url = "${pageContext.request.contextPath}/goTeachingTask.action?page="+num;
         	var max = eval("${pageTimes}");
@@ -134,13 +134,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	$("#form1").submit();
         }
         function reset(){
-        	$("#tName").val("");
+        	$("#searchName").val("");
         }
         function resetForm(){
         	document.getElementById("form1").reset();
         }
         function searchByName(){
-        	var name = $("#tName").val();
+        	var name = $("#searchName").val();
         	window.location.href="${pageContext.request.contextPath}/goTeachingTask.action?name="+encodeURI(encodeURI(name));
         }
         function editTaskInfo(id){
@@ -193,7 +193,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 #total{
 	margin-left:50px;
 }
-#tName{
+#searchName{
+	width:100px;
+	float:right;
+}
+#searchTName{
 	width:100px;
 	float:right;
 }
@@ -203,7 +207,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 #reset {
 	float:right;
 }
-#seaName{
+.seaName{
 	font-size:16px;
 	margin-top:5px;
 	margin-right:10px;
@@ -217,9 +221,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	<script type="text/javascript">
         $(function() {
+        	var teacherList;
             var uls = $('.sidebar-nav > ul > *').clone();
             uls.addClass('visible-xs');
             $('#main-menu').append(uls.clone());
+            $.ajax({
+                type: "post",
+                url: "${pageContext.request.contextPath}/selectAllTeacher.action", 
+                dataType: "json",
+                success: function(data){
+                	teacherList = data ; 
+                }
+            });
+            
         });
     </script>
 
@@ -258,8 +272,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<button class="btn btn-default">导出</button>
 			<button id="reset" class="btn btn-default" onclick="reset()">重置</button>
 			<button id="toSearch" class="btn btn-primary" onclick="searchByName()">查询</button>
-			<input type="text" id="tName" name="tName" class="form-control" value="${searchName }"/>
-			<label id="seaName">课程名称:</label>
+			<input type="text" id="searchName" name="searchName" class="form-control" value="${searchName }"/>
+			<label class="seaName">课程名称:</label>
+			<c:if test='${openAuthor == "true"}'>
+				<input type="text" id="searchTName" name="searchTName" class="form-control" value="${searchTName }"/>
+				<label class="seaName">姓名:</label>
+			</c:if>
 		</div>
 		<div id="info">
 			<table class="table">

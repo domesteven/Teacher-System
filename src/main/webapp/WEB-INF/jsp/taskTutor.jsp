@@ -43,20 +43,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- Demo page code -->
 
 	<script type="text/javascript">
-		var baseurl  = "${pageContext.request.contextPath}/goTaskGraduation.action";
+		var baseurl  = "${pageContext.request.contextPath}/goTaskTutor.action";
 		toastr.options.positionClass = 'toast-bottom-center';
-		var teacherList;
-		window.onload=function()//用window的onload事件，窗体加载完毕的时候
-		{
-        	$.ajax({
-                type: "post",
-                url: "${pageContext.request.contextPath}/selectAllTeacher.action", 
-                dataType: "json",
-                success: function(data){
-                	teacherList = data.teacherList ; 
-                }
-            });
-		}
         $(function() {
             var match = document.cookie.match(new RegExp('color=([^;]+)'));
             if(match) var color = match[1];
@@ -72,7 +60,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         });
        
         function up(){
-        	var name = $("#tName").val();
+        	var name = $("#searchName").val();
         	var url  = baseurl+"?page=${currentPage-1}";
         	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
@@ -84,8 +72,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
         
         function down(){
-        	debugger
-        	var name = $("#tName").val();
+        	
+        	var name = $("#searchName").val();
         	var url = baseurl+"?page=${currentPage+1}";
         	var max = eval("${pageTimes}");
         	if(name != null && name != ""){
@@ -98,7 +86,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
         
         function search(){
-        	var name = $("#tName").val();
+        	debugger
+        	var name = $("#searchName").val();
         	var num =  eval($("#searchPage").val());
         	var url = baseurl+"?page="+num;
         	var max = eval("${pageTimes}");
@@ -125,7 +114,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	var id= $("#recordId").val();
         	$.ajax({
                 type: "post",
-                url: "${pageContext.request.contextPath}/delTaskGraduation.do", 
+                url: "${pageContext.request.contextPath}/delTaskTutor.do", 
                 data: {id:id},
                 dataType: "json",
                 success: function(data){
@@ -139,29 +128,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             });
         }
         function insert(){
-        	
+        	debugger
         	var id = $("#id").val();
         	if(id != null && id != ""){
-        		$("#form1").attr('action',"${pageContext.request.contextPath}/editTaskGraduation.action"); 
+        		$("#form1").attr('action',"${pageContext.request.contextPath}/editTaskTutor.action"); 
         	}
         	$("#form1").submit();
         }
         function reset(){
-        	$("#tName").val("");
+        	$("#searchName").val("");
         }
         function resetForm(){
         	document.getElementById("form1").reset();
-        	$("#isPublic_n").attr("checked","checked");
         }
         function searchByName(){
-        	var name = $("#tName").val();
+        	var name = $("#searchName").val();
         	window.location.href=baseurl+"?name="+encodeURI(encodeURI(name));
         }
         function editTaskInfo(id){
         	
         	$.ajax({
                 type: "post",
-                url: "${pageContext.request.contextPath}/selectTaskGraduationById.action", 
+                url: "${pageContext.request.contextPath}/selectTaskTutorById.action", 
                 data: {id:id},
                 dataType: "json",
                 success: function(data){
@@ -169,15 +157,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 		toastr.error(data.errmsg);
                 	}else{
                 		$("#id").val(data.data.id);
-                		$("#name").val(data.data.name);
+                		$("#tName").val(data.data.tName);
+                		$("#name").val(data.data.tName);
                 		$("#studentName").val(data.data.studentName);
-                		if(data.data.isPublic == "1"){
-                			$("#isPublic_y").attr("checked","checked");
-                		}else{
-                			$("#isPublic_n").attr("checked","checked");
-                		}
-                		
-                		$("#publicationName").val(data.data.publicationName);
+                		$("#studentClass").val(data.data.studentClass);
+                		$("#major").val(data.data.major);
                 		
                 		$('#myModal1').modal('show');   
                 	}
@@ -212,7 +196,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 #total{
 	margin-left:50px;
 }
-#tName{
+#searchName{
 	width:100px;
 	float:right;
 }
@@ -277,17 +261,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<button class="btn btn-default">导出</button>
 			<button id="reset" class="btn btn-default" onclick="reset()">重置</button>
 			<button id="toSearch" class="btn btn-primary" onclick="searchByName()">查询</button>
-			<input type="text" id="tName" name="tName" class="form-control" value="${searchName }"/>
+			<input type="text" id="searchName" name="searchName" class="form-control" value="${searchName }"/>
 			<label id="seaName">企业名称:</label>
 		</div>
 		<div id="info">
 			<table class="table">
 				<thead>
 					<tr>
-						<th>设计或者论文名称</th>
+						<th>教师姓名</th>
 						<th>学生姓名</th>
-						<th>是否发布</th>
-						<th>发表的刊物名称</th>
+						<th>班级</th>
+						<th>学生专业</th>
 						<th style="width: 3.5em;"></th>
 					</tr>
 				</thead>
@@ -295,15 +279,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 					<c:forEach items="${list}" var="item">
 						<tr>
-							<td>${item.name}</td>
+							<td>${item.tName}</td>
 							<td>${item.studentName}</td>
-							<td>
-								<c:choose>  
-								    <c:when test="${item.isPublic == 1}">是</c:when>  
-								    <c:when test="${item.isPublic == 2}">否</c:when>  
-								</c:choose>  
-							
-							<td>${item.publicationName}</td>
+							<td>${item.studentClass}</td>
+							<td>${item.major}</td>
 							<td><a onclick="editTaskInfo(${item.id})"><i class="fa fa-pencil"></i></a> <a onclick="setRecordId(${item.id})"><i
 									class="fa fa-trash-o"></i></a></td>
 						</tr>
@@ -368,15 +347,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 				<div class="modal-body">
 				<div style="height:300px;width:500px,overflow:auto; ">
-					<form id="form1" action="${pageContext.request.contextPath}/saveTaskGraduation.action"
+					<form id="form1" action="${pageContext.request.contextPath}/saveTaskTutor.action"
 			method="post" enctype="multipart/form-data">
 			<table id="table1"
 				class="table table-striped table-bordered table-condensed list">
 				<tbody>
 					<tr>
-						<td width="30%">设计或者论文名称<font color="FF0000">*</font></td>
-						<td width="500"><input id="name" name="name" type="text"
-							value="" /></td>
+						<td width="30%">教师姓名<font color="FF0000">*</font></td>
+						<td width="500"><input id="name" name="tName" type="text"
+							value="${userinfo.tName }" disabled="disabled"/><input id="tName" name="tName" type="hidden"
+							value="${userinfo.tName }" /></td>
 
 
 					</tr>
@@ -388,16 +368,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 					</tr>
 					<tr>
-						<td>是否发布<font color="FF0000">*</font></td>
+						<td>班级<font color="FF0000">*</font></td>
 						<td>
-							<input id="isPublic_y" type="radio" name="isPublic" value="1">是</input>
-							<input id="isPublic_n" type="radio" name="isPublic" value="2" checked>否</input>
+							<input id="studentClass" name="studentClass"
+							type="text" value="" />
 						</td>
 
 					</tr>
 					<tr>
-						<td>发表的刊物名称<font color="FF0000">*</font></td>
-						<td><input id="publicationName" name="publicationName"
+						<td>学生专业<font color="FF0000">*</font></td>
+						<td><input id="major" name="major"
 							type="text" value="" /></td>
 
 					</tr>
@@ -435,7 +415,5 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	$("#form1").submit();
         }
     </script>
-
-
 </body>
 </html>

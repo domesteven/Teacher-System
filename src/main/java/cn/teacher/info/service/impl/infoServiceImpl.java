@@ -12,12 +12,15 @@ import cn.bean.TaskGraduation;
 import cn.bean.TaskGraduationExample;
 import cn.bean.TaskTeaching;
 import cn.bean.TaskTeachingExample;
+import cn.bean.TaskTutor;
+import cn.bean.TaskTutorExample;
 import cn.bean.Teacher;
 import cn.bean.TeacherExample;
 import cn.mapper.TaskCompanyMapper;
 import cn.mapper.TaskDirectortournamentMapper;
 import cn.mapper.TaskGraduationMapper;
 import cn.mapper.TaskTeachingMapper;
+import cn.mapper.TaskTutorMapper;
 import cn.mapper.TeacherMapper;
 import cn.teacher.info.service.infoServiceIfc;
 
@@ -36,6 +39,24 @@ public class infoServiceImpl implements infoServiceIfc {
 	
 	@Autowired
 	private TaskGraduationMapper taskGraduationMapper;
+	
+	@Autowired
+	private TaskTutorMapper taskTutorMapper;
+	
+	
+	@Override
+	public List<Teacher> selectAllTeacher() {
+		// TODO Auto-generated method stub
+		List<Teacher> list = null;
+		try {
+			TeacherExample example = new TeacherExample();
+			TeacherExample.Criteria criteria = example.createCriteria();
+			list = teacherMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
 	
 	@Override
 	public void updateInfo(Teacher teacher) {
@@ -370,5 +391,85 @@ public class infoServiceImpl implements infoServiceIfc {
 		}
 		return bean;
 	}
+
+	@Override
+	public List<TaskTutor> selectAllTask(TaskTutor bean) {
+		// TODO Auto-generated method stub
+		List<TaskTutor> list = null;
+		try {
+			TaskTutorExample example = new TaskTutorExample();
+			TaskTutorExample.Criteria criteria = example.createCriteria();
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
+			if(bean.getStudentName()!=null && bean.getStudentName()!=""){
+				criteria.andStudentNameLike("%"+bean.getStudentName()+"%");
+			}
+			list = taskTutorMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+
+	@Override
+	public List<TaskTutor> selectTaskByPage(TaskTutor bean, int startRow,
+			int pageSize) {
+		// TODO Auto-generated method stub
+		List<TaskTutor> list = null;
+		try {
+			TaskTutorExample example = new TaskTutorExample();
+			example.setOrderByClause("modify_time desc");
+			example.setStartRow(startRow);
+			example.setPageSize(pageSize);
+			TaskTutorExample.Criteria criteria = example.createCriteria();
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
+			if(bean.getStudentName()!=null && bean.getStudentName()!=""){
+				criteria.andStudentNameLike("%"+bean.getStudentName()+"%");
+			}
+			list = taskTutorMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+
+	@Override
+	public TaskTutor selectTaskById(TaskTutor taskBean) {
+		// TODO Auto-generated method stub
+		TaskTutor bean = null;
+		try {
+			bean = taskTutorMapper.selectByPrimaryKey(taskBean.getId());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return bean;
+	}
+
+	@Override
+	public void update(TaskTutor taskBean) {
+		// TODO Auto-generated method stub
+		taskTutorMapper.updateByPrimaryKey(taskBean);
+	}
+
+	@Override
+	public void insert(TaskTutor taskBean) {
+		// TODO Auto-generated method stub
+		taskTutorMapper.insert(taskBean);
+	}
+
+	@Override
+	public void delTask(TaskTutor taskBean) {
+		// TODO Auto-generated method stub
+		try {
+			taskTutorMapper.deleteByPrimaryKey(taskBean.getId());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	
 
 }

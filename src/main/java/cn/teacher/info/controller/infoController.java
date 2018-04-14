@@ -41,6 +41,7 @@ import cn.bean.TaskCompany;
 import cn.bean.TaskDirectortournament;
 import cn.bean.TaskGraduation;
 import cn.bean.TaskTeaching;
+import cn.bean.TaskTutor;
 import cn.bean.Teacher;
 import cn.tdog.utils.ExportExcelParam;
 import cn.tdog.utils.ExportExcelUtil;
@@ -314,6 +315,9 @@ public class infoController {
 	            bean.setName(keyword);
 	            modelAndView.addObject("searchName", keyword);
 	        }  
+			if(req.getParameter("teacherName") != null){
+				modelAndView.addObject("searchTName", req.getParameter("teacherName"));
+			}
 			Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
 			if(req.getSession().getAttribute("openAuthor") == "false" || teacher.getAuthorlever() == 2){
 				int tId = teacher.gettId();
@@ -371,6 +375,9 @@ public class infoController {
 	            bean.setName(keyword);
 	            modelAndView.addObject("searchName", keyword);
 	        }  
+			if(req.getParameter("teacherName") != null){
+				modelAndView.addObject("searchTName", req.getParameter("teacherName"));
+			}
 			Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
 			if(req.getSession().getAttribute("openAuthor") == "false" || teacher.getAuthorlever() == 2){
 				int tId = teacher.gettId();
@@ -428,6 +435,9 @@ public class infoController {
 	            bean.setName(keyword);
 	            modelAndView.addObject("searchName", keyword);
 	        }  
+			if(req.getParameter("teacherName") != null){
+				modelAndView.addObject("searchTName", req.getParameter("teacherName"));
+			}
 			Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
 			if(req.getSession().getAttribute("openAuthor") == "false" || teacher.getAuthorlever() == 2){
 				int tId = teacher.gettId();
@@ -486,6 +496,9 @@ public class infoController {
 	            bean.setName(keyword);
 	            modelAndView.addObject("searchName", keyword);
 	        }  
+			if(req.getParameter("teacherName") != null){
+				modelAndView.addObject("searchTName", req.getParameter("teacherName"));
+			}
 			Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
 			if(req.getSession().getAttribute("openAuthor") == "false" || teacher.getAuthorlever() == 2){
 				int tId = teacher.gettId();
@@ -604,6 +617,131 @@ public class infoController {
 	//
 	//学科竞赛指导任务controller--------------------结束
 	
+	
+	//学科竞赛指导任务controller--------------------开始
+		@RequestMapping(value="/goTaskTutor")
+		@ResponseBody	
+		public ModelAndView goTaskTutor(@Validated TaskTutor bean,String page,HttpServletRequest req,HttpServletResponse res) throws Exception {
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.setViewName("taskTutor");
+			try {
+				String parameter = req.getParameter("name");
+				if(StringUtils.isNotBlank(parameter)){  
+		            String keyword=java.net.URLDecoder.decode(parameter,"UTF-8");  
+		            bean.setStudentName(keyword);
+		            modelAndView.addObject("searchName", keyword);
+		        }  
+				if(req.getParameter("teacherName") != null){
+					modelAndView.addObject("searchTName", req.getParameter("teacherName"));
+				}
+				Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
+				if(req.getSession().getAttribute("openAuthor") == "false" || teacher.getAuthorlever() == 2){
+					int tId = teacher.gettId();
+					bean.settId(tId);
+				}
+				//每页显示条数
+				int pageSize = Integer.parseInt(myconfig.get("pageSize"));
+				
+				List<TaskTutor> list = infoService.selectAllTask(bean);
+				modelAndView.addObject("userNum",list.size());
+				
+				//总页数
+				int pageTimes;
+				if(list.size()>pageSize){
+					if(list.size() % pageSize == 0){
+						pageTimes = list.size()/pageSize;
+					}else{
+						pageTimes = list.size()/pageSize+1;
+					}
+				}else{
+					pageTimes = 1;
+				}
+				
+				
+				modelAndView.addObject("pageTimes", pageTimes);
+				//页面初始的时候page没有值
+		         if(null == page)
+		         {
+		             page = "1";
+		         }
+		         
+		         int startRow = (Integer.parseInt(page)-1) * pageSize;
+		         list = infoService.selectTaskByPage(bean,startRow, pageSize);
+		         
+		         modelAndView.addObject("currentPage", Integer.parseInt(page));
+		         modelAndView.addObject("list", list);
+		         
+			} catch (Exception e) {
+				// TODO: handle exception
+				log.info(e.getMessage());
+			}
+			
+			return modelAndView;
+		}
+		
+		
+		@RequestMapping(value="/selectTaskTutorById")
+		@ResponseBody
+		public Map selectTaskTutorById(@Validated TaskTutor taskBean,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+			Map data = new HashMap();
+			data.put("errcode", "-1");
+			data.put("errmsg", "失败");
+			try {
+				TaskTutor bean = infoService.selectTaskById(taskBean);
+				data.put("errcode", "0");
+				data.put("errmsg", "成功");
+				data.put("data", bean);
+			} catch (Exception e) {
+				// TODO: handle exception
+				log.info(e.getMessage());
+			}
+			return data; 
+		}
+		
+		@RequestMapping(value="/editTaskTutor")	
+		public String editTaskTutor(@Validated TaskTutor taskBean,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+			
+			try {
+				
+				infoService.update(taskBean);
+			} catch (Exception e) {
+				// TODO: handle exception
+				log.info(e.getMessage());
+			}
+			return "redirect:/goTaskTutor"; 
+		}
+		
+		@RequestMapping(value="/saveTaskTutor")	
+		public String saveTaskTutor(@Validated TaskTutor taskBean,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+			String fileName = null;
+			try {
+				
+				infoService.insert(taskBean);
+			} catch (Exception e) {
+				// TODO: handle exception
+				log.info(e.getMessage());
+			}
+			return "redirect:/goTaskTutor"; 
+		}
+		
+		@RequestMapping(value="/delTaskTutor")
+		@ResponseBody	
+		public Map delTaskTutor(@Validated TaskTutor taskBean,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+			Map data = new HashMap();
+			data.put("errcode", "-1");
+			data.put("errmsg", "失败");
+			try {
+				infoService.delTask(taskBean);
+				data.put("errcode", "0");
+			} catch (Exception e) {
+				// TODO: handle exception
+				log.info(e.getMessage());
+			}
+			return data; 
+		}
+		//
+		//学科竞赛指导任务controller--------------------结束
+	
 	@RequestMapping(value="/TaskCompanyExcel")
 	@ResponseBody
 	public void TaskCompanyExcel(@Validated TaskCompany bean,HttpServletRequest req,
@@ -661,4 +799,24 @@ public class infoController {
 		out.close();
 
 	}
+	
+	@RequestMapping(value="/selectAllTeacher")
+	@ResponseBody	
+	public Map selectAllTeacher(HttpServletRequest req,HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		data.put("errcode", "-1");
+		data.put("errmsg", "失败");
+		try {
+			List<Teacher> list = infoService.selectAllTeacher();
+			req.getSession().setAttribute("teacherList", list);
+			data.put("teacherList", list);
+			data.put("errcode", "0");
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return data; 
+	}
+	
+	
 }

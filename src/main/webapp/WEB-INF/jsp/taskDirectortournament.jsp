@@ -46,6 +46,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript">
 		toastr.options.positionClass = 'toast-bottom-center';
 		var baseurl  = "${pageContext.request.contextPath}/goTaskDirectortournament.action";
+		var teacherList;
+		window.onload=function()//用window的onload事件，窗体加载完毕的时候
+		{
+        	$.ajax({
+                type: "post",
+                url: "${pageContext.request.contextPath}/selectAllTeacher.action", 
+                dataType: "json",
+                success: function(data){
+                	teacherList = data.teacherList ; 
+                }
+            });
+		}
         $(function() {
             var match = document.cookie.match(new RegExp('color=([^;]+)'));
             if(match) var color = match[1];

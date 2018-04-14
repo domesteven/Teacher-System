@@ -6,6 +6,7 @@ import cn.bean.TaskCompany;
 import cn.bean.TaskDirectortournament;
 import cn.bean.TaskGraduation;
 import cn.bean.TaskTeaching;
+import cn.bean.TaskTutor;
 import cn.bean.Teacher;
 
 public interface infoServiceIfc {
@@ -64,6 +65,21 @@ public interface infoServiceIfc {
 	void update(TaskDirectortournament taskBean);
 
 	TaskDirectortournament selectTaskById(TaskDirectortournament taskBean);
+
+	List<TaskTutor> selectAllTask(TaskTutor bean);
+
+	List<TaskTutor> selectTaskByPage(TaskTutor bean, int startRow,
+			int pageSize);
+
+	TaskTutor selectTaskById(TaskTutor taskBean);
+
+	void update(TaskTutor taskBean);
+
+	void insert(TaskTutor taskBean);
+
+	void delTask(TaskTutor taskBean);
+
+	List<Teacher> selectAllTeacher();
 
 	
 }
