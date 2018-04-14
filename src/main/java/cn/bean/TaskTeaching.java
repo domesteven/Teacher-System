@@ -7,6 +7,8 @@ public class TaskTeaching {
 
     private Integer tId;
 
+    private String tName;
+
     private String name;
 
     private String code;
@@ -39,6 +41,14 @@ public class TaskTeaching {
 
     public void settId(Integer tId) {
         this.tId = tId;
+    }
+
+    public String gettName() {
+        return tName;
+    }
+
+    public void settName(String tName) {
+        this.tName = tName == null ? null : tName.trim();
     }
 
     public String getName() {

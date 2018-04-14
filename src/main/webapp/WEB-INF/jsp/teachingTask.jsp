@@ -61,8 +61,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         function up(){
         	var name = $("#searchName").val();
         	var url  = "${pageContext.request.contextPath}/goTeachingTask.action?page=${currentPage-1}";
+        	var teacherName = $("#searchTName").val();
         	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
+        	}
+        	if(teacherName != null && teacherName != ""){
+        		url += "&tName="+encodeURI(encodeURI(teacherName));
         	}
         	if("${currentPage-1}">0){
         		window.location.href= url;	
@@ -75,8 +79,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	var name = $("#searchName").val();
         	var url = "${pageContext.request.contextPath}/goTeachingTask.action?page=${currentPage+1}";
         	var max = eval("${pageTimes}");
+        	var teacherName = $("#searchTName").val();
         	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
+        	}
+        	if(teacherName != null && teacherName != ""){
+        		url += "&tName="+encodeURI(encodeURI(teacherName));
         	}
         	if(eval("${currentPage+1}") <= max){
         		window.location.href=url;	
@@ -87,10 +95,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         function search(){
         	var name = $("#searchName").val();
         	var num =  eval($("#searchPage").val());
+        	var teacherName = $("#searchTName").val();
         	var url = "${pageContext.request.contextPath}/goTeachingTask.action?page="+num;
         	var max = eval("${pageTimes}");
         	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
+        	}
+        	if(teacherName != null && teacherName != ""){
+        		url += "&tName="+encodeURI(encodeURI(teacherName));
         	}
         	if(num>0  && num <= max){
         		window.location.href=url;
@@ -135,13 +147,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
         function reset(){
         	$("#searchName").val("");
+        	$("#searchTName").val("");
         }
         function resetForm(){
         	document.getElementById("form1").reset();
         }
         function searchByName(){
         	var name = $("#searchName").val();
-        	window.location.href="${pageContext.request.contextPath}/goTeachingTask.action?name="+encodeURI(encodeURI(name));
+        	var teacherName = $("#searchTName").val();
+        	window.location.href="${pageContext.request.contextPath}/goTeachingTask.action?name="+encodeURI(encodeURI(name))+"&tName="+encodeURI(encodeURI(teacherName));
         }
         function editTaskInfo(id){
         	
@@ -283,6 +297,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<table class="table">
 				<thead>
 					<tr>
+						<c:if test='${openAuthor == "true"}'>
+							<th>教师姓名</th>
+						</c:if>
 						<th>课程名称</th>
 						<th>课程所属专业</th>
 						<th>课程性质</th>
@@ -297,6 +314,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 					<c:forEach items="${list}" var="item">
 						<tr>
+							<c:if test='${openAuthor == "true"}'>
+								<td>${item.tName}</td>
+							</c:if>
 							<td>${item.name}</td>
 							<td>${item.major}</td>
 							<td>${item.property}</td>
@@ -409,6 +429,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 				</tbody>
 				<input id="tId" name="tId" value="${userinfo.tId}" type="hidden" />
+				<input id="tName" name="tName" value="${userinfo.tName}" type="hidden" />
 				<input id="id" name="id" value="" type="hidden"/>
 			</table>
 		</form>

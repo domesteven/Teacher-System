@@ -13,9 +13,7 @@ public class TaskTeachingExample {
     
     private int startRow;
     
-    private int pageSize;
-
-    public int getStartRow() {
+	public int getStartRow() {
 		return startRow;
 	}
 
@@ -31,7 +29,9 @@ public class TaskTeachingExample {
 		this.pageSize = pageSize;
 	}
 
-	public TaskTeachingExample() {
+	private int pageSize;
+
+    public TaskTeachingExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -242,6 +242,76 @@ public class TaskTeachingExample {
 
         public Criteria andTIdNotBetween(Integer value1, Integer value2) {
             addCriterion("t_id not between", value1, value2, "tId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTNameIsNull() {
+            addCriterion("t_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTNameIsNotNull() {
+            addCriterion("t_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTNameEqualTo(String value) {
+            addCriterion("t_name =", value, "tName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTNameNotEqualTo(String value) {
+            addCriterion("t_name <>", value, "tName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTNameGreaterThan(String value) {
+            addCriterion("t_name >", value, "tName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTNameGreaterThanOrEqualTo(String value) {
+            addCriterion("t_name >=", value, "tName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTNameLessThan(String value) {
+            addCriterion("t_name <", value, "tName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTNameLessThanOrEqualTo(String value) {
+            addCriterion("t_name <=", value, "tName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTNameLike(String value) {
+            addCriterion("t_name like", value, "tName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTNameNotLike(String value) {
+            addCriterion("t_name not like", value, "tName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTNameIn(List<String> values) {
+            addCriterion("t_name in", values, "tName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTNameNotIn(List<String> values) {
+            addCriterion("t_name not in", values, "tName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTNameBetween(String value1, String value2) {
+            addCriterion("t_name between", value1, value2, "tName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTNameNotBetween(String value1, String value2) {
+            addCriterion("t_name not between", value1, value2, "tName");
             return (Criteria) this;
         }
 
