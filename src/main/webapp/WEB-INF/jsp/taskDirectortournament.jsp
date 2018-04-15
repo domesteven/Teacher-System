@@ -75,6 +75,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         function up(){
         	var name = $("#searchName").val();
         	var url  = baseurl+"?page=${currentPage-1}";
+        	var teacherName = $("#searchTName").val();
+        	if(teacherName != null && teacherName != ""){
+        		url += "&tName="+encodeURI(encodeURI(teacherName));
+        	}
         	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
         	}
@@ -89,6 +93,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	var name = $("#searchName").val();
         	var url = baseurl+"?page=${currentPage+1}";
         	var max = eval("${pageTimes}");
+        	var teacherName = $("#searchTName").val();
+        	if(teacherName != null && teacherName != ""){
+        		url += "&tName="+encodeURI(encodeURI(teacherName));
+        	}
         	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
         	}
@@ -103,6 +111,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	var url = baseurl+"?page="+num;
         	var max = eval("${pageTimes}");
         	var name = $("#searchName").val();
+        	var teacherName = $("#searchTName").val();
+        	if(teacherName != null && teacherName != ""){
+        		url += "&tName="+encodeURI(encodeURI(teacherName));
+        	}
         	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
         	}
@@ -148,13 +160,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
         function reset(){
         	$("#searchName").val("");
+        	$("#searchTName").val("");
         }
         function resetForm(){
         	document.getElementById("form1").reset();
         }
         function searchByName(){
         	var name = $("#searchName").val();
-        	window.location.href=baseurl+"?name="+encodeURI(encodeURI(name));
+        	var teacherName = $("#searchTName").val();
+        	
+        	window.location.href=baseurl+"?name="+encodeURI(encodeURI(name))+"&tName="+encodeURI(encodeURI(teacherName));
         }
         
         
@@ -246,13 +261,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	width:100px;
 	float:right;
 }
+#searchTName{
+	width:100px;
+	float:right;
+}
 #toSearch{
 	float:right;
 }
 #reset {
 	float:right;
 }
-#seaName{
+.seaName{
 	font-size:16px;
 	margin-top:5px;
 	margin-right:10px;
@@ -308,7 +327,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<button id="reset" class="btn btn-default" onclick="reset()">重置</button>
 			<button id="toSearch" class="btn btn-primary" onclick="searchByName()">查询</button>
 			<input type="text" id="searchName" name="searchName" class="form-control" value="${searchName }"/>
-			<label id="seaName">企业名称:</label>
+			<label class="seaName">项目名:</label>
+			<c:if test='${openAuthor == "true"}'>
+				<input type="text" id="searchTName" name="searchTName" class="form-control" value="${searchTName }"/>
+				<label class="seaName">姓名:</label>
+			</c:if>
 		</div>
 		<div id="info">
 			<table class="table">

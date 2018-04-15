@@ -375,7 +375,9 @@ public class infoController {
 	            bean.setName(keyword);
 	            modelAndView.addObject("searchName", keyword);
 	        }  
-		
+			if(bean.gettName() != null && bean.gettName() != ""){  
+				modelAndView.addObject("searchTName", bean.gettName());
+	        }
 			Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
 			if(req.getSession().getAttribute("openAuthor") == "false" || teacher.getAuthorlever() == 2){
 				int tId = teacher.gettId();
@@ -433,7 +435,9 @@ public class infoController {
 	            bean.setName(keyword);
 	            modelAndView.addObject("searchName", keyword);
 	        }  
-			
+			if(bean.gettName() != null && bean.gettName() != ""){  
+				modelAndView.addObject("searchTName", bean.gettName());
+	        }
 			Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
 			if(req.getSession().getAttribute("openAuthor") == "false" || teacher.getAuthorlever() == 2){
 				int tId = teacher.gettId();
@@ -492,7 +496,9 @@ public class infoController {
 	            bean.setName(keyword);
 	            modelAndView.addObject("searchName", keyword);
 	        }  
-		
+			if(bean.gettName() != null && bean.gettName() != ""){  
+				modelAndView.addObject("searchTName", bean.gettName());
+	        }
 			Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
 			if(req.getSession().getAttribute("openAuthor") == "false" || teacher.getAuthorlever() == 2){
 				int tId = teacher.gettId();
@@ -625,7 +631,9 @@ public class infoController {
 		            bean.setStudentName(keyword);
 		            modelAndView.addObject("searchName", keyword);
 		        }  
-			
+				if(bean.gettName() != null && bean.gettName() != ""){  
+					modelAndView.addObject("searchTName", bean.gettName());
+		        }
 				Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
 				if(req.getSession().getAttribute("openAuthor") == "false" || teacher.getAuthorlever() == 2){
 					int tId = teacher.gettId();

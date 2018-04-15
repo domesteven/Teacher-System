@@ -179,6 +179,9 @@ public class infoServiceImpl implements infoServiceIfc {
 			if(bean.getName()!=null && bean.getName()!=""){
 				criteria.andNameLike("%"+bean.getName()+"%");
 			}
+			if(bean.gettName()!=null && bean.gettName()!=""){
+				criteria.andTNameLike("%"+bean.gettName()+"%");
+			}
 			list = taskCompanyMapper.selectByExample(example);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -201,6 +204,9 @@ public class infoServiceImpl implements infoServiceIfc {
 			}
 			if(bean.getName()!=null && bean.getName()!=""){
 				criteria.andNameLike("%"+bean.getName()+"%");
+			}
+			if(bean.gettName()!=null && bean.gettName()!=""){
+				criteria.andTNameLike("%"+bean.gettName()+"%");
 			}
 			list = taskCompanyMapper.selectByExample(example);
 		} catch (Exception e) {
@@ -279,6 +285,9 @@ public class infoServiceImpl implements infoServiceIfc {
 			if(bean.getName()!=null && bean.getName()!=""){
 				criteria.andNameLike("%"+bean.getName()+"%");
 			}
+			if(bean.gettName()!=null && bean.gettName()!=""){
+				criteria.andTNameLike("%"+bean.gettName()+"%");
+			}
 			list = taskGraduationMapper.selectByExample(example);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -302,6 +311,9 @@ public class infoServiceImpl implements infoServiceIfc {
 			}
 			if(bean.getName()!=null && bean.getName()!=""){
 				criteria.andNameLike("%"+bean.getName()+"%");
+			}
+			if(bean.gettName()!=null && bean.gettName()!=""){
+				criteria.andTNameLike("%"+bean.gettName()+"%");
 			}
 			list = taskGraduationMapper.selectByExample(example);
 		} catch (Exception e) {
@@ -334,6 +346,9 @@ public class infoServiceImpl implements infoServiceIfc {
 			if(bean.getName()!=null && bean.getName()!=""){
 				criteria.andNameLike("%"+bean.getName()+"%");
 			}
+			if(bean.gettName()!=null && bean.gettName()!=""){
+				criteria.andTNameLike("%"+bean.gettName()+"%");
+			}
 			list = taskDirectortournamentMapper.selectByExample(example);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -357,6 +372,9 @@ public class infoServiceImpl implements infoServiceIfc {
 			}
 			if(bean.getName()!=null && bean.getName()!=""){
 				criteria.andNameLike("%"+bean.getName()+"%");
+			}
+			if(bean.gettName()!=null && bean.gettName()!=""){
+				criteria.andTNameLike("%"+bean.gettName()+"%");
 			}
 			list = taskDirectortournamentMapper.selectByExample(example);
 		} catch (Exception e) {
@@ -411,6 +429,9 @@ public class infoServiceImpl implements infoServiceIfc {
 			if(bean.getStudentName()!=null && bean.getStudentName()!=""){
 				criteria.andStudentNameLike("%"+bean.getStudentName()+"%");
 			}
+			if(bean.gettName()!=null && bean.gettName()!=""){
+				criteria.andTNameLike("%"+bean.gettName()+"%");
+			}
 			list = taskTutorMapper.selectByExample(example);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -434,6 +455,9 @@ public class infoServiceImpl implements infoServiceIfc {
 			}
 			if(bean.getStudentName()!=null && bean.getStudentName()!=""){
 				criteria.andStudentNameLike("%"+bean.getStudentName()+"%");
+			}
+			if(bean.gettName()!=null && bean.gettName()!=""){
+				criteria.andTNameLike("%"+bean.gettName()+"%");
 			}
 			list = taskTutorMapper.selectByExample(example);
 		} catch (Exception e) {

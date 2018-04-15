@@ -62,12 +62,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	var name = $("#searchName").val();
         	var url  = "${pageContext.request.contextPath}/goTeachingTask.action?page=${currentPage-1}";
         	var teacherName = $("#searchTName").val();
-        	if(name != null && name != ""){
-        		url += "&name="+encodeURI(encodeURI(name));
-        	}
         	if(teacherName != null && teacherName != ""){
         		url += "&tName="+encodeURI(encodeURI(teacherName));
         	}
+        	if(name != null && name != ""){
+        		url += "&name="+encodeURI(encodeURI(name));
+        	}
+        	
         	if("${currentPage-1}">0){
         		window.location.href= url;	
         	}

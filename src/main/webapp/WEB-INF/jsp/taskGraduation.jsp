@@ -72,8 +72,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         });
        
         function up(){
-        	var name = $("#tName").val();
+        	var name = $("#searchName").val();
         	var url  = baseurl+"?page=${currentPage-1}";
+        	var teacherName = $("#searchTName").val();
+        	if(teacherName != null && teacherName != ""){
+        		url += "&tName="+encodeURI(encodeURI(teacherName));
+        	}
         	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
         	}
@@ -85,9 +89,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         
         function down(){
         	debugger
-        	var name = $("#tName").val();
+        	var name = $("#searchName").val();
         	var url = baseurl+"?page=${currentPage+1}";
         	var max = eval("${pageTimes}");
+        	var teacherName = $("#searchTName").val();
+        	if(teacherName != null && teacherName != ""){
+        		url += "&tName="+encodeURI(encodeURI(teacherName));
+        	}
         	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
         	}
@@ -98,10 +106,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
         
         function search(){
-        	var name = $("#tName").val();
+        	var name = $("#searchName").val();
         	var num =  eval($("#searchPage").val());
         	var url = baseurl+"?page="+num;
         	var max = eval("${pageTimes}");
+        	var teacherName = $("#searchTName").val();
+        	if(teacherName != null && teacherName != ""){
+        		url += "&tName="+encodeURI(encodeURI(teacherName));
+        	}
         	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
         	}
@@ -147,15 +159,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	$("#form1").submit();
         }
         function reset(){
-        	$("#tName").val("");
+        	$("#searchName").val("");
+        	$("#searchTName").val("");
         }
         function resetForm(){
         	document.getElementById("form1").reset();
         	$("#isPublic_n").attr("checked","checked");
         }
         function searchByName(){
-        	var name = $("#tName").val();
-        	window.location.href=baseurl+"?name="+encodeURI(encodeURI(name));
+        	var name = $("#searchName").val();
+        	var teacherName = $("#searchTName").val();
+        	
+        	window.location.href=baseurl+"?name="+encodeURI(encodeURI(name))+"&tName="+encodeURI(encodeURI(teacherName));
         }
         function editTaskInfo(id){
         	
@@ -212,7 +227,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 #total{
 	margin-left:50px;
 }
-#tName{
+#searchName{
+	width:100px;
+	float:right;
+}
+#searchTName{
 	width:100px;
 	float:right;
 }
@@ -222,7 +241,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 #reset {
 	float:right;
 }
-#seaName{
+.seaName{
 	font-size:16px;
 	margin-top:5px;
 	margin-right:10px;
@@ -277,13 +296,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<button class="btn btn-default">导出</button>
 			<button id="reset" class="btn btn-default" onclick="reset()">重置</button>
 			<button id="toSearch" class="btn btn-primary" onclick="searchByName()">查询</button>
-			<input type="text" id="tName" name="tName" class="form-control" value="${searchName }"/>
-			<label id="seaName">企业名称:</label>
+			<input type="text" id="searchName" name="searchName" class="form-control" value="${searchName }"/>
+			<label class="seaName">企业名称:</label>
+			<c:if test='${openAuthor == "true"}'>
+				<input type="text" id="searchTName" name="searchTName" class="form-control" value="${searchTName }"/>
+				<label class="seaName">姓名:</label>
+			</c:if>
 		</div>
 		<div id="info">
 			<table class="table">
 				<thead>
 					<tr>
+						<c:if test='${openAuthor == "true"}'>
+							<th>教师姓名</th>
+						</c:if>
 						<th>设计或者论文名称</th>
 						<th>学生姓名</th>
 						<th>是否发布</th>
@@ -295,6 +321,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 					<c:forEach items="${list}" var="item">
 						<tr>
+							<c:if test='${openAuthor == "true"}'>
+								<td>${item.tName}</td>
+							</c:if>
 							<td>${item.name}</td>
 							<td>${item.studentName}</td>
 							<td>
@@ -404,6 +433,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 				</tbody>
 				<input id="tId" name="tId" value="${userinfo.tId}" type="hidden" />
+				<input id="tName" name="tName" value="${userinfo.tName}" type="hidden" />
 				<input id="id" name="id" value="" type="hidden"/>
 			</table>
 		</form>

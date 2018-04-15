@@ -12,6 +12,7 @@ public class TaskTeachingExample {
     protected List<Criteria> oredCriteria;
     
     private int startRow;
+    private int pageSize;
     
 	public int getStartRow() {
 		return startRow;
@@ -29,7 +30,7 @@ public class TaskTeachingExample {
 		this.pageSize = pageSize;
 	}
 
-	private int pageSize;
+	
 
     public TaskTeachingExample() {
         oredCriteria = new ArrayList<Criteria>();
