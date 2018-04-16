@@ -37,6 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 
+import cn.bean.ProjectPublish;
 import cn.bean.TaskCompany;
 import cn.bean.TaskDirectortournament;
 import cn.bean.TaskGraduation;
@@ -564,10 +565,20 @@ public class infoController {
 	}
 	
 	@RequestMapping(value="/editTaskDirectortournament")	
-	public String editTaskDirectortournament(@Validated TaskDirectortournament taskBean,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
-		
+	public String editTaskDirectortournament(@RequestParam(value = "file", required = false) MultipartFile file,@Validated TaskDirectortournament taskBean,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+		String fileName = null;
 		try {
-			
+			if(!file.isEmpty()){
+				String path = myconfig.get("pic_download");   //request.getSession().getServletContext().getRealPath("upload");  
+				fileName = file.getOriginalFilename();    
+		        File dir = new File(path,fileName);          
+		        if(!dir.exists()){  
+		            dir.mkdirs();  
+		        }  
+		        //MultipartFile自带的解析方法  
+		        file.transferTo(dir);  
+		        taskBean.setAttach(fileName);
+			}
 			infoService.update(taskBean);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -741,6 +752,131 @@ public class infoController {
 		}
 		//
 		//学科竞赛指导任务controller--------------------结束
+		
+		
+		//发表文献controller--------------------开始
+				@RequestMapping(value="/goProjectPublish")
+				@ResponseBody	
+				public ModelAndView goProjectPublish(@Validated ProjectPublish bean,String page,HttpServletRequest req,HttpServletResponse res) throws Exception {
+					ModelAndView modelAndView = new ModelAndView();
+					modelAndView.setViewName("projectPublish");
+					try {
+						String parameter = req.getParameter("name");
+						if(StringUtils.isNotBlank(parameter)){  
+				            String keyword=java.net.URLDecoder.decode(parameter,"UTF-8");  
+				            bean.setName(keyword);
+				            modelAndView.addObject("searchName", keyword);
+				        }  
+						if(bean.gettName() != null && bean.gettName() != ""){  
+							modelAndView.addObject("searchTName", bean.gettName());
+				        }
+						Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
+						if(req.getSession().getAttribute("openAuthor") == "false" || teacher.getAuthorlever() == 2){
+							int tId = teacher.gettId();
+							bean.settId(tId);
+						}
+						//每页显示条数
+						int pageSize = Integer.parseInt(myconfig.get("pageSize"));
+						
+						List<ProjectPublish> list = infoService.selectAllTask(bean);
+						modelAndView.addObject("userNum",list.size());
+						
+						//总页数
+						int pageTimes;
+						if(list.size()>pageSize){
+							if(list.size() % pageSize == 0){
+								pageTimes = list.size()/pageSize;
+							}else{
+								pageTimes = list.size()/pageSize+1;
+							}
+						}else{
+							pageTimes = 1;
+						}
+						
+						
+						modelAndView.addObject("pageTimes", pageTimes);
+						//页面初始的时候page没有值
+				         if(null == page)
+				         {
+				             page = "1";
+				         }
+				         
+				         int startRow = (Integer.parseInt(page)-1) * pageSize;
+				         list = infoService.selectTaskByPage(bean,startRow, pageSize);
+				         
+				         modelAndView.addObject("currentPage", Integer.parseInt(page));
+				         modelAndView.addObject("list", list);
+				         
+					} catch (Exception e) {
+						// TODO: handle exception
+						log.info(e.getMessage());
+					}
+					
+					return modelAndView;
+				}
+				
+				
+				@RequestMapping(value="/selectProjectPublishById")
+				@ResponseBody
+				public Map selectProjectPublishById(@Validated ProjectPublish taskBean,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+					Map data = new HashMap();
+					data.put("errcode", "-1");
+					data.put("errmsg", "失败");
+					try {
+						ProjectPublish bean = infoService.selectTaskById(taskBean);
+						data.put("errcode", "0");
+						data.put("errmsg", "成功");
+						data.put("data", bean);
+					} catch (Exception e) {
+						// TODO: handle exception
+						log.info(e.getMessage());
+					}
+					return data; 
+				}
+				
+				@RequestMapping(value="/editProjectPublish")	
+				public String editProjectPublish(@Validated ProjectPublish taskBean,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+					
+					try {
+						
+						infoService.update(taskBean);
+					} catch (Exception e) {
+						// TODO: handle exception
+						log.info(e.getMessage());
+					}
+					return "redirect:/goProjectPublish"; 
+				}
+				
+				@RequestMapping(value="/saveProjectPublish")	
+				public String saveProjectPublish(@Validated ProjectPublish taskBean,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+					String fileName = null;
+					try {
+						
+						infoService.insert(taskBean);
+					} catch (Exception e) {
+						// TODO: handle exception
+						log.info(e.getMessage());
+					}
+					return "redirect:/goProjectPublish"; 
+				}
+				
+				@RequestMapping(value="/delProjectPublish")
+				@ResponseBody	
+				public Map delProjectPublish(@Validated ProjectPublish taskBean,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+					Map data = new HashMap();
+					data.put("errcode", "-1");
+					data.put("errmsg", "失败");
+					try {
+						infoService.delTask(taskBean);
+						data.put("errcode", "0");
+					} catch (Exception e) {
+						// TODO: handle exception
+						log.info(e.getMessage());
+					}
+					return data; 
+				}
+				//
+				//学科竞赛指导任务controller--------------------结束
 	
 	@RequestMapping(value="/TaskCompanyExcel")
 	@ResponseBody

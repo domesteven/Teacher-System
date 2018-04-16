@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import cn.bean.ProjectPublish;
+import cn.bean.ProjectPublishExample;
 import cn.bean.TaskCompany;
 import cn.bean.TaskCompanyExample;
 import cn.bean.TaskDirectortournament;
@@ -16,6 +18,7 @@ import cn.bean.TaskTutor;
 import cn.bean.TaskTutorExample;
 import cn.bean.Teacher;
 import cn.bean.TeacherExample;
+import cn.mapper.ProjectPublishMapper;
 import cn.mapper.TaskCompanyMapper;
 import cn.mapper.TaskDirectortournamentMapper;
 import cn.mapper.TaskGraduationMapper;
@@ -42,6 +45,9 @@ public class infoServiceImpl implements infoServiceIfc {
 	
 	@Autowired
 	private TaskTutorMapper taskTutorMapper;
+	
+	@Autowired
+	private ProjectPublishMapper projectPublishMapper;
 	
 	
 	@Override
@@ -495,6 +501,88 @@ public class infoServiceImpl implements infoServiceIfc {
 		// TODO Auto-generated method stub
 		try {
 			taskTutorMapper.deleteByPrimaryKey(taskBean.getId());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+	@Override
+	public List<ProjectPublish> selectAllTask(ProjectPublish bean) {
+		List<ProjectPublish> list = null;
+		try {
+			ProjectPublishExample example = new ProjectPublishExample();
+			ProjectPublishExample.Criteria criteria = example.createCriteria();
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
+			if(bean.getName()!=null && bean.getName()!=""){
+				criteria.andNameLike("%"+bean.getName()+"%");
+			}
+			if(bean.gettName()!=null && bean.gettName()!=""){
+				criteria.andTNameLike("%"+bean.gettName()+"%");
+			}
+			list = projectPublishMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+
+	@Override
+	public List<ProjectPublish> selectTaskByPage(ProjectPublish bean,
+			int startRow, int pageSize) {
+		List<ProjectPublish> list = null;
+		try {
+			ProjectPublishExample example = new ProjectPublishExample();
+			example.setOrderByClause("modify_time desc");
+			example.setStartRow(startRow);
+			example.setPageSize(pageSize);
+			ProjectPublishExample.Criteria criteria = example.createCriteria();
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
+			if(bean.getName()!=null && bean.getName()!=""){
+				criteria.andNameLike("%"+bean.getName()+"%");
+			}
+			if(bean.gettName()!=null && bean.gettName()!=""){
+				criteria.andTNameLike("%"+bean.gettName()+"%");
+			}
+			list = projectPublishMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+
+	@Override
+	public ProjectPublish selectTaskById(ProjectPublish taskBean) {
+		// TODO Auto-generated method stub
+		ProjectPublish bean = null;
+				try {
+					bean = projectPublishMapper.selectByPrimaryKey(taskBean.getId());
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				return bean;
+	}
+
+	@Override
+	public void update(ProjectPublish taskBean) {
+		// TODO Auto-generated method stub
+		projectPublishMapper.updateByPrimaryKey(taskBean);
+	}
+
+	@Override
+	public void insert(ProjectPublish taskBean) {
+		// TODO Auto-generated method stub
+		projectPublishMapper.insert(taskBean);
+	}
+
+	@Override
+	public void delTask(ProjectPublish taskBean) {
+		// TODO Auto-generated method stub
+		try {
+			projectPublishMapper.deleteByPrimaryKey(taskBean.getId());
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

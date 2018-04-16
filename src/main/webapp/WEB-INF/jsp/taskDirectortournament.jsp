@@ -206,8 +206,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 		$("#studentName").val(data.data.studentName);
                 		$("#tName").val(data.data.tName);
                 		$("#tName1").val(data.data.tName);
+                		$("#attach").val(data.data.attach);
                 		$("#attach1").val(data.data.attach);
-                		
                 		var date = data.data.time;
                 		var time = new Date(date).Format("yyyy-MM-dd");    
                 		$("#time").attr("value",time);
@@ -449,8 +449,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					
 					<tr>
 						<td>获奖荣誉<font color="FF0000">*</font></td>
-						<td><input id="attach1" name="file"
-							type="text" value="" disabled="disabled"/><input id="attach" name="file"
+						<td><input id="attach" name="attach"
+							type="hidden" value="" />
+						<input id="attach1" name="attach1"
+							type="text" value="" disabled="disabled"/><input id="attach1" name="file"
 							type="file" value="" /></td>
 
 					</tr>

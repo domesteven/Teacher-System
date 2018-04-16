@@ -82,7 +82,7 @@
 
         <li><a href="#" data-target=".accounts-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-briefcase"></i> 科研 <span class="label label-info">+3</span></a></li>
         <li><ul class="accounts-menu nav nav-list collapse">
-            <li ><a href="sign-in.html"><span class="fa fa-caret-right"></span> 科研项目列表</a></li>
+            <li ><a href="${pageContext.request.contextPath}/goProjectPublish.action"><span class="fa fa-caret-right"></span> 发表文献</a></li>
             <li ><a href="sign-up.html"><span class="fa fa-caret-right"></span> 科研项目新增</a></li>
             <li ><a href="reset-password.html"><span class="fa fa-caret-right"></span> 科研项目修改</a></li>
     </ul></li>

@@ -2,6 +2,7 @@ package cn.teacher.info.service;
 
 import java.util.List;
 
+import cn.bean.ProjectPublish;
 import cn.bean.TaskCompany;
 import cn.bean.TaskDirectortournament;
 import cn.bean.TaskGraduation;
@@ -80,6 +81,19 @@ public interface infoServiceIfc {
 	void delTask(TaskTutor taskBean);
 
 	List<Teacher> selectAllTeacher();
+
+	List<ProjectPublish> selectAllTask(ProjectPublish bean);
+
+	List<ProjectPublish> selectTaskByPage(ProjectPublish bean, int startRow,
+			int pageSize);
+
+	ProjectPublish selectTaskById(ProjectPublish taskBean);
+
+	void update(ProjectPublish taskBean);
+
+	void insert(ProjectPublish taskBean);
+
+	void delTask(ProjectPublish taskBean);
 
 	
 }
