@@ -25,6 +25,8 @@
     <!-- Demo page code -->
 
     <script type="text/javascript">
+  
+	  
         $(function() {
             var match = document.cookie.match(new RegExp('color=([^;]+)'));
             if(match) var color = match[1];

@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Bootstrap Admin</title>
+<title>教师管理系统</title>
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
@@ -156,7 +156,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         function searchByName(){
         	var name = $("#searchName").val();
         	var teacherName = $("#searchTName").val();
-        	window.location.href="${pageContext.request.contextPath}/goTeachingTask.action?name="+encodeURI(encodeURI(name))+"&tName="+encodeURI(encodeURI(teacherName));
+        	if(teacherName != undefined){
+        		window.location.href="${pageContext.request.contextPath}/goTeachingTask.action?name="+encodeURI(encodeURI(name))+"&tName="+encodeURI(encodeURI(teacherName));
+        	}else{
+        		window.location.href="${pageContext.request.contextPath}/goTeachingTask.action?name="+encodeURI(encodeURI(name));
+        	}
+        	
         }
         function editTaskInfo(id){
         	

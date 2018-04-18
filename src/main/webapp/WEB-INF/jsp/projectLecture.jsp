@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -44,8 +45,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	<script type="text/javascript">
 		toastr.options.positionClass = 'toast-bottom-center';
-		var baseurl  = "${pageContext.request.contextPath}/goTaskCompany.action";
-		
+		var baseurl  = "${pageContext.request.contextPath}/goProjectLecture.action";
         $(function() {
             var match = document.cookie.match(new RegExp('color=([^;]+)'));
             if(match) var color = match[1];
@@ -126,7 +126,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	var id= $("#recordId").val();
         	$.ajax({
                 type: "post",
-                url: "${pageContext.request.contextPath}/delTaskCompany.do", 
+                url: "${pageContext.request.contextPath}/delProjectLecture.do", 
                 data: {id:id},
                 dataType: "json",
                 success: function(data){
@@ -140,10 +140,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             });
         }
         function insert(){
-        	
         	var id = $("#id").val();
         	if(id != null && id != ""){
-        		$("#form1").attr('action',"${pageContext.request.contextPath}/editTaskCompany.action"); 
+        		$("#form1").attr('action',"${pageContext.request.contextPath}/editProjectLecture.action"); 
         	}
         	$("#form1").submit();
         }
@@ -153,6 +152,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
         function resetForm(){
         	document.getElementById("form1").reset();
+        	$("#time").attr("value","");
         }
         function searchByName(){
         	var name = $("#searchName").val();
@@ -162,12 +162,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	}else{
         		window.location.href=baseurl+"?name="+encodeURI(encodeURI(name));
         	}
+        	
         }
+        
+        
+        Date.prototype.Format = function (fmt) { //author: meizz   
+            var o = {  
+                "M+": this.getMonth() + 1, //月份   
+                "d+": this.getDate(), //日   
+                "h+": this.getHours(), //小时   
+                "m+": this.getMinutes(), //分   
+                "s+": this.getSeconds(), //秒   
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度   
+                "S": this.getMilliseconds() //毫秒   
+            };  
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));  
+            for (var k in o)  
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));  
+            return fmt;  
+        }  
+        
+        
         function editTaskInfo(id){
         	
         	$.ajax({
                 type: "post",
-                url: "${pageContext.request.contextPath}/selectTaskCompanyById.action", 
+                url: "${pageContext.request.contextPath}/selectProjectLectureById.action", 
                 data: {id:id},
                 dataType: "json",
                 success: function(data){
@@ -176,8 +196,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 	}else{
                 		$("#id").val(data.data.id);
                 		$("#name").val(data.data.name);
-                		$("#phone").val(data.data.phone);
-                		$("#place").val(data.data.place);
+
+                		var date = data.data.time;
+                		var time = new Date(date).Format("yyyy-MM-dd");    
+                		$("#time").attr("value",time);
+                		$("#academics").val(data.data.name);
                 		
                 		$('#myModal1').modal('show');   
                 	}
@@ -289,7 +312,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<button id="reset" class="btn btn-default" onclick="reset()">重置</button>
 			<button id="toSearch" class="btn btn-primary" onclick="searchByName()">查询</button>
 			<input type="text" id="searchName" name="searchName" class="form-control" value="${searchName }"/>
-			<label class="seaName">企业名称:</label>
+			<label class="seaName">项目名:</label>
 			<c:if test='${openAuthor == "true"}'>
 				<input type="text" id="searchTName" name="searchTName" class="form-control" value="${searchTName }"/>
 				<label class="seaName">姓名:</label>
@@ -302,9 +325,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<c:if test='${openAuthor == "true"}'>
 							<th>教师姓名</th>
 						</c:if>
-						<th>企业名称</th>
-						<th>电话</th>
-						<th>地址</th>
+						<th>学术讲座名称</th>
+						<th>学术讲座时间</th>
+						<th>学术讲座人员</th>
+
 						<th style="width: 3.5em;"></th>
 					</tr>
 				</thead>
@@ -312,12 +336,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 					<c:forEach items="${list}" var="item">
 						<tr>
-						<c:if test='${openAuthor == "true"}'>
+							<c:if test='${openAuthor == "true"}'>
 								<td>${item.tName}</td>
 							</c:if>
 							<td>${item.name}</td>
-							<td>${item.phone}</td>
-							<td>${item.place}</td>
+							<td><fmt:formatDate value="${item.time}" type="date" pattern="yyyy-MM-dd"/></td>
+							<td>${item.academics}</td>
 							<td><a onclick="editTaskInfo(${item.id})"><i class="fa fa-pencil"></i></a> <a onclick="setRecordId(${item.id})"><i
 									class="fa fa-trash-o"></i></a></td>
 						</tr>
@@ -382,31 +406,34 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 				<div class="modal-body">
 				<div style="height:300px;width:500px,overflow:auto; ">
-					<form id="form1" action="${pageContext.request.contextPath}/saveTaskCompany.action"
+					<form id="form1" action="${pageContext.request.contextPath}/saveProjectLecture.action"
 			method="post" enctype="multipart/form-data">
 			<table id="table1"
 				class="table table-striped table-bordered table-condensed list">
 				<tbody>
 					<tr>
-						<td width="30%">企业名称<font color="FF0000">*</font></td>
+						
+						<td width="30%">学术讲座名称<font color="FF0000">*</font></td>
 						<td width="500"><input id="name" name="name" type="text"
 							value="" /></td>
 
+					</tr>
+					
+					<tr>
+						<td>学术讲座时间<font color="FF0000">*</font></td>
+						<td><input id="time" name="time"
+							type="date" value="" /></td>
 
 					</tr>
 					<tr>
-						<td>电话<font color="FF0000">*</font></td>
-						<td><input id="phone" name="phone"
-							type="text" value="" /></td>
-						
-
-					</tr>
-					<tr>
-						<td>地址<font color="FF0000">*</font></td>
-						<td><input id="place" name="place"
+						<td>学术讲座人员<font color="FF0000">*</font></td>
+						<td><input id="academics" name="academics"
 							type="text" value="" /></td>
 
 					</tr>
+		
+					
+					
 
 				</tbody>
 				<input id="tId" name="tId" value="${userinfo.tId}" type="hidden" />
@@ -428,7 +455,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	<script src="lib/bootstrap/js/bootstrap.js"></script>
 	<script type="text/javascript">
-		$(".education").val("${userinfo.education}"); 
+		
 		if("${userinfo.sex}" == "1"){
 			$("#male").click()
 		}else{

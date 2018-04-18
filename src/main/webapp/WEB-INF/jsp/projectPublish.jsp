@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Bootstrap Admin</title>
+<title>教师管理系统</title>
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
@@ -44,6 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- Demo page code -->
 
 	<script type="text/javascript">
+		var basePage = "projectPublish";
 		toastr.options.positionClass = 'toast-bottom-center';
 		var baseurl  = "${pageContext.request.contextPath}/goProjectPublish.action";
 		
@@ -154,12 +155,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
         function resetForm(){
         	document.getElementById("form1").reset();
-        	
+        	$("#publishTime").attr("value","");
         }
         function searchByName(){
         	var name = $("#searchName").val();
         	var teacherName = $("#searchTName").val();
-        	window.location.href=baseurl+"?name="+encodeURI(encodeURI(name))+"&tName="+encodeURI(encodeURI(teacherName));
+        	if(teacherName != undefined){
+        		window.location.href=baseurl+"?name="+encodeURI(encodeURI(name))+"&tName="+encodeURI(encodeURI(teacherName));
+        	}else{
+        		window.location.href=baseurl+"?name="+encodeURI(encodeURI(name));
+        	}
         }
         
         Date.prototype.Format = function (fmt) { //author: meizz   

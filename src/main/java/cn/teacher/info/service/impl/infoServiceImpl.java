@@ -4,8 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import cn.bean.ProjectLecture;
+import cn.bean.ProjectLectureExample;
+import cn.bean.ProjectPerson;
+import cn.bean.ProjectPersonExample;
 import cn.bean.ProjectPublish;
 import cn.bean.ProjectPublishExample;
+import cn.bean.ProjectSocialservice;
+import cn.bean.ProjectSocialserviceExample;
 import cn.bean.TaskCompany;
 import cn.bean.TaskCompanyExample;
 import cn.bean.TaskDirectortournament;
@@ -18,7 +24,10 @@ import cn.bean.TaskTutor;
 import cn.bean.TaskTutorExample;
 import cn.bean.Teacher;
 import cn.bean.TeacherExample;
+import cn.mapper.ProjectLectureMapper;
+import cn.mapper.ProjectPersonMapper;
 import cn.mapper.ProjectPublishMapper;
+import cn.mapper.ProjectSocialserviceMapper;
 import cn.mapper.TaskCompanyMapper;
 import cn.mapper.TaskDirectortournamentMapper;
 import cn.mapper.TaskGraduationMapper;
@@ -48,6 +57,15 @@ public class infoServiceImpl implements infoServiceIfc {
 	
 	@Autowired
 	private ProjectPublishMapper projectPublishMapper;
+	
+	@Autowired
+	private ProjectPersonMapper projectPersonMapper;
+	
+	@Autowired
+	private ProjectSocialserviceMapper projectSocialserviceMapper;
+	
+	@Autowired
+	private ProjectLectureMapper projectLectureMapper;
 	
 	
 	@Override
@@ -588,6 +606,255 @@ public class infoServiceImpl implements infoServiceIfc {
 		}
 	}
 
+	@Override
+	public List<ProjectPerson> selectAllTask(ProjectPerson bean) {
+		List<ProjectPerson> list = null;
+		try {
+			ProjectPersonExample example = new ProjectPersonExample();
+			ProjectPersonExample.Criteria criteria = example.createCriteria();
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
+			if(bean.getName()!=null && bean.getName()!=""){
+				criteria.andNameLike("%"+bean.getName()+"%");
+			}
+			if(bean.gettName()!=null && bean.gettName()!=""){
+				criteria.andTNameLike("%"+bean.gettName()+"%");
+			}
+			list = projectPersonMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+
+	@Override
+	public List<ProjectPerson> selectTaskByPage(ProjectPerson bean,
+			int startRow, int pageSize) {
+		List<ProjectPerson> list = null;
+		try {
+			ProjectPersonExample example = new ProjectPersonExample();
+			example.setOrderByClause("modify_time desc");
+			example.setStartRow(startRow);
+			example.setPageSize(pageSize);
+			ProjectPersonExample.Criteria criteria = example.createCriteria();
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
+			if(bean.getName()!=null && bean.getName()!=""){
+				criteria.andNameLike("%"+bean.getName()+"%");
+			}
+			if(bean.gettName()!=null && bean.gettName()!=""){
+				criteria.andTNameLike("%"+bean.gettName()+"%");
+			}
+			list = projectPersonMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+
+	@Override
+	public ProjectPerson selectTaskById(ProjectPerson taskBean) {
+		// TODO Auto-generated method stub
+		ProjectPerson bean = null;
+		try {
+			bean = projectPersonMapper.selectByPrimaryKey(taskBean.getId());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return bean;
+	}
+
+	@Override
+	public void update(ProjectPerson taskBean) {
+		// TODO Auto-generated method stub
+		projectPersonMapper.updateByPrimaryKey(taskBean);
+	}
+
+	@Override
+	public void delTask(ProjectPerson taskBean) {
+		// TODO Auto-generated method stub
+		try {
+			projectPersonMapper.deleteByPrimaryKey(taskBean.getId());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	@Override
+	public void insert(ProjectPerson taskBean) {
+		// TODO Auto-generated method stub
+		projectPersonMapper.insert(taskBean);
+	}
+
+	@Override
+	public List<ProjectSocialservice> selectAllTask(ProjectSocialservice bean) {
+		// TODO Auto-generated method stub
+		List<ProjectSocialservice> list = null;
+		try {
+			ProjectSocialserviceExample example = new ProjectSocialserviceExample();
+			ProjectSocialserviceExample.Criteria criteria = example.createCriteria();
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
+			if(bean.getName()!=null && bean.getName()!=""){
+				criteria.andNameLike("%"+bean.getName()+"%");
+			}
+			if(bean.gettName()!=null && bean.gettName()!=""){
+				criteria.andTNameLike("%"+bean.gettName()+"%");
+			}
+			list = projectSocialserviceMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+
+	@Override
+	public List<ProjectSocialservice> selectTaskByPage(
+			ProjectSocialservice bean, int startRow, int pageSize) {
+		// TODO Auto-generated method stub
+		List<ProjectSocialservice> list = null;
+		try {
+			ProjectSocialserviceExample example = new ProjectSocialserviceExample();
+			example.setOrderByClause("modify_time desc");
+			example.setStartRow(startRow);
+			example.setPageSize(pageSize);
+			ProjectSocialserviceExample.Criteria criteria = example.createCriteria();
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
+			if(bean.getName()!=null && bean.getName()!=""){
+				criteria.andNameLike("%"+bean.getName()+"%");
+			}
+			if(bean.gettName()!=null && bean.gettName()!=""){
+				criteria.andTNameLike("%"+bean.gettName()+"%");
+			}
+			list = projectSocialserviceMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+
+	@Override
+	public ProjectSocialservice selectTaskById(ProjectSocialservice taskBean) {
+		// TODO Auto-generated method stub
+		ProjectSocialservice bean = null;
+		try {
+			bean = projectSocialserviceMapper.selectByPrimaryKey(taskBean.getId());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return bean;
+	}
+
+	@Override
+	public void update(ProjectSocialservice taskBean) {
+		// TODO Auto-generated method stub
+		projectSocialserviceMapper.updateByPrimaryKey(taskBean);
+	}
+
+	@Override
+	public void insert(ProjectSocialservice taskBean) {
+		// TODO Auto-generated method stub
+		projectSocialserviceMapper.insert(taskBean);
+	}
+
+	@Override
+	public void delTask(ProjectSocialservice taskBean) {
+		// TODO Auto-generated method stub
+		try {
+			projectSocialserviceMapper.deleteByPrimaryKey(taskBean.getId());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	@Override
+	public List<ProjectLecture> selectAllTask(ProjectLecture bean) {
+		List<ProjectLecture> list = null;
+		try {
+			ProjectLectureExample example = new ProjectLectureExample();
+			ProjectLectureExample.Criteria criteria = example.createCriteria();
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
+			if(bean.getName()!=null && bean.getName()!=""){
+				criteria.andNameLike("%"+bean.getName()+"%");
+			}
+			if(bean.gettName()!=null && bean.gettName()!=""){
+				criteria.andTNameLike("%"+bean.gettName()+"%");
+			}
+			list = projectLectureMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+
+	@Override
+	public List<ProjectLecture> selectTaskByPage(ProjectLecture bean,
+			int startRow, int pageSize) {
+		// TODO Auto-generated method stub
+		List<ProjectLecture> list = null;
+		try {
+			ProjectLectureExample example = new ProjectLectureExample();
+			example.setOrderByClause("modify_time desc");
+			example.setStartRow(startRow);
+			example.setPageSize(pageSize);
+			ProjectLectureExample.Criteria criteria = example.createCriteria();
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
+			if(bean.getName()!=null && bean.getName()!=""){
+				criteria.andNameLike("%"+bean.getName()+"%");
+			}
+			if(bean.gettName()!=null && bean.gettName()!=""){
+				criteria.andTNameLike("%"+bean.gettName()+"%");
+			}
+			list = projectLectureMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+
+	@Override
+	public ProjectLecture selectTaskById(ProjectLecture taskBean) {
+		// TODO Auto-generated method stub
+		ProjectLecture bean = null;
+		try {
+			bean = projectLectureMapper.selectByPrimaryKey(taskBean.getId());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return bean;
+	}
+
+	@Override
+	public void update(ProjectLecture taskBean) {
+		// TODO Auto-generated method stub
+		projectLectureMapper.updateByPrimaryKey(taskBean);
+	}
+
+	@Override
+	public void insert(ProjectLecture taskBean) {
+		// TODO Auto-generated method stub
+		projectLectureMapper.insert(taskBean);
+	}
+
+	@Override
+	public void delTask(ProjectLecture taskBean) {
+		// TODO Auto-generated method stub
+		try {
+			projectLectureMapper.deleteByPrimaryKey(taskBean.getId());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
 	
 
 }

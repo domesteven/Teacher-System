@@ -174,6 +174,81 @@ CREATE TABLE `task_tutor` (
 
 /*Data for the table `task_tutor` */
 
+/*Table structure for table `project_lecture` */
+
+DROP TABLE IF EXISTS `project_lecture`;
+
+CREATE TABLE `project_lecture` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `t_id` int(20) NOT NULL COMMENT '教师ID',
+  `t_name` varchar(100) DEFAULT NULL COMMENT '教师名字',
+  `name` varchar(200) NOT NULL COMMENT '学术讲座名称',
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '学术讲座时间',
+  `academics` varchar(200) DEFAULT NULL COMMENT '学术讲座人员',
+  `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `project_lecture` */
+
+/*Table structure for table `project_person` */
+
+DROP TABLE IF EXISTS `project_person`;
+
+CREATE TABLE `project_person` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `t_id` int(20) NOT NULL COMMENT '教师ID',
+  `t_name` varchar(100) DEFAULT NULL COMMENT '教师姓名',
+  `name` varchar(200) NOT NULL COMMENT '人才工程名称',
+  `student_name` varchar(100) NOT NULL COMMENT '姓名',
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '人才工程开始时间',
+  `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `project_person` */
+
+/*Table structure for table `project_publish` */
+
+DROP TABLE IF EXISTS `project_publish`;
+
+CREATE TABLE `project_publish` (
+  `id` int(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `t_id` int(20) NOT NULL COMMENT '教师ID',
+  `t_name` varchar(100) DEFAULT NULL COMMENT '教师姓名',
+  `name` varchar(200) NOT NULL COMMENT '刊物名称',
+  `press_company` varchar(200) DEFAULT NULL COMMENT '发表商',
+  `publish_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '发表时间',
+  `issn` varchar(100) NOT NULL COMMENT '出版物编号',
+  `type` varchar(10) NOT NULL COMMENT '(1:是论文；2：著作教材)',
+  `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Data for the table `project_publish` */
+
+insert  into `project_publish`(`id`,`t_id`,`t_name`,`name`,`press_company`,`publish_time`,`issn`,`type`,`modify_time`) values (1,1,'admin','123','123213','2018-04-16 00:00:00','32132','2','2018-04-16 16:26:19');
+
+/*Table structure for table `project_socialservice` */
+
+DROP TABLE IF EXISTS `project_socialservice`;
+
+CREATE TABLE `project_socialservice` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `t_id` int(20) NOT NULL COMMENT '教师ID',
+  `t_name` varchar(100) DEFAULT NULL COMMENT '教师姓名',
+  `company_name` varchar(200) NOT NULL COMMENT '服务企业名称或部门',
+  `member` varchar(500) DEFAULT NULL COMMENT '成员',
+  `name` varchar(200) NOT NULL COMMENT '项目名称',
+  `service_time` int(10) DEFAULT NULL COMMENT '服务时限',
+  `money` int(20) DEFAULT NULL COMMENT '经费',
+  `start_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '立项时间',
+  `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `project_socialservice` */
+
 /*Table structure for table `teacher` */
 
 DROP TABLE IF EXISTS `teacher`;
