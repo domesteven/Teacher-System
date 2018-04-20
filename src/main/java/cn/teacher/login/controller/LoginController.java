@@ -89,7 +89,7 @@ public class LoginController{
 				if(bean.getAuthorlever() == 1 && session.getAttribute("openAuthor") == null){
 					session.setAttribute("openAuthor", "false");
 				}
-				modelAndView.setViewName("index");
+				modelAndView.setViewName("showInfo");
 				log.info("loginSuccess-->");
 			}
 		} catch (Exception e) {

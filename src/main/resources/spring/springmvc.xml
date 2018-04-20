@@ -47,6 +47,7 @@
 	 			<property name="allowUrls">    
 			        <list>    
 			          <!-- 如果请求中包含以下路径，则不进行拦截 -->    
+			          <value>/getUserName</value>   
 			          <value>/resources</value>    
 			          <value>/goRegist</value>
 			          <value>/register</value>

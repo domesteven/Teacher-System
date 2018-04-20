@@ -279,7 +279,43 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--<![endif]-->
 
 	<%@include file="menu.jsp"%>
+	
+	<div class="sidebar-nav">
+    <ul>
+    <li><a href="#" data-target=".dashboard-menu" class="nav-header" data-toggle="collapse"><i class="fa fa-fw fa-dashboard"></i> 个人信息<i class="fa fa-collapse"></i></a></li>
+    <li><ul class="dashboard-menu nav nav-list collapse">
+            <li ><a href="${pageContext.request.contextPath}/goShowInfoPage.action"><span class="fa fa-caret-right"></span> 个人信息展示</a></li>
+    </ul></li>
 
+    <li data-popover="true" data-content="Items in this group require a <strong><a href='http://portnine.com/bootstrap-themes/aircraft' target='blank'>premium license</a><strong>." rel="popover" data-placement="right"><a href="#" data-target=".premium-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-fighter-jet"></i> 教学<i class="fa fa-collapse"></i></a></li>
+        <li><ul class="premium-menu nav nav-list collapse in">
+                <li class="visible-xs visible-sm"><a href="#">- Premium features require a license -</a></span>
+            <li ><a href="${pageContext.request.contextPath}/goTeachingTask.action"><span class="fa fa-caret-right"></span> 教学任务</a></li>
+            <li class="active"><a href="${pageContext.request.contextPath}/goTaskCompany.action"><span class="fa fa-caret-right"></span> 校企合作任务</a></li>
+            <li ><a href="${pageContext.request.contextPath}/goTaskGraduation.action"><span class="fa fa-caret-right"></span> 毕业综合实践项目</a></li>
+            <li ><a href="${pageContext.request.contextPath}/goTaskDirectortournament.action"><span class="fa fa-caret-right"></span> 学科竞赛指导任务</a></li>
+            <li ><a href="${pageContext.request.contextPath}/goTaskTutor.action"><span class="fa fa-caret-right"></span> 学业导师任务</a></li>
+    </ul></li>
+
+        <li><a href="#" data-target=".accounts-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-briefcase"></i> 科研 <span class="label label-info">+3</span></a></li>
+        <li><ul class="accounts-menu nav nav-list collapse">
+            <li ><a href="${pageContext.request.contextPath}/goProjectPublish.action"><span class="fa fa-caret-right"></span> 发表文献</a></li>
+            <li ><a href="${pageContext.request.contextPath}/goProjectPerson.action"><span class="fa fa-caret-right"></span> 人才工程项目</a></li>
+            <li ><a href="${pageContext.request.contextPath}/goProjectSocialservice.action"><span class="fa fa-caret-right"></span> 服务社会成果</a></li>
+            <li ><a href="${pageContext.request.contextPath}/goProjectLecture.action"><span class="fa fa-caret-right"></span> 学术讲座论坛</a></li>
+    </ul></li>
+
+        <li><a href="#" data-target=".legal-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-legal"></i>荣誉奖励<i class="fa fa-collapse"></i></a></li>
+        <li><ul class="legal-menu nav nav-list collapse">
+            <li ><a href="privacy-policy.html"><span class="fa fa-caret-right"></span> 荣誉奖励列表</a></li>
+            <li ><a href="terms-and-conditions.html"><span class="fa fa-caret-right"></span> 荣誉奖励新增</a></li>
+            <li ><a href="terms-and-conditions.html"><span class="fa fa-caret-right"></span> 荣誉奖励修改</a></li>
+    </ul></li>
+
+        
+            </ul>
+    </div>
+	
 	<div class="content">
 		<div class="btn-toolbar list-toolbar">
 			<button class="btn btn-primary" onclick="showCreateModel()">
