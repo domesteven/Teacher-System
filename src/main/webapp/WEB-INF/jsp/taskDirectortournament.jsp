@@ -334,10 +334,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <li><a href="#" data-target=".dashboard-menu" class="nav-header" data-toggle="collapse"><i class="fa fa-fw fa-dashboard"></i> 个人信息<i class="fa fa-collapse"></i></a></li>
     <li><ul class="dashboard-menu nav nav-list collapse">
             <li ><a href="${pageContext.request.contextPath}/goShowInfoPage.action"><span class="fa fa-caret-right"></span> 个人信息展示</a></li>
+            <c:if test='${openAuthor == "true"}'>
+            	 <li><a href="${pageContext.request.contextPath}/goShowAllTeacherInfoPage.action"><span class="fa fa-caret-right"></span> 教师信息展示</a></li>
+            </c:if>
+     <li><a href="${pageContext.request.contextPath}/goEditPwd.action"><span class="fa fa-caret-right"></span> 修改密码</a></li> 
     </ul></li>
 
-    <li data-popover="true" data-content="Items in this group require a <strong><a href='http://portnine.com/bootstrap-themes/aircraft' target='blank'>premium license</a><strong>." rel="popover" data-placement="right"><a href="#" data-target=".premium-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-fighter-jet"></i> 教学<i class="fa fa-collapse"></i></a></li>
-        <li><ul class="premium-menu nav nav-list collapse in">
+    <li><a href="#" data-target=".premium-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-fighter-jet"></i> 教学<i class="fa fa-collapse"></i></a></li>        <li><ul class="premium-menu nav nav-list collapse in">
                 <li class="visible-xs visible-sm"><a href="#">- Premium features require a license -</a></span>
             <li ><a href="${pageContext.request.contextPath}/goTeachingTask.action"><span class="fa fa-caret-right"></span> 教学任务</a></li>
             <li ><a href="${pageContext.request.contextPath}/goTaskCompany.action"><span class="fa fa-caret-right"></span> 校企合作任务</a></li>

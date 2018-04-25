@@ -52,6 +52,7 @@ import cn.tdog.utils.ExcelUtil;
 import cn.tdog.utils.FormatUtil;
 import cn.tdog.utils.HttpJsonUtil;
 import cn.tdog.utils.HttpRequest;
+import cn.teacher.info.service.infoServiceIfc;
 import cn.teacher.login.service.LoginServiceIfc;
 import cn.teacher.login.service.impl.LoginServiceImpl;
 
@@ -62,6 +63,9 @@ public class LoginController{
 	@Autowired
 	private LoginServiceIfc loginService;
 	
+	@Autowired
+	private infoServiceIfc infoService;
+	
 	private static  final transient Logger log = Logger.getLogger(LoginController .class);
 	
 	@Resource
@@ -69,13 +73,13 @@ public class LoginController{
 	
 	@RequestMapping(value="/login")
 	@ResponseBody
-	public ModelAndView login(@Validated Teacher teacher,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+	public Map login(@Validated Teacher teacher,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
 		ModelAndView modelAndView = new ModelAndView();
 		Map resResult = new HashMap();
 		Map data = new HashMap();
 		resResult.put("errcode","-1");
-		resResult.put("errmsg","Login请求失败");
-		modelAndView.setViewName("sign-in");
+		resResult.put("errmsg","登录验证失败");
+		
 		try {
 			if(bindingResult.hasErrors()){
 			}
@@ -89,14 +93,61 @@ public class LoginController{
 				if(bean.getAuthorlever() == 1 && session.getAttribute("openAuthor") == null){
 					session.setAttribute("openAuthor", "false");
 				}
-				modelAndView.setViewName("showInfo");
+				resResult.put("errcode","0");
+				resResult.put("errmsg","登录成功");
 				log.info("loginSuccess-->");
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("login-->"+"errormsg:"+e.getMessage());
 		}
-		modelAndView.addObject("data",resResult);
+		
+		return resResult;
+	}
+	
+	
+	@RequestMapping(value="/editPwd")
+	@ResponseBody
+	public Map editPwd(@Validated Teacher teacher,String password1,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+		ModelAndView modelAndView = new ModelAndView();
+		Map resResult = new HashMap();
+		Map data = new HashMap();
+		resResult.put("errcode","-1");
+		resResult.put("errmsg","修改密码失败");
+		
+		try {
+			HttpSession session=req.getSession();
+			Teacher userinfo = (Teacher) session.getAttribute("userinfo");
+			teacher.settName(userinfo.gettName());
+			Teacher currentUser = check(teacher);
+			if(currentUser != null){
+				currentUser.setPassword(password1);
+				infoService.update(currentUser);
+				resResult.put("errcode", "0");
+				resResult.put("errmsg", "修改密码成功");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("login-->"+"errormsg:"+e.getMessage());
+		}
+		
+		return resResult;
+	}
+	
+	
+	@RequestMapping(value="/goIndex")
+	@ResponseBody
+	public ModelAndView goIndex(@Validated Teacher teacher,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("showInfo");
+		return modelAndView;
+	}
+	
+	@RequestMapping(value="/goEditPwd")
+	@ResponseBody
+	public ModelAndView goEditPwd(@Validated Teacher teacher,BindingResult bindingResult,HttpServletRequest req,HttpServletResponse res) throws Exception {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("editPwd");
 		return modelAndView;
 	}
 	

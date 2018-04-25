@@ -60,7 +60,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
        
         function up(){
         	var name = $("#searchName").val();
-        	var url  = "${pageContext.request.contextPath}/goTeachingTask.action?page=${currentPage-1}";
+        	var url  = "${pageContext.request.contextPath}/goShowAllTeacherInfoPage.action?page=${currentPage-1}";
         	var teacherName = $("#searchTName").val();
         	if(teacherName != null && teacherName != ""){
         		url += "&tName="+encodeURI(encodeURI(teacherName));
@@ -78,7 +78,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         function down(){
         	debugger
         	var name = $("#searchName").val();
-        	var url = "${pageContext.request.contextPath}/goTeachingTask.action?page=${currentPage+1}";
+        	var url = "${pageContext.request.contextPath}/goShowAllTeacherInfoPage.action?page=${currentPage+1}";
         	var max = eval("${pageTimes}");
         	var teacherName = $("#searchTName").val();
         	if(name != null && name != ""){
@@ -97,7 +97,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	var name = $("#searchName").val();
         	var num =  eval($("#searchPage").val());
         	var teacherName = $("#searchTName").val();
-        	var url = "${pageContext.request.contextPath}/goTeachingTask.action?page="+num;
+        	var url = "${pageContext.request.contextPath}/goShowAllTeacherInfoPage.action?page="+num;
         	var max = eval("${pageTimes}");
         	if(name != null && name != ""){
         		url += "&name="+encodeURI(encodeURI(name));
@@ -117,6 +117,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	$("#recordId").val(id);
             $('#myModal').modal('show');    
         }
+		function setResetRecordId(id){
+        	
+        	$("#recordId").val(id);
+            $('#myModal2').modal('show');    
+        }
+        
         function showCreateModel(){
         	$('#myModal1').modal('show');   
         }
@@ -125,14 +131,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	var id= $("#recordId").val();
         	$.ajax({
                 type: "post",
-                url: "${pageContext.request.contextPath}/delTaskTeaching.do", 
-                data: {id:id},
+                url: "${pageContext.request.contextPath}/delTeacher.do", 
+                data: {tId:id},
                 dataType: "json",
                 success: function(data){
                 	if(data.errcode == "-1"){
                 		toastr.error(data.errmsg);
                 	}else{
-                		window.location.href="${pageContext.request.contextPath}/goTeachingTask.action?page=${currentPage}";
+                		window.location.href="${pageContext.request.contextPath}/goShowAllTeacherInfoPage.action?page=${currentPage}";
                 	}
                 	
                 }
@@ -157,9 +163,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	var name = $("#searchName").val();
         	var teacherName = $("#searchTName").val();
         	if(teacherName != undefined){
-        		window.location.href="${pageContext.request.contextPath}/goTeachingTask.action?name="+encodeURI(encodeURI(name))+"&tName="+encodeURI(encodeURI(teacherName));
+        		window.location.href="${pageContext.request.contextPath}/goShowAllTeacherInfoPage.action?name="+encodeURI(encodeURI(name))+"&tName="+encodeURI(encodeURI(teacherName));
         	}else{
-        		window.location.href="${pageContext.request.contextPath}/goTeachingTask.action?name="+encodeURI(encodeURI(name));
+        		window.location.href="${pageContext.request.contextPath}/goShowAllTeacherInfoPage.action?name="+encodeURI(encodeURI(name));
         	}
         	
         }
@@ -167,21 +173,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	
         	$.ajax({
                 type: "post",
-                url: "${pageContext.request.contextPath}/selectTaskTeachingById.action", 
-                data: {id:id},
+                url: "${pageContext.request.contextPath}/selectTeacherById.action", 
+                data: {tId:id},
                 dataType: "json",
                 success: function(data){
                 	if(data.errcode == "-1"){
                 		toastr.error(data.errmsg);
                 	}else{
-                		$("#id").val(data.data.id);
-                		$("#name").val(data.data.name);
+                		$("#tName").val(data.data.tName);
                 		$("#major").val(data.data.major);
-                		$("#property").val(data.data.property);
-                		$("#hour").val(data.data.hour);
-                		$("#countMan").val(data.data.countMan);
-                		$("#assessmentMethod").val(data.data.assessmentMethod);
-                		$("#teachingSubject").val(data.data.teachingSubject);
+                		$("#education").val(data.data.education);
+                		$("#title").val(data.data.title);
+                		if(data.data.sex == "1"){
+                			$("#sex").val("男");	
+                		}else{
+                			$("#sex").val("女");
+                		}
+                		
+                		
                 		$('#myModal1').modal('show');   
                 	}
                 	
@@ -190,7 +199,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
         
         function excel(){
-        	var url = "${pageContext.request.contextPath}/TaskTeachingExcel.action";
+        	var url = "${pageContext.request.contextPath}/TeacherListExcel.action";
         	var name = $("#searchName").val();
         
         	if(name != null && name != ""){
@@ -203,6 +212,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         		url += "&tName="+encodeURI(encodeURI(teacherName));
         	}
         	window.location.href = url;
+        }
+        
+        function resetPwd(id){
+        	var id= $("#recordId").val();
+        	var passwrod = $("#resetPassword").val();
+        	$.ajax({
+                type: "post",
+                url: "${pageContext.request.contextPath}/resetPwd.do", 
+                data: {tId:id,password:passwrod},
+                dataType: "json",
+                success: function(data){
+                	if(data.errcode == "-1"){
+                		toastr.error(data.errmsg);
+                	}else{
+                		debugger
+                		toastr.success(data.errmsg);
+                		window.location.href="${pageContext.request.contextPath}/goShowAllTeacherInfoPage.action?page=${currentPage}";
+                	}
+                	
+                }
+            });
         }
     </script>
 	<style type="text/css">
@@ -248,6 +278,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	margin-top:5px;
 	margin-right:10px;
 	float:right;
+}
+#resetPwd{
+	height: 18px;
+	width:18px;
+	
+	margin-left: 8px;
 }
 
 .navbar-default .navbar-brand,.navbar-default .navbar-brand:hover {
@@ -303,15 +339,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="sidebar-nav">
     <ul>
     <li><a href="#" data-target=".dashboard-menu" class="nav-header" data-toggle="collapse"><i class="fa fa-fw fa-dashboard"></i> 个人信息<i class="fa fa-collapse"></i></a></li>
-    <li><ul class="dashboard-menu nav nav-list collapse">
+    <li><ul class="dashboard-menu nav nav-list collapse in">
             <li ><a href="${pageContext.request.contextPath}/goShowInfoPage.action"><span class="fa fa-caret-right"></span> 个人信息展示</a></li>
             <c:if test='${openAuthor == "true"}'>
-            	 <li><a href="${pageContext.request.contextPath}/goShowAllTeacherInfoPage.action"><span class="fa fa-caret-right"></span> 教师信息展示</a></li>
+            	 <li class="active"><a href="${pageContext.request.contextPath}/goShowAllTeacherInfoPage.action"><span class="fa fa-caret-right"></span> 教师信息展示</a></li>
             </c:if>
      <li><a href="${pageContext.request.contextPath}/goEditPwd.action"><span class="fa fa-caret-right"></span> 修改密码</a></li> 
     </ul></li>
 
-    <li><a href="#" data-target=".premium-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-fighter-jet"></i> 教学<i class="fa fa-collapse"></i></a></li>        <li><ul class="premium-menu nav nav-list collapse in">
+    <li><a href="#" data-target=".premium-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-fighter-jet"></i> 教学<i class="fa fa-collapse"></i></a></li>        <li><ul class="premium-menu nav nav-list collapse">
                 <li class="visible-xs visible-sm"><a href="#">- Premium features require a license -</a></span>
             <li class="active"><a href="${pageContext.request.contextPath}/goTeachingTask.action"><span class="fa fa-caret-right"></span> 教学任务</a></li>
             <li ><a href="${pageContext.request.contextPath}/goTaskCompany.action"><span class="fa fa-caret-right"></span> 校企合作任务</a></li>
@@ -341,14 +377,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<div class="content">
 		<div class="btn-toolbar list-toolbar">
-			<button class="btn btn-primary" onclick="showCreateModel()">
-				<i class="fa fa-plus"></i> 新增
-			</button>
+			
 			<button class="btn btn-default" onclick="excel()">导出</button>
 			<button id="reset" class="btn btn-default" onclick="reset()">重置</button>
 			<button id="toSearch" class="btn btn-primary" onclick="searchByName()">查询</button>
 			<input type="text" id="searchName" name="searchName" class="form-control" value="${searchName }"/>
-			<label class="seaName">课程名称:</label>
+			<label class="seaName">专业:</label>
 			<c:if test='${openAuthor == "true"}'>
 				<input type="text" id="searchTName" name="searchTName" class="form-control" value="${searchTName }"/>
 				<label class="seaName">姓名:</label>
@@ -358,16 +392,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<table class="table">
 				<thead>
 					<tr>
-						<c:if test='${openAuthor == "true"}'>
-							<th>教师姓名</th>
-						</c:if>
-						<th>课程名称</th>
-						<th>课程所属专业</th>
-						<th>课程性质</th>
-						<th>课时</th>
-						<th>人数</th>
-						<th>考核方式</th>
-						<th>所属教学改革课题</th>
+						
+						<th>教师姓名</th>
+						<th>学历</th>
+						<th>职称</th>
+						<th>性别</th>
+						<th>专业</th>
+						
 						<th style="width: 3.5em;"></th>
 					</tr>
 				</thead>
@@ -375,18 +406,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 					<c:forEach items="${list}" var="item">
 						<tr>
-							<c:if test='${openAuthor == "true"}'>
-								<td>${item.tName}</td>
-							</c:if>
-							<td>${item.name}</td>
+							
+							<td>${item.tName}</td>
+							<td>${item.education}</td>
+							<td>${item.title}</td>
+							<td>
+								<c:choose>
+									<c:when test='${item.sex == "1" }'>男</c:when>
+									<c:when test='${item.sex == "2" }'>女</c:when>
+								</c:choose>
+							</td>
 							<td>${item.major}</td>
-							<td>${item.property}</td>
-							<td>${item.hour}</td>
-							<td>${item.countMan}</td>
-							<td>${item.assessmentMethod}</td>
-							<td>${item.teachingSubject}</td>
-							<td><a onclick="editTaskInfo(${item.id})"><i class="fa fa-pencil"></i></a> <a onclick="setRecordId(${item.id})"><i
-									class="fa fa-trash-o"></i></a></td>
+							
+							<td><a onclick="editTaskInfo(${item.tId})"><i class="fa fa-pencil"></i></a> <a onclick="setRecordId(${item.tId})"><i
+									class="fa fa-trash-o"></i></a><a onclick="setResetRecordId(${item.tId})"><img id ="resetPwd" src="../images/345.jpg"></a></td>
 						</tr>
 					</c:forEach>
 	
@@ -438,6 +471,34 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	</div>
 	
+	<div class="modal small fade" id="myModal2" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+					<h3 id="myModalLabel">修改密码</h3>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" id="recordId"/>
+					<p class="error-text">
+						
+						<div class="form-group">
+		                    <label>新密码：</label>
+		                    <input type="text" id="resetPassword" name="resetPassword" class="form-control"/>
+		                </div>
+					</p>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default" data-dismiss="modal"
+						aria-hidden="true">取消</button>
+					<button class="btn btn-danger" onclick="resetPwd()">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	<div class="modal fade" id="myModal1" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
 		<div class="modal-dialog" style="width: 700px;height:250px;">
@@ -455,37 +516,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				class="table table-striped table-bordered table-condensed list">
 				<tbody>
 					<tr>
-						<td width="15%">课程名称<font color="FF0000">*</font></td>
-						<td width="500"><input id="name" name="name" type="text"
-							value="" /></td>
-						<td width="15%">课程所属专业<font color="FF0000">*</font></td>
-						<td width="500"><input id="major" name="major" type="text"
-							value="" /></td>
+						<td width="15%">教师姓名<font color="FF0000">*</font></td>
+						<td width="500"><input id="tName" name="tName" type="text"
+							value="" disabled/></td>
+						<td width="15%">学历<font color="FF0000">*</font></td>
+						<td width="500"><input id="education" name="education" type="text"
+							value="" disabled/></td>
 
 					</tr>
 					<tr>
-						<td>课程性质<font color="FF0000">*</font></td>
-						<td><input id="property" name="property"
-							type="text" value="" /></td>
-						<td>课时<font color="FF0000">*</font></td>
-						<td><input id="hour" name="hour"
-							type="text" value="" /></td>
+						<td>职称<font color="FF0000">*</font></td>
+						<td><input id="title" name="title"
+							type="text" value="" disabled/></td>
+						<td>性别<font color="FF0000">*</font></td>
+						<td><input id="sex" name="sex"
+							type="text" value="" disabled/></td>
 
 					</tr>
 					<tr>
-						<td>人数<font color="FF0000">*</font></td>
-						<td><input id="countMan" name="countMan"
-							value="" type="text" /></td>
-						<td>考核方式<font color="FF0000">*</font></td>
-						<td><input id="assessmentMethod" name="assessmentMethod" type="text"
-							value="" /></td>
-					</tr>
-
-					<tr>
-						<td width="15%">所属教学改革课题<font color="FF0000">*</font></td>
-						<td><input id="teachingSubject" name="teachingSubject"
-							type="text" value="" /></td>
 						
+						<td>专业<font color="FF0000">*</font></td>
+						<td><input id="major" name="major"
+							type="text" value="" disabled/></td>
+
 					</tr>
 
 				</tbody>

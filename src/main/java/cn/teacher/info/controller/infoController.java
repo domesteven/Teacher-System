@@ -1973,6 +1973,70 @@ public class infoController {
 		out.close();
 
 	}
+	
+	@RequestMapping(value = "/TeacherListExcel")
+	@ResponseBody
+	public void TeacherListExcel(@Validated Teacher bean,
+			HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+
+		String parameter = req.getParameter("name");
+		if (StringUtils.isNotBlank(parameter)) {
+			String keyword = java.net.URLDecoder.decode(parameter, "UTF-8");
+			bean.setMajor(keyword);
+			req.getSession().setAttribute("searchName", keyword);
+		}
+		Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
+		
+		if (req.getSession().getAttribute("openAuthor") == "false"
+				|| teacher.getAuthorlever() == 2) {
+			int tId = teacher.gettId();
+			bean.settId(tId);
+		}
+
+		List<Teacher> resultList = infoService.selectAllTask(bean);
+		
+		resp.reset();
+		OutputStream out = null;
+		String strTitleName = "教师表";
+		String strSheetName = "教师表";
+		String filename = "教师表.xls";
+
+		List<ExportExcelParam> item = new ArrayList<ExportExcelParam>();
+		
+		
+		item.add(new ExportExcelParam("教师姓名", "tName", 20 * 256));
+		item.add(new ExportExcelParam("学历", "education", 20 * 256));
+		item.add(new ExportExcelParam("职称", "title", 20 * 256));
+		item.add(new ExportExcelParam("性别", "sex", 20 * 256));
+		item.add(new ExportExcelParam("专业", "major", 20 * 256));
+		
+		try {
+			out = resp.getOutputStream();
+			HSSFWorkbook wb = ExportExcelUtil.generateExcel(resultList, item,
+					strTitleName, strSheetName);
+
+			resp.addHeader("Content-Disposition", "attachment;filename="
+					+ URLEncoder.encode(filename, "UTF-8"));
+			resp.setContentType("application/vnd.ms-excel;charset=UTF-8");
+
+			wb.write(out);
+
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (java.lang.reflect.InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		out.flush();
+		out.close();
+
+	}
 
 	@RequestMapping(value = "/selectAllTeacher")
 	@ResponseBody
@@ -1992,5 +2056,128 @@ public class infoController {
 		}
 		return data;
 	}
+	
+	@RequestMapping(value = "/goShowAllTeacherInfoPage")
+	@ResponseBody
+	public ModelAndView goShowAllTeacherInfoPage(
+			@Validated Teacher bean, String page,
+			HttpServletRequest req, HttpServletResponse res) throws Exception {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("teacherInfoList");
+		try {
+			String parameter = req.getParameter("name");
+			if (StringUtils.isNotBlank(parameter)) {
+				String keyword = java.net.URLDecoder.decode(parameter, "UTF-8");
+				bean.setMajor(keyword);
+				modelAndView.addObject("searchName", keyword);
+			}
+			if (bean.gettName() != null && bean.gettName() != "") {
+				modelAndView.addObject("searchTName", bean.gettName());
+			}
+			Teacher teacher = (Teacher) req.getSession().getAttribute(
+					"userinfo");
+			if (req.getSession().getAttribute("openAuthor") == "false"
+					|| teacher.getAuthorlever() == 2) {
+				int tId = teacher.gettId();
+				bean.settId(tId);
+			}
+			// 每页显示条数
+			int pageSize = Integer.parseInt(myconfig.get("pageSize"));
 
+			List<Teacher> list = infoService.selectAllTask(bean);
+			modelAndView.addObject("userNum", list.size());
+
+			// 总页数
+			int pageTimes;
+			if (list.size() > pageSize) {
+				if (list.size() % pageSize == 0) {
+					pageTimes = list.size() / pageSize;
+				} else {
+					pageTimes = list.size() / pageSize + 1;
+				}
+			} else {
+				pageTimes = 1;
+			}
+
+			modelAndView.addObject("pageTimes", pageTimes);
+			// 页面初始的时候page没有值
+			if (null == page) {
+				page = "1";
+			}
+
+			int startRow = (Integer.parseInt(page) - 1) * pageSize;
+			list = infoService.selectTaskByPage(bean, startRow, pageSize);
+
+			modelAndView.addObject("currentPage", Integer.parseInt(page));
+			modelAndView.addObject("list", list);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/selectTeacherById")
+	@ResponseBody
+	public Map selectTeacherById(
+			@Validated Teacher taskBean,
+			BindingResult bindingResult, HttpServletRequest req,
+			HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		data.put("errcode", "-1");
+		data.put("errmsg", "失败");
+		try {
+			Teacher bean = infoService.selectTaskById(taskBean);
+			data.put("errcode", "0");
+			data.put("errmsg", "成功");
+			data.put("data", bean);
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return data;
+	}
+	
+	@RequestMapping(value = "/delTeacher")
+	@ResponseBody
+	public Map delTeacher(
+			@Validated Teacher taskBean,
+			BindingResult bindingResult, HttpServletRequest req,
+			HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		data.put("errcode", "-1");
+		data.put("errmsg", "失败");
+		try {
+			infoService.delTask(taskBean);
+			data.put("errcode", "0");
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return data;
+	}
+	
+	@RequestMapping(value = "/resetPwd")
+	@ResponseBody
+	public Map resetPwd(
+			@Validated Teacher taskBean,
+			BindingResult bindingResult, HttpServletRequest req,
+			HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		data.put("errcode", "-1");
+		data.put("errmsg", "失败");
+		try {
+			infoService.update(taskBean);
+			data.put("errcode", "0");
+			data.put("errmsg", "修改密码成功");
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return data;
+	}
+	
+	
 }

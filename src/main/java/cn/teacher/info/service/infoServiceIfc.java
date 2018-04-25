@@ -137,5 +137,15 @@ public interface infoServiceIfc {
 
 	void delTask(ProjectLecture taskBean);
 
+	List<Teacher> selectAllTask(Teacher bean);
+
+	List<Teacher> selectTaskByPage(Teacher bean, int startRow, int pageSize);
+
+	Teacher selectTaskById(Teacher taskBean);
+
+	void delTask(Teacher taskBean);
+
+	void update(Teacher taskBean);
+
 	
 }

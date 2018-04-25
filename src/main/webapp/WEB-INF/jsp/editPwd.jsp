@@ -45,13 +45,13 @@
             
         });
         
-        function toLogin(){
-        	var tName = $("#tName").val();
+        function editPwd(){
         	var password = $("#password").val();
+        	var password1 = $("#password1").val();
         	$.ajax({
                 type: "post",
-                url: "${pageContext.request.contextPath}/login.do", 
-                data: {tName:tName,password:password},
+                url: "${pageContext.request.contextPath}/editPwd.do", 
+                data: {password1:password1,password:password},
                 dataType: "json",
                 success: function(data){
                 	if(data.errcode == "-1"){
@@ -114,31 +114,32 @@
 
         </div>
       </div>
+      
     </div>
     
 
 
         <div class="dialog">
     <div class="panel panel-default">
-        <p class="panel-heading no-collapse">登录</p>
+        <p class="panel-heading no-collapse">重置密码</p>
         <div class="panel-body">
-            <form action="${pageContext.request.contextPath}/login.do" name="loginForm" method="post" >
+            <form >
                 <div class="form-group">
-                    <label>用户</label>
-                    <input id="tName" name="tName" type="text" class="form-control span12"/>
+                    <label>旧密码</label>
+                    <input id="password" name="password" type="password" class="form-control span12"/>
                 </div>
                 <div class="form-group">
-                <label>密码</label>
-                    <input id="password" name="password" type="password" class="form-controlspan12 form-control"/>
+                <label>新密码</label>
+                    <input id="password1" name="password1" type="text" class="form-controlspan12 form-control"/>
                 </div>
-                <input type="button" class="btn btn-primary pull-right" value="登录" onclick="toLogin()"/>
-                <label class="remember-me"><input type="checkbox"> 记住密码</label>
+                <input type="button" class="btn btn-primary pull-right" value="修改" onclick="editPwd()"/>
+                
                 <div class="clearfix"></div>
             </form>
         </div>
     </div>
     
-    <p><a href="${pageContext.request.contextPath}/goRegist.do">注册</a></p>
+    
 </div>
 
 

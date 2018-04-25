@@ -18,6 +18,10 @@
 
     <link rel="stylesheet" type="text/css" href="stylesheets/theme.css">
     <link rel="stylesheet" type="text/css" href="stylesheets/premium.css">
+    
+    <link href="stylesheets/toastr.min.css" rel="stylesheet" />
+	<script src="js/toastr.min.js"></script>
+    
 	
 </head>
 <body class=" theme-blue">
@@ -25,7 +29,7 @@
     <!-- Demo page code -->
 
     <script type="text/javascript">
-  
+		toastr.options.positionClass = 'toast-bottom-center';
 	  
         $(function() {
             var match = document.cookie.match(new RegExp('color=([^;]+)'));
@@ -40,6 +44,26 @@
             $('[data-popover="true"]').popover({html: true});
             
         });
+        
+        function toLogin(){
+        	var tName = $("#tName").val();
+        	var password = $("#password").val();
+        	$.ajax({
+                type: "post",
+                url: "${pageContext.request.contextPath}/login.do", 
+                data: {tName:tName,password:password},
+                dataType: "json",
+                success: function(data){
+                	if(data.errcode == "-1"){
+                		toastr.error(data.errmsg);
+                	}else{
+                		window.location.href="${pageContext.request.contextPath}/goIndex.do";
+                	}
+                	
+                }
+            });
+        }
+        
     </script>
     <style type="text/css">
         #line-chart {
@@ -101,13 +125,13 @@
             <form action="${pageContext.request.contextPath}/login.do" name="loginForm" method="post" >
                 <div class="form-group">
                     <label>用户</label>
-                    <input name="tName" type="text" class="form-control span12"/>
+                    <input id="tName" name="tName" type="text" class="form-control span12"/>
                 </div>
                 <div class="form-group">
                 <label>密码</label>
-                    <input name="password" type="password" class="form-controlspan12 form-control"/>
+                    <input id="password" name="password" type="password" class="form-controlspan12 form-control"/>
                 </div>
-                <input type="submit" class="btn btn-primary pull-right" value="登录"/>
+                <input type="button" class="btn btn-primary pull-right" value="登录" onclick="toLogin()"/>
                 <label class="remember-me"><input type="checkbox"> 记住密码</label>
                 <div class="clearfix"></div>
             </form>

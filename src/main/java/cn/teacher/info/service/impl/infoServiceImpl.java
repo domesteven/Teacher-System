@@ -854,6 +854,82 @@ public class infoServiceImpl implements infoServiceIfc {
 			// TODO: handle exception
 		}
 	}
+
+	@Override
+	public List<Teacher> selectAllTask(Teacher bean) {
+		List<Teacher> list = null;
+		try {
+			TeacherExample example = new TeacherExample();
+			TeacherExample.Criteria criteria = example.createCriteria();
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
+			if(bean.getMajor()!=null && bean.getMajor()!=""){
+				criteria.andMajorLike("%"+bean.getMajor()+"%");
+			}
+			if(bean.gettName()!=null && bean.gettName()!=""){
+				criteria.andTNameLike("%"+bean.gettName()+"%");
+			}
+			list = teacherMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+
+	@Override
+	public List<Teacher> selectTaskByPage(Teacher bean, int startRow,
+			int pageSize) {
+		List<Teacher> list = null;
+		try {
+			TeacherExample example = new TeacherExample();
+			example.setOrderByClause("modify_time desc");
+			example.setStartRow(startRow);
+			example.setPageSize(pageSize);
+			TeacherExample.Criteria criteria = example.createCriteria();
+			if(bean.gettId() != null){
+				criteria.andTIdEqualTo(bean.gettId());
+			}
+			if(bean.getMajor()!=null && bean.getMajor()!=""){
+				criteria.andMajorLike("%"+bean.getMajor().trim()+"%");
+			}
+			if(bean.gettName()!=null && bean.gettName()!=""){
+				criteria.andTNameLike("%"+bean.gettName().trim()+"%");
+			}
+			list = teacherMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+
+	@Override
+	public Teacher selectTaskById(Teacher taskBean) {
+		// TODO Auto-generated method stub
+		Teacher bean = null;
+		try {
+			bean = teacherMapper.selectByPrimaryKey(taskBean.gettId());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return bean;
+	}
+
+	@Override
+	public void delTask(Teacher taskBean) {
+		// TODO Auto-generated method stub
+		try {
+			teacherMapper.deleteByPrimaryKey(taskBean.gettId());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	@Override
+	public void update(Teacher taskBean) {
+		// TODO Auto-generated method stub
+		teacherMapper.updateByPrimaryKeySelective(taskBean);
+	}
 	
 	
 
