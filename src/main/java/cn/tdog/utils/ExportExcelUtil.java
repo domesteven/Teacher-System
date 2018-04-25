@@ -224,7 +224,7 @@ public class ExportExcelUtil {
 	 */
 	public static SimpleDateFormat getDateTimeFormat() {
 		if (SDF == null) {
-			SDF = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			SDF = new SimpleDateFormat("yyyy-MM-dd");
 		}
 		return SDF;
 	}

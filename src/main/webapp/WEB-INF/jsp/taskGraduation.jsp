@@ -207,7 +207,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 }
             });
         }
-        
+        function excel(){
+        	var url = "${pageContext.request.contextPath}/TaskGraduationExcel.action";
+        	var name = $("#searchName").val();
+        	
+        	if(name != null && name != ""){
+        		url += "?name="+encodeURI(encodeURI(name));
+        	}else{
+        		url += "?name=";
+        	}
+        	var teacherName = $("#searchTName").val();
+        	if(teacherName != null && teacherName != ""){
+        		url += "&tName="+encodeURI(encodeURI(teacherName));
+        	}
+        	window.location.href = url;
+        }
        
     </script>
 	<style type="text/css">
@@ -336,7 +350,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<button class="btn btn-primary" onclick="showCreateModel()">
 				<i class="fa fa-plus"></i> 新增
 			</button>
-			<button class="btn btn-default">导出</button>
+			<button class="btn btn-default" onclick="excel()">导出</button>
 			<button id="reset" class="btn btn-default" onclick="reset()">重置</button>
 			<button id="toSearch" class="btn btn-primary" onclick="searchByName()">查询</button>
 			<input type="text" id="searchName" name="searchName" class="form-control" value="${searchName }"/>

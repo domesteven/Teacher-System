@@ -213,10 +213,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
         
         function excel(){
-        	var url = "${pageContext.request.contextPath}/TaskCompanyExcel.action";
+        	var url = "${pageContext.request.contextPath}/ProjectSocialserviceExcel.action";
         	var name = $("#searchName").val();
+        	
         	if(name != null && name != ""){
         		url += "?name="+encodeURI(encodeURI(name));
+        	}else{
+        		url += "?name=";
+        	}
+        	var teacherName = $("#searchTName").val();
+        	if(teacherName != null && teacherName != ""){
+        		url += "&tName="+encodeURI(encodeURI(teacherName));
         	}
         	window.location.href = url;
         }
@@ -361,6 +368,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<table class="table">
 				<thead>
 					<tr>
+						<c:if test='${openAuthor == "true"}'>
+							<th>教师姓名</th>
+						</c:if>
 						<th>服务企业名称或部门</th>
 						<th>成员</th>
 						<th>项目名称</th>
@@ -374,6 +384,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 					<c:forEach items="${list}" var="item">
 						<tr>
+							<c:if test='${openAuthor == "true"}'>
+								<td>${item.tName}</td>
+							</c:if>
 							<td>${item.companyName}</td>
 							<td>${item.member}</td>
 							<td>${item.name}</td>

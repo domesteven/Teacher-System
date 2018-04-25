@@ -218,10 +218,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
         
         function excel(){
-        	var url = "${pageContext.request.contextPath}/TaskCompanyExcel.action";
+        	var url = "${pageContext.request.contextPath}/ProjectPublishExcel.action";
         	var name = $("#searchName").val();
+        	
         	if(name != null && name != ""){
         		url += "?name="+encodeURI(encodeURI(name));
+        	}else{
+        		url += "?name=";
+        	}
+        	var teacherName = $("#searchTName").val();
+        	if(teacherName != null && teacherName != ""){
+        		url += "&tName="+encodeURI(encodeURI(teacherName));
         	}
         	window.location.href = url;
         }

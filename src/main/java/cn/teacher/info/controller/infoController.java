@@ -17,6 +17,7 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -1369,7 +1370,75 @@ public class infoController {
 
 		//
 		// 学术讲座论坛项目controller--------------------结束
+		@RequestMapping(value = "/TaskTeachingExcel")
+		@ResponseBody
+		public void TaskTeachingExcel(@Validated TaskTeaching bean,
+				HttpServletRequest req, HttpServletResponse resp)
+				throws IOException {
 
+			String parameter = req.getParameter("name");
+			if (StringUtils.isNotBlank(parameter)) {
+				String keyword = java.net.URLDecoder.decode(parameter, "UTF-8");
+				bean.setName(keyword);
+				req.getSession().setAttribute("searchName", keyword);
+			}
+			Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
+			
+			if (req.getSession().getAttribute("openAuthor") == "false"
+					|| teacher.getAuthorlever() == 2) {
+				int tId = teacher.gettId();
+				bean.settId(tId);
+			}
+
+			List<TaskTeaching> resultList = infoService.selectAllTaskTeaching(bean);
+
+			resp.reset();
+			OutputStream out = null;
+			String strTitleName = "教学任务表";
+			String strSheetName = "教学任务表";
+			String filename = "教学任务表.xls";
+
+			List<ExportExcelParam> item = new ArrayList<ExportExcelParam>();
+			HttpSession session=req.getSession();
+			if(session.getAttribute("openAuthor") == "true"){
+				item.add(new ExportExcelParam("教师姓名", "tName", 20 * 256));
+			}
+			item.add(new ExportExcelParam("课程名称", "name", 20 * 256));
+			item.add(new ExportExcelParam("课程所属专业", "major", 20 * 256));
+			item.add(new ExportExcelParam("课程性质", "property", 20 * 256));
+			item.add(new ExportExcelParam("课时", "hour", 20 * 256));
+			item.add(new ExportExcelParam("人数", "countMan", 20 * 256));
+			item.add(new ExportExcelParam("考核方式", "assessmentMethod", 20 * 256));
+			item.add(new ExportExcelParam("所属教学改革课题", "teachingSubject", 20 * 256));
+
+			try {
+				out = resp.getOutputStream();
+				HSSFWorkbook wb = ExportExcelUtil.generateExcel(resultList, item,
+						strTitleName, strSheetName);
+
+				resp.addHeader("Content-Disposition", "attachment;filename="
+						+ URLEncoder.encode(filename, "UTF-8"));
+				resp.setContentType("application/vnd.ms-excel;charset=UTF-8");
+
+				wb.write(out);
+
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (java.lang.reflect.InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			out.flush();
+			out.close();
+
+		}
+		
+		
 	@RequestMapping(value = "/TaskCompanyExcel")
 	@ResponseBody
 	public void TaskCompanyExcel(@Validated TaskCompany bean,
@@ -1383,8 +1452,12 @@ public class infoController {
 			req.getSession().setAttribute("searchName", keyword);
 		}
 		Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
-		int tId = teacher.gettId();
-		bean.settId(tId);
+		
+		if (req.getSession().getAttribute("openAuthor") == "false"
+				|| teacher.getAuthorlever() == 2) {
+			int tId = teacher.gettId();
+			bean.settId(tId);
+		}
 
 		List<TaskCompany> resultList = infoService.selectAllTaskCompany(bean);
 
@@ -1395,11 +1468,485 @@ public class infoController {
 		String filename = "校企合作任务表.xls";
 
 		List<ExportExcelParam> item = new ArrayList<ExportExcelParam>();
-
+		HttpSession session=req.getSession();
+		if(session.getAttribute("openAuthor") == "true"){
+			item.add(new ExportExcelParam("教师姓名", "tName", 20 * 256));
+		}
 		item.add(new ExportExcelParam("企业名称", "name", 20 * 256));
 		item.add(new ExportExcelParam("电话", "phone", 20 * 256));
 		item.add(new ExportExcelParam("地点", "place", 20 * 256));
 
+		try {
+			out = resp.getOutputStream();
+			HSSFWorkbook wb = ExportExcelUtil.generateExcel(resultList, item,
+					strTitleName, strSheetName);
+
+			resp.addHeader("Content-Disposition", "attachment;filename="
+					+ URLEncoder.encode(filename, "UTF-8"));
+			resp.setContentType("application/vnd.ms-excel;charset=UTF-8");
+
+			wb.write(out);
+
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (java.lang.reflect.InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		out.flush();
+		out.close();
+
+	}
+	
+	@RequestMapping(value = "/TaskGraduationExcel")
+	@ResponseBody
+	public void TaskGraduationExcel(@Validated TaskGraduation bean,
+			HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+
+		String parameter = req.getParameter("name");
+		if (StringUtils.isNotBlank(parameter)) {
+			String keyword = java.net.URLDecoder.decode(parameter, "UTF-8");
+			bean.setName(keyword);
+			req.getSession().setAttribute("searchName", keyword);
+		}
+		Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
+		
+		if (req.getSession().getAttribute("openAuthor") == "false"
+				|| teacher.getAuthorlever() == 2) {
+			int tId = teacher.gettId();
+			bean.settId(tId);
+		}
+
+		List<TaskGraduation> resultList = infoService.selectAllTaskCompany(bean);
+		
+		for(int i=0;i<resultList.size();i++){
+			if(resultList.get(i).getIsPublic().equals("1")){
+				resultList.get(i).setIsPublic("是");
+			}else{
+				resultList.get(i).setIsPublic("否");
+			}
+		}
+		
+		resp.reset();
+		OutputStream out = null;
+		String strTitleName = "毕业综合实践项目表";
+		String strSheetName = "毕业综合实践项目表";
+		String filename = "毕业综合实践项目表.xls";
+
+		List<ExportExcelParam> item = new ArrayList<ExportExcelParam>();
+		HttpSession session=req.getSession();
+		if(session.getAttribute("openAuthor") == "true"){
+			item.add(new ExportExcelParam("教师姓名", "tName", 20 * 256));
+		}
+		item.add(new ExportExcelParam("设计或者论文名称", "name", 20 * 256));
+		item.add(new ExportExcelParam("学生姓名", "studentName", 20 * 256));
+		item.add(new ExportExcelParam("是否发布", "isPublic", 20 * 256));
+		item.add(new ExportExcelParam("发表的刊物名称", "publicationName", 20 * 256));
+
+		try {
+			out = resp.getOutputStream();
+			HSSFWorkbook wb = ExportExcelUtil.generateExcel(resultList, item,
+					strTitleName, strSheetName);
+
+			resp.addHeader("Content-Disposition", "attachment;filename="
+					+ URLEncoder.encode(filename, "UTF-8"));
+			resp.setContentType("application/vnd.ms-excel;charset=UTF-8");
+
+			wb.write(out);
+
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (java.lang.reflect.InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		out.flush();
+		out.close();
+
+	}
+	
+	@RequestMapping(value = "/TaskDirectortournamentExcel")
+	@ResponseBody
+	public void TaskDirectortournamentExcel(@Validated TaskDirectortournament bean,
+			HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+
+		String parameter = req.getParameter("name");
+		if (StringUtils.isNotBlank(parameter)) {
+			String keyword = java.net.URLDecoder.decode(parameter, "UTF-8");
+			bean.setName(keyword);
+			req.getSession().setAttribute("searchName", keyword);
+		}
+		Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
+		
+		if (req.getSession().getAttribute("openAuthor") == "false"
+				|| teacher.getAuthorlever() == 2) {
+			int tId = teacher.gettId();
+			bean.settId(tId);
+		}
+
+		List<TaskDirectortournament> resultList = infoService.selectAllTask(bean);
+		
+		
+		resp.reset();
+		OutputStream out = null;
+		String strTitleName = "学科竞赛指导任务表";
+		String strSheetName = "学科竞赛指导任务表";
+		String filename = "学科竞赛指导任务表.xls";
+
+		List<ExportExcelParam> item = new ArrayList<ExportExcelParam>();
+		
+		item.add(new ExportExcelParam("项目名", "name", 20 * 256));
+		item.add(new ExportExcelParam("指导老师姓名", "tName", 20 * 256));
+		item.add(new ExportExcelParam("学生姓名", "studentName", 20 * 256));
+		item.add(new ExportExcelParam("获奖荣誉", "attach", 20 * 256));
+		item.add(new ExportExcelParam("获奖时间", "time", 20 * 256));
+
+		try {
+			out = resp.getOutputStream();
+			HSSFWorkbook wb = ExportExcelUtil.generateExcel(resultList, item,
+					strTitleName, strSheetName);
+
+			resp.addHeader("Content-Disposition", "attachment;filename="
+					+ URLEncoder.encode(filename, "UTF-8"));
+			resp.setContentType("application/vnd.ms-excel;charset=UTF-8");
+
+			wb.write(out);
+
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (java.lang.reflect.InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		out.flush();
+		out.close();
+
+	}
+	
+	@RequestMapping(value = "/TaskTutorExcel")
+	@ResponseBody
+	public void TaskTutorExcel(@Validated TaskTutor bean,
+			HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+
+		String parameter = req.getParameter("name");
+		if (StringUtils.isNotBlank(parameter)) {
+			String keyword = java.net.URLDecoder.decode(parameter, "UTF-8");
+			bean.setStudentName(keyword);
+			req.getSession().setAttribute("searchName", keyword);
+		}
+		Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
+		
+		if (req.getSession().getAttribute("openAuthor") == "false"
+				|| teacher.getAuthorlever() == 2) {
+			int tId = teacher.gettId();
+			bean.settId(tId);
+		}
+
+		List<TaskTutor> resultList = infoService.selectAllTask(bean);
+		
+		
+		resp.reset();
+		OutputStream out = null;
+		String strTitleName = "学业导师任务表";
+		String strSheetName = "学业导师任务表";
+		String filename = "学业导师任务表.xls";
+
+		List<ExportExcelParam> item = new ArrayList<ExportExcelParam>();
+		
+		item.add(new ExportExcelParam("教师姓名", "tName", 20 * 256));
+		item.add(new ExportExcelParam("学生姓名", "studentName", 20 * 256));
+		item.add(new ExportExcelParam("班级", "studentClass", 20 * 256));
+		item.add(new ExportExcelParam("学生专业", "major", 20 * 256));
+
+		try {
+			out = resp.getOutputStream();
+			HSSFWorkbook wb = ExportExcelUtil.generateExcel(resultList, item,
+					strTitleName, strSheetName);
+
+			resp.addHeader("Content-Disposition", "attachment;filename="
+					+ URLEncoder.encode(filename, "UTF-8"));
+			resp.setContentType("application/vnd.ms-excel;charset=UTF-8");
+
+			wb.write(out);
+
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (java.lang.reflect.InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		out.flush();
+		out.close();
+
+	}
+	
+	@RequestMapping(value = "/ProjectPublishExcel")
+	@ResponseBody
+	public void ProjectPublishExcel(@Validated ProjectPublish bean,
+			HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+
+		String parameter = req.getParameter("name");
+		if (StringUtils.isNotBlank(parameter)) {
+			String keyword = java.net.URLDecoder.decode(parameter, "UTF-8");
+			bean.setName(keyword);
+			req.getSession().setAttribute("searchName", keyword);
+		}
+		Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
+		
+		if (req.getSession().getAttribute("openAuthor") == "false"
+				|| teacher.getAuthorlever() == 2) {
+			int tId = teacher.gettId();
+			bean.settId(tId);
+		}
+
+		List<ProjectPublish> resultList = infoService.selectAllTask(bean);
+		
+		for(int i=0;i<resultList.size();i++){
+			if(resultList.get(i).getType().equals("1")){
+				resultList.get(i).setType("论文");
+			}else{
+				resultList.get(i).setType("著作教材");
+			}
+		}
+		
+		resp.reset();
+		OutputStream out = null;
+		String strTitleName = "发表文献表";
+		String strSheetName = "发表文献表";
+		String filename = "发表文献表.xls";
+
+		List<ExportExcelParam> item = new ArrayList<ExportExcelParam>();
+		HttpSession session=req.getSession();
+		if(session.getAttribute("openAuthor") == "true"){
+			item.add(new ExportExcelParam("教师姓名", "tName", 20 * 256));
+		}
+		item.add(new ExportExcelParam("刊物名称", "name", 20 * 256));
+		item.add(new ExportExcelParam("发表刊物", "pressCompany", 20 * 256));
+		item.add(new ExportExcelParam("发表时间", "publishTime", 20 * 256));
+		item.add(new ExportExcelParam("出版物编号", "issn", 20 * 256));
+		item.add(new ExportExcelParam("类型", "type", 20 * 256));
+
+		try {
+			out = resp.getOutputStream();
+			HSSFWorkbook wb = ExportExcelUtil.generateExcel(resultList, item,
+					strTitleName, strSheetName);
+
+			resp.addHeader("Content-Disposition", "attachment;filename="
+					+ URLEncoder.encode(filename, "UTF-8"));
+			resp.setContentType("application/vnd.ms-excel;charset=UTF-8");
+
+			wb.write(out);
+
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (java.lang.reflect.InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		out.flush();
+		out.close();
+
+	}
+	
+	@RequestMapping(value = "/ProjectPersonExcel")
+	@ResponseBody
+	public void ProjectPersonExcel(@Validated ProjectPerson bean,
+			HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+
+		String parameter = req.getParameter("name");
+		if (StringUtils.isNotBlank(parameter)) {
+			String keyword = java.net.URLDecoder.decode(parameter, "UTF-8");
+			bean.setName(keyword);
+			req.getSession().setAttribute("searchName", keyword);
+		}
+		Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
+		
+		if (req.getSession().getAttribute("openAuthor") == "false"
+				|| teacher.getAuthorlever() == 2) {
+			int tId = teacher.gettId();
+			bean.settId(tId);
+		}
+
+		List<ProjectPerson> resultList = infoService.selectAllTask(bean);
+		
+		
+		resp.reset();
+		OutputStream out = null;
+		String strTitleName = "人才工程项目表";
+		String strSheetName = "人才工程项目表";
+		String filename = "人才工程项目表.xls";
+
+		List<ExportExcelParam> item = new ArrayList<ExportExcelParam>();
+		HttpSession session=req.getSession();
+		
+		item.add(new ExportExcelParam("人才工程名称", "name", 20 * 256));
+		item.add(new ExportExcelParam("指导老师姓名", "tName", 20 * 256));
+		item.add(new ExportExcelParam("学生姓名", "studentName", 20 * 256));
+		item.add(new ExportExcelParam("人才工程开始时间", "time", 20 * 256));
+
+		try {
+			out = resp.getOutputStream();
+			HSSFWorkbook wb = ExportExcelUtil.generateExcel(resultList, item,
+					strTitleName, strSheetName);
+
+			resp.addHeader("Content-Disposition", "attachment;filename="
+					+ URLEncoder.encode(filename, "UTF-8"));
+			resp.setContentType("application/vnd.ms-excel;charset=UTF-8");
+
+			wb.write(out);
+
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (java.lang.reflect.InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		out.flush();
+		out.close();
+
+	}
+	
+	
+	@RequestMapping(value = "/ProjectSocialserviceExcel")
+	@ResponseBody
+	public void ProjectSocialserviceExcel(@Validated ProjectSocialservice bean,
+			HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+
+		String parameter = req.getParameter("name");
+		if (StringUtils.isNotBlank(parameter)) {
+			String keyword = java.net.URLDecoder.decode(parameter, "UTF-8");
+			bean.setName(keyword);
+			req.getSession().setAttribute("searchName", keyword);
+		}
+		Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
+		
+		if (req.getSession().getAttribute("openAuthor") == "false"
+				|| teacher.getAuthorlever() == 2) {
+			int tId = teacher.gettId();
+			bean.settId(tId);
+		}
+
+		List<ProjectSocialservice> resultList = infoService.selectAllTask(bean);
+		
+		
+		resp.reset();
+		OutputStream out = null;
+		String strTitleName = "服务社会成果表";
+		String strSheetName = "服务社会成果表";
+		String filename = "服务社会成果表.xls";
+
+		List<ExportExcelParam> item = new ArrayList<ExportExcelParam>();
+		HttpSession session=req.getSession();
+		if(session.getAttribute("openAuthor") == "true"){
+			item.add(new ExportExcelParam("教师姓名", "tName", 20 * 256));
+		}
+		item.add(new ExportExcelParam("服务企业名称或部门", "companyName", 20 * 256));
+		item.add(new ExportExcelParam("成员", "member", 20 * 256));
+		item.add(new ExportExcelParam("项目名称", "name", 20 * 256));
+		item.add(new ExportExcelParam("服务时限", "serviceTime", 20 * 256));
+		item.add(new ExportExcelParam("经费", "money", 20 * 256));
+		item.add(new ExportExcelParam("立项时间", "startTime", 20 * 256));
+
+		try {
+			out = resp.getOutputStream();
+			HSSFWorkbook wb = ExportExcelUtil.generateExcel(resultList, item,
+					strTitleName, strSheetName);
+
+			resp.addHeader("Content-Disposition", "attachment;filename="
+					+ URLEncoder.encode(filename, "UTF-8"));
+			resp.setContentType("application/vnd.ms-excel;charset=UTF-8");
+
+			wb.write(out);
+
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (java.lang.reflect.InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		out.flush();
+		out.close();
+
+	}
+	
+	@RequestMapping(value = "/ProjectLectureExcel")
+	@ResponseBody
+	public void ProjectLectureExcel(@Validated ProjectLecture bean,
+			HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+
+		String parameter = req.getParameter("name");
+		if (StringUtils.isNotBlank(parameter)) {
+			String keyword = java.net.URLDecoder.decode(parameter, "UTF-8");
+			bean.setName(keyword);
+			req.getSession().setAttribute("searchName", keyword);
+		}
+		Teacher teacher = (Teacher) req.getSession().getAttribute("userinfo");
+		
+		if (req.getSession().getAttribute("openAuthor") == "false"
+				|| teacher.getAuthorlever() == 2) {
+			int tId = teacher.gettId();
+			bean.settId(tId);
+		}
+
+		List<ProjectLecture> resultList = infoService.selectAllTask(bean);
+		
+		
+		resp.reset();
+		OutputStream out = null;
+		String strTitleName = "学术讲座论坛表";
+		String strSheetName = "学术讲座论坛表";
+		String filename = "学术讲座论坛表.xls";
+
+		List<ExportExcelParam> item = new ArrayList<ExportExcelParam>();
+		
+		
+		item.add(new ExportExcelParam("教师姓名", "tName", 20 * 256));
+		item.add(new ExportExcelParam("学术讲座名称", "name", 20 * 256));
+		item.add(new ExportExcelParam("成员", "academics", 20 * 256));
+		item.add(new ExportExcelParam("项目名称", "time", 20 * 256));
+		
 		try {
 			out = resp.getOutputStream();
 			HSSFWorkbook wb = ExportExcelUtil.generateExcel(resultList, item,
