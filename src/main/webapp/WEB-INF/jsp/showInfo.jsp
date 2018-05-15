@@ -163,12 +163,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <li ><a href="${pageContext.request.contextPath}/goProjectLecture.action"><span class="fa fa-caret-right"></span> 学术讲座论坛</a></li>
     </ul></li>
 
-        <li><a href="#" data-target=".legal-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-legal"></i>荣誉奖励<i class="fa fa-collapse"></i></a></li>
+        <!-- <li><a href="#" data-target=".legal-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-legal"></i>荣誉奖励<i class="fa fa-collapse"></i></a></li>
         <li><ul class="legal-menu nav nav-list collapse">
             <li ><a href="privacy-policy.html"><span class="fa fa-caret-right"></span> 荣誉奖励列表</a></li>
             <li ><a href="terms-and-conditions.html"><span class="fa fa-caret-right"></span> 荣誉奖励新增</a></li>
             <li ><a href="terms-and-conditions.html"><span class="fa fa-caret-right"></span> 荣誉奖励修改</a></li>
-    </ul></li>
+    </ul></li> -->
 
         
             </ul>
@@ -236,6 +236,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					
 				</tbody>
 				<input id="tId" name="tId" value="${userinfo.tId}" type="hidden" />
+				<input id="password" name="password" value="${userinfo.password}" type="hidden" />
 				<tfoot>
 					<tr>
 						<td colspan="4">
