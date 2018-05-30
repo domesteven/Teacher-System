@@ -20,9 +20,9 @@
 	
 	<!-- <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl" value="jdbc:mysql://39.108.154.210:3306/yeqin" />
-		<property name="user" value="yeqin" />
-		<property name="password" value="SYDSy7EZ3M" />
+		<property name="jdbcUrl" value="jdbc:mysql://39.108.106.88:3306/teacherSys" />
+		<property name="user" value="teacherSys" />
+		<property name="password" value="FtN6ZkaiLr" />
 	</bean> -->
 	
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">

@@ -2,7 +2,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
     <meta charset="utf-8">
-    <title>商学院</title>
+    <title>教师信息系统</title>
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -108,7 +108,7 @@
 
     <div class="navbar navbar-default" role="navigation">
         <div class="navbar-header">
-          <a class="" href="index.html"><span class="navbar-brand"><span class="fa fa-paper-plane"></span> 商学院</span></a></div>
+          <a class="" href="index.html"><span class="navbar-brand"><span class="fa fa-paper-plane"></span> 教师信息系统</span></a></div>
 
         <div class="navbar-collapse collapse" style="height: 1px;">
 

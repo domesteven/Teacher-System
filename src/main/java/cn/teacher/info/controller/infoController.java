@@ -68,6 +68,7 @@ public class infoController {
 			HttpServletResponse res) throws Exception {
 		String fileName = null;
 		try {
+			log.info("============文件上传开始");
 			if (!file.isEmpty()) {
 				String path = myconfig.get("pic_download"); // request.getSession().getServletContext().getRealPath("upload");
 				fileName = file.getOriginalFilename();
@@ -2178,6 +2179,25 @@ public class infoController {
 		}
 		return data;
 	}
-	
+	@RequestMapping(value = "/changeToAuthor")
+	@ResponseBody
+	public Map changeToAuthor(
+			@Validated Teacher taskBean,
+			BindingResult bindingResult, HttpServletRequest req,
+			HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		data.put("errcode", "-1");
+		data.put("errmsg", "失败");
+		try {
+			taskBean.setAuthorlever(1);
+			infoService.update(taskBean);
+			data.put("errcode", "0");
+			data.put("errmsg", "修改密码成功");
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return data;
+	}
 	
 }

@@ -5,17 +5,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Insert title here</title>
+<title>教师信息系统</title>
 </head>
 <body>
 	<script type="text/javascript">
-		window.onload=function(){
-			if(basePage=="projectPublish"){
-				
-				
-			}
-			
-		}
+		
 		function changeAuthor(){
 			$.ajax({
                 type: "post",
@@ -36,7 +30,7 @@
 					class="icon-bar"></span>
 			</button>
 			<a class="" href="index.html"><span class="navbar-brand"><span
-					class="fa fa-paper-plane"></span> 商学院</span></a>
+					class="fa fa-paper-plane"></span> 教师信息系统</span></a>
 		</div>
 
 		<div class="navbar-collapse collapse" style="height: 1px;">

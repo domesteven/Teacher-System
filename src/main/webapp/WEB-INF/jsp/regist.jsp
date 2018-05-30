@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <html lang="en"><head>
     <meta charset="utf-8">
-    <title>Bootstrap Admin</title>
+    <title>教师信息系统</title>
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -179,7 +179,7 @@
 
     <div class="navbar navbar-default" role="navigation">
         <div class="navbar-header">
-          <a class="" href="index.html"><span class="navbar-brand"><span class="fa fa-paper-plane"></span> Aircraft</span></a></div>
+          <a class="" href="index.html"><span class="navbar-brand"><span class="fa fa-paper-plane"></span> 教师信息系统</span></a></div>
 
         <div class="navbar-collapse collapse" style="height: 1px;">
 
@@ -225,7 +225,7 @@
             </form>
         </div>
     </div>
-    <a href="sign-in.html" style="font-size: .75em; margin-top: .25em;">Sign in to your account</a>
+    <a href="sign-in.html" style="font-size: .75em; margin-top: .25em;">已有账号，去登陆</a>
 </div>
 
 

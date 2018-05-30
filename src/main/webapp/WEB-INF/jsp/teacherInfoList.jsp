@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>教师管理系统</title>
+<title>教师信息系统</title>
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
@@ -122,6 +122,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	$("#recordId").val(id);
             $('#myModal2').modal('show');    
         }
+		function setResetRecordId1(id){
+        	
+        	$("#recordId").val(id);
+            $('#myModal3').modal('show');    
+        }
+        
         
         function showCreateModel(){
         	$('#myModal1').modal('show');   
@@ -144,6 +150,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 }
             });
         }
+        function changeToAuthor(){
+        	debugger
+        	var id= $("#recordId").val();
+        	$.ajax({
+                type: "post",
+                url: "${pageContext.request.contextPath}/changeToAuthor.do", 
+                data: {tId:id},
+                dataType: "json",
+                success: function(data){
+                	if(data.errcode == "-1"){
+                		toastr.error(data.errmsg);
+                	}else{
+                		window.location.href="${pageContext.request.contextPath}/goShowAllTeacherInfoPage.action?page=${currentPage}";
+                	}
+                	
+                }
+            });
+        }
+        
         function insert(){
         	
         	var id = $("#id").val();
@@ -214,7 +239,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	window.location.href = url;
         }
         
-        function resetPwd(id){
+        function resetPwd1(){
+        	debugger
         	var id= $("#recordId").val();
         	var passwrod = $("#resetPassword").val();
         	$.ajax({
@@ -356,7 +382,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <li ><a href="${pageContext.request.contextPath}/goTaskTutor.action"><span class="fa fa-caret-right"></span> 学业导师任务</a></li>
     </ul></li>
 
-        <li><a href="#" data-target=".accounts-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-briefcase"></i> 科研 <span class="label label-info">+3</span></a></li>
+        <li><a href="#" data-target=".accounts-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-briefcase"></i> 科研 <i class="fa fa-collapse"></i></a></li>
         <li><ul class="accounts-menu nav nav-list collapse">
             <li ><a href="${pageContext.request.contextPath}/goProjectPublish.action"><span class="fa fa-caret-right"></span> 发表文献</a></li>
             <li ><a href="${pageContext.request.contextPath}/goProjectPerson.action"><span class="fa fa-caret-right"></span> 人才工程项目</a></li>
@@ -398,6 +424,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<th>职称</th>
 						<th>性别</th>
 						<th>专业</th>
+						<th>身份证号码</th>
 						
 						<th style="width: 3.5em;"></th>
 					</tr>
@@ -417,9 +444,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</c:choose>
 							</td>
 							<td>${item.major}</td>
-							
+							<td>${item.certificateNumber}</td>
 							<td><a onclick="editTaskInfo(${item.tId})"><i class="fa fa-pencil"></i></a> <a onclick="setRecordId(${item.tId})"><i
-									class="fa fa-trash-o"></i></a><a onclick="setResetRecordId(${item.tId})"><img id ="resetPwd" src="../images/345.jpg"></a></td>
+									class="fa fa-trash-o"></i></a><a onclick="setResetRecordId(${item.tId})"><img id ="resetPwd" src="./images/345.jpg"></a></td>
+							<c:choose>
+									<c:when test='${item.authorlever == 1 }'><td>不需要赋予权限</td></c:when>
+									<c:when test='${item.authorlever == 2 }'><td><a onclick="setResetRecordId1(${item.tId})">赋予权限</a></td></c:when>
+							</c:choose>
+							
 						</tr>
 					</c:forEach>
 	
@@ -471,6 +503,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	</div>
 	
+	<div class="modal small fade" id="myModal3" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+					<h3 id="myModalLabel">赋予权限</h3>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" id="recordId"/>
+					<p class="error-text">
+						<i class="fa fa-warning modal-icon"></i>确定赋予管理员权限？
+					</p>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default" data-dismiss="modal"
+						aria-hidden="true">取消</button>
+					<button class="btn btn-danger" onclick="changeToAuthor()">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
 	<div class="modal small fade" id="myModal2" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -493,7 +550,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="modal-footer">
 					<button class="btn btn-default" data-dismiss="modal"
 						aria-hidden="true">取消</button>
-					<button class="btn btn-danger" onclick="resetPwd()">确定</button>
+					<button class="btn btn-danger" onclick="resetPwd1()">确定</button>
 				</div>
 			</div>
 		</div>
@@ -538,7 +595,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<td>专业<font color="FF0000">*</font></td>
 						<td><input id="major" name="major"
 							type="text" value="" disabled/></td>
-
+							
 					</tr>
 
 				</tbody>
