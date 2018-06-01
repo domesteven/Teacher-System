@@ -2075,6 +2075,9 @@ public class infoController {
 			if (bean.gettName() != null && bean.gettName() != "") {
 				modelAndView.addObject("searchTName", bean.gettName());
 			}
+			if (bean.getSchoolYear() != null ) {
+				modelAndView.addObject("searchTime", bean.getSchoolYear());
+			}
 			Teacher teacher = (Teacher) req.getSession().getAttribute(
 					"userinfo");
 			if (req.getSession().getAttribute("openAuthor") == "false"

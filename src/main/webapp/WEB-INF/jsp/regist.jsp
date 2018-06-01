@@ -57,6 +57,10 @@
         	var schoolYear = $("#schoolYear").val();
         	var certificateNumber = $("#certificateNumber").val();
         	var sex = $('input:radio[name="sex"]:checked').val();
+        	
+        	var date = new Date(schoolYear);
+        	
+        	
         	if(tName == undefined || tName == ""){
         		toastr.warning("姓名不能为空");
         		return;
@@ -90,7 +94,7 @@
                 		$.ajax({
                             type: "post",
                             url: "${pageContext.request.contextPath}/register.do", 
-                            data: {tName:tName,password:password,schoolYear:schoolYear,certificateNumber:certificateNumber,sex:sex},
+                            data: {tName:tName,password:password,schoolYear:date,certificateNumber:certificateNumber,sex:sex},
                             dataType: "json",
                             success: function(data){
                             	if(data.errcode == "-1"){
@@ -209,7 +213,7 @@
                 </div>
                 <div class="form-group">
                     <label>入校年份</label>
-                    <input type="text" id="schoolYear" name="schoolYear" class="form-controlspan12 form-control"/>
+                    <input type="date" id="schoolYear" name="schoolYear" class="form-controlspan12 form-control"/>
                 </div>
                 <div class="form-group">
                     <label>身份证号码</label>

@@ -11,7 +11,7 @@ public class Teacher {
 
     private Integer authorlever;
 
-    private Integer schoolYear;
+    private Date schoolYear;
 
     private String education;
 
@@ -67,11 +67,11 @@ public class Teacher {
         this.authorlever = authorlever;
     }
 
-    public Integer getSchoolYear() {
+    public Date getSchoolYear() {
         return schoolYear;
     }
 
-    public void setSchoolYear(Integer schoolYear) {
+    public void setSchoolYear(Date schoolYear) {
         this.schoolYear = schoolYear;
     }
 

@@ -10,7 +10,7 @@ public class TeacherExample {
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
-    
+
     private int startRow;
     
     private int pageSize;
@@ -30,7 +30,6 @@ public class TeacherExample {
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
-
 
     public TeacherExample() {
         oredCriteria = new ArrayList<Criteria>();
@@ -396,52 +395,52 @@ public class TeacherExample {
             return (Criteria) this;
         }
 
-        public Criteria andSchoolYearEqualTo(Integer value) {
+        public Criteria andSchoolYearEqualTo(Date value) {
             addCriterion("school_year =", value, "schoolYear");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolYearNotEqualTo(Integer value) {
+        public Criteria andSchoolYearNotEqualTo(Date value) {
             addCriterion("school_year <>", value, "schoolYear");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolYearGreaterThan(Integer value) {
+        public Criteria andSchoolYearGreaterThan(Date value) {
             addCriterion("school_year >", value, "schoolYear");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolYearGreaterThanOrEqualTo(Integer value) {
+        public Criteria andSchoolYearGreaterThanOrEqualTo(Date value) {
             addCriterion("school_year >=", value, "schoolYear");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolYearLessThan(Integer value) {
+        public Criteria andSchoolYearLessThan(Date value) {
             addCriterion("school_year <", value, "schoolYear");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolYearLessThanOrEqualTo(Integer value) {
+        public Criteria andSchoolYearLessThanOrEqualTo(Date value) {
             addCriterion("school_year <=", value, "schoolYear");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolYearIn(List<Integer> values) {
+        public Criteria andSchoolYearIn(List<Date> values) {
             addCriterion("school_year in", values, "schoolYear");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolYearNotIn(List<Integer> values) {
+        public Criteria andSchoolYearNotIn(List<Date> values) {
             addCriterion("school_year not in", values, "schoolYear");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolYearBetween(Integer value1, Integer value2) {
+        public Criteria andSchoolYearBetween(Date value1, Date value2) {
             addCriterion("school_year between", value1, value2, "schoolYear");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolYearNotBetween(Integer value1, Integer value2) {
+        public Criteria andSchoolYearNotBetween(Date value1, Date value2) {
             addCriterion("school_year not between", value1, value2, "schoolYear");
             return (Criteria) this;
         }

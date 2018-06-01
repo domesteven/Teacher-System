@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 
 
@@ -51,11 +52,14 @@ public class LoginServiceImpl implements LoginServiceIfc {
 		}
 		return res;
 	}
+	
+	@Transactional
 	public Boolean register(Teacher teacher) {
 		Boolean res = false;
 		if(teacher != null){
 			
 			int num = teacherMapper.insert(teacher);
+			//int i = 1/0;
 			if(num > 0){
 				res = true;
 			}

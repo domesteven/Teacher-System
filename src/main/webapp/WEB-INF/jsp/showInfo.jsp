@@ -40,6 +40,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	<script type="text/javascript">
         $(function() {
+
             var match = document.cookie.match(new RegExp('color=([^;]+)'));
             if(match) var color = match[1];
             if(color) {
@@ -198,8 +199,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</tr>
 					<tr>
 						<td>入校年份<font color="FF0000">*</font></td>
-						<td><input id="schoolYear" name="schoolYear"
-							value="${userinfo.schoolYear}" type="text" /></td>
+						<td><input type="date" id="schoolYear" name="schoolYear"
+							value="" type="text" /></td>
 						<td>职称<font color="FF0000">*</font></td>
 						<td><input id="title" name="title" type="text"
 							value="${userinfo.title}" /></td>
@@ -270,7 +271,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 
 	<script src="lib/bootstrap/js/bootstrap.js"></script>
+	
 	<script type="text/javascript">
+		Date.prototype.Format = function (fmt) { //author: meizz   
+	        var o = {  
+	            "M+": this.getMonth() + 1, //月份   
+	            "d+": this.getDate(), //日   
+	            "h+": this.getHours(), //小时   
+	            "m+": this.getMinutes(), //分   
+	            "s+": this.getSeconds(), //秒   
+	            "q+": Math.floor((this.getMonth() + 3) / 3), //季度   
+	            "S": this.getMilliseconds() //毫秒   
+	        };  
+	        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));  
+	        for (var k in o)  
+	        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));  
+	        return fmt;  
+	    }  
+	
+		var time = new Date("${userinfo.schoolYear}").Format("yyyy-MM-dd");    
+		$("#schoolYear").attr("value",time);
 		$(".education").val("${userinfo.education}"); 
 		if("${userinfo.sex}" == "1"){
 			$("#male").click()

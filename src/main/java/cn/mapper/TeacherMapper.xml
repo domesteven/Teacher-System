@@ -6,7 +6,7 @@
     <result column="t_name" property="tName" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="authorlever" property="authorlever" jdbcType="INTEGER" />
-    <result column="school_year" property="schoolYear" jdbcType="INTEGER" />
+    <result column="school_year" property="schoolYear" jdbcType="TIMESTAMP" />
     <result column="education" property="education" jdbcType="VARCHAR" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="sex" property="sex" jdbcType="INTEGER" />
@@ -94,10 +94,9 @@
     <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
-    <if test="startRow != null and pageSize != null and pageSize != 0">
+<if test="startRow != null and pageSize != null and pageSize != 0">
 	    limit #{startRow},#{pageSize}
-	</if>
-  </select>
+	</if>  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -122,7 +121,7 @@
       graduate_school, teaching_research, job, 
       modify_time)
     values (#{tId,jdbcType=INTEGER}, #{tName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{authorlever,jdbcType=INTEGER}, #{schoolYear,jdbcType=INTEGER}, #{education,jdbcType=VARCHAR}, 
+      #{authorlever,jdbcType=INTEGER}, #{schoolYear,jdbcType=TIMESTAMP}, #{education,jdbcType=VARCHAR}, 
       #{title,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{nativePlace,jdbcType=VARCHAR}, 
       #{certificateNumber,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{major,jdbcType=VARCHAR}, 
       #{graduateSchool,jdbcType=VARCHAR}, #{teachingResearch,jdbcType=VARCHAR}, #{job,jdbcType=VARCHAR}, 
@@ -194,7 +193,7 @@
         #{authorlever,jdbcType=INTEGER},
       </if>
       <if test="schoolYear != null" >
-        #{schoolYear,jdbcType=INTEGER},
+        #{schoolYear,jdbcType=TIMESTAMP},
       </if>
       <if test="education != null" >
         #{education,jdbcType=VARCHAR},
@@ -253,7 +252,7 @@
         authorlever = #{record.authorlever,jdbcType=INTEGER},
       </if>
       <if test="record.schoolYear != null" >
-        school_year = #{record.schoolYear,jdbcType=INTEGER},
+        school_year = #{record.schoolYear,jdbcType=TIMESTAMP},
       </if>
       <if test="record.education != null" >
         education = #{record.education,jdbcType=VARCHAR},
@@ -299,7 +298,7 @@
       t_name = #{record.tName,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
       authorlever = #{record.authorlever,jdbcType=INTEGER},
-      school_year = #{record.schoolYear,jdbcType=INTEGER},
+      school_year = #{record.schoolYear,jdbcType=TIMESTAMP},
       education = #{record.education,jdbcType=VARCHAR},
       title = #{record.title,jdbcType=VARCHAR},
       sex = #{record.sex,jdbcType=INTEGER},
@@ -328,7 +327,7 @@
         authorlever = #{authorlever,jdbcType=INTEGER},
       </if>
       <if test="schoolYear != null" >
-        school_year = #{schoolYear,jdbcType=INTEGER},
+        school_year = #{schoolYear,jdbcType=TIMESTAMP},
       </if>
       <if test="education != null" >
         education = #{education,jdbcType=VARCHAR},
@@ -371,7 +370,7 @@
     set t_name = #{tName,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       authorlever = #{authorlever,jdbcType=INTEGER},
-      school_year = #{schoolYear,jdbcType=INTEGER},
+      school_year = #{schoolYear,jdbcType=TIMESTAMP},
       education = #{education,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=INTEGER},

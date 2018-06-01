@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -44,6 +45,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	<script type="text/javascript">
 		toastr.options.positionClass = 'toast-bottom-center';
+		
         $(function() {
             var match = document.cookie.match(new RegExp('color=([^;]+)'));
             if(match) var color = match[1];
@@ -180,6 +182,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         function reset(){
         	$("#searchName").val("");
         	$("#searchTName").val("");
+        	
+        	$("#searchTime").val("");
         }
         function resetForm(){
         	document.getElementById("form1").reset();
@@ -187,12 +191,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         function searchByName(){
         	var name = $("#searchName").val();
         	var teacherName = $("#searchTName").val();
-        	if(teacherName != undefined){
-        		window.location.href="${pageContext.request.contextPath}/goShowAllTeacherInfoPage.action?name="+encodeURI(encodeURI(name))+"&tName="+encodeURI(encodeURI(teacherName));
-        	}else{
-        		window.location.href="${pageContext.request.contextPath}/goShowAllTeacherInfoPage.action?name="+encodeURI(encodeURI(name));
+        	var time = $("#searchTime").val();
+        	var date = new Date(time); 
+        	console.log(date);
+        	var baseurl = "${pageContext.request.contextPath}/goShowAllTeacherInfoPage.action?name="+ encodeURI(encodeURI(name));
+        	if(date != null){
+        		baseurl += "&schoolYear="+encodeURI(encodeURI(time));
         	}
-        	
+        	if(teacherName != undefined){
+        		baseurl +="&tName="+encodeURI(encodeURI(teacherName));
+        	}
+        	window.location.href = baseurl;
         }
         function editTaskInfo(id){
         	
@@ -291,6 +300,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 }
 #searchTName{
 	width:100px;
+	float:right;
+}
+#searchTime{
+	width:160px;
 	float:right;
 }
 #toSearch{
@@ -407,6 +420,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<button class="btn btn-default" onclick="excel()">导出</button>
 			<button id="reset" class="btn btn-default" onclick="reset()">重置</button>
 			<button id="toSearch" class="btn btn-primary" onclick="searchByName()">查询</button>
+			<input type="date" id="searchTime" name="searchTime" class="form-control" value="${searchTime }"/>
+			<label class="seaName">入校年份:</label>
 			<input type="text" id="searchName" name="searchName" class="form-control" value="${searchName }"/>
 			<label class="seaName">专业:</label>
 			<c:if test='${openAuthor == "true"}'>
@@ -425,6 +440,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<th>性别</th>
 						<th>专业</th>
 						<th>身份证号码</th>
+						<th>入校年份</th>
 						
 						<th style="width: 3.5em;"></th>
 					</tr>
@@ -445,6 +461,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</td>
 							<td>${item.major}</td>
 							<td>${item.certificateNumber}</td>
+							<td><fmt:formatDate value="${item.schoolYear}" type="date" pattern="yyyy-MM-dd"/></td>
+							
 							<td><a onclick="editTaskInfo(${item.tId})"><i class="fa fa-pencil"></i></a> <a onclick="setRecordId(${item.tId})"><i
 									class="fa fa-trash-o"></i></a><a onclick="setResetRecordId(${item.tId})"><img id ="resetPwd" src="./images/345.jpg"></a></td>
 							<c:choose>
@@ -618,6 +636,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	<script src="lib/bootstrap/js/bootstrap.js"></script>
 	<script type="text/javascript">
+		Date.prototype.Format = function (fmt) { //author: meizz   
+	        var o = {  
+	            "M+": this.getMonth() + 1, //月份   
+	            "d+": this.getDate(), //日   
+	            "h+": this.getHours(), //小时   
+	            "m+": this.getMinutes(), //分   
+	            "s+": this.getSeconds(), //秒   
+	            "q+": Math.floor((this.getMonth() + 3) / 3), //季度   
+	            "S": this.getMilliseconds() //毫秒   
+	        };  
+	        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));  
+	        for (var k in o)  
+	        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));  
+	        return fmt;  
+	    }  
+		
 		$(".education").val("${userinfo.education}"); 
 		if("${userinfo.sex}" == "1"){
 			$("#male").click()

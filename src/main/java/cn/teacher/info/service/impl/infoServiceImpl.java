@@ -870,6 +870,9 @@ public class infoServiceImpl implements infoServiceIfc {
 			if(bean.gettName()!=null && bean.gettName()!=""){
 				criteria.andTNameLike("%"+bean.gettName()+"%");
 			}
+			if(bean.getSchoolYear()!=null ){
+				criteria.andSchoolYearEqualTo(bean.getSchoolYear());
+			}
 			list = teacherMapper.selectByExample(example);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -895,6 +898,9 @@ public class infoServiceImpl implements infoServiceIfc {
 			}
 			if(bean.gettName()!=null && bean.gettName()!=""){
 				criteria.andTNameLike("%"+bean.gettName().trim()+"%");
+			}
+			if(bean.getSchoolYear()!=null ){
+				criteria.andSchoolYearEqualTo(bean.getSchoolYear());
 			}
 			list = teacherMapper.selectByExample(example);
 		} catch (Exception e) {
