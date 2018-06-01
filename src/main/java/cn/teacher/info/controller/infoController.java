@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -2075,8 +2075,12 @@ public class infoController {
 			if (bean.gettName() != null && bean.gettName() != "") {
 				modelAndView.addObject("searchTName", bean.gettName());
 			}
+			//时间
 			if (bean.getSchoolYear() != null ) {
-				modelAndView.addObject("searchTime", bean.getSchoolYear());
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getSchoolYear());
+				int searchTime = c.get(Calendar.YEAR);
+				modelAndView.addObject("searchTime", searchTime);
 			}
 			Teacher teacher = (Teacher) req.getSession().getAttribute(
 					"userinfo");

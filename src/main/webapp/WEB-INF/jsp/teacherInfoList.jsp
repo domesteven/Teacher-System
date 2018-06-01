@@ -16,17 +16,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta name="description" content="">
 <meta name="author" content="">
 
+<script src="lib/jquery-1.11.1.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css"
+	href="lib/bootstrap/css/bootstrap-datetimepicker.min.css">
+<script type="text/javascript" src="lib/bootstrap/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+
+
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700'
 	rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css"
 	href="lib/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css">
 
-<script src="lib/jquery-1.11.1.min.js" type="text/javascript"></script>
+
 
 <script src="lib/jQuery-Knob/js/jquery.knob.js" type="text/javascript"></script>
 <script type="text/javascript">
-        $(function() {
+		$(function() {
             $(".knob").knob();
         });
     </script>
@@ -189,13 +195,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	document.getElementById("form1").reset();
         }
         function searchByName(){
+        	debugger
         	var name = $("#searchName").val();
         	var teacherName = $("#searchTName").val();
         	var time = $("#searchTime").val();
-        	var date = new Date(time); 
-        	console.log(date);
+        	
+        	/* var date = new Date(time); */ 
         	var baseurl = "${pageContext.request.contextPath}/goShowAllTeacherInfoPage.action?name="+ encodeURI(encodeURI(name));
-        	if(date != null){
+        	if(time != undefined && time != ""){
+        		time += "-01-01";
         		baseurl += "&schoolYear="+encodeURI(encodeURI(time));
         	}
         	if(teacherName != undefined){
@@ -240,6 +248,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         		url += "?name="+encodeURI(encodeURI(name));
         	}else{
         		url += "?name=";
+        	}
+        	
+			var time = $("#searchTime").val();
+        	
+        	/* var date = new Date(time); */ 
+        	
+        	if(time != undefined && time != ""){
+        		time += "-01-01";
+        		url += "&schoolYear="+encodeURI(encodeURI(time));
         	}
         	var teacherName = $("#searchTName").val();
         	if(teacherName != null && teacherName != ""){
@@ -291,6 +308,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 #but2 {
 	float: left;
 }
+
+#searchTimeDiv{
+	float:right;
+}
+#nameDiv{
+float:right;
+}
 #total{
 	margin-left:50px;
 }
@@ -303,7 +327,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	float:right;
 }
 #searchTime{
-	width:160px;
+	width:100px;
 	float:right;
 }
 #toSearch{
@@ -420,14 +444,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<button class="btn btn-default" onclick="excel()">导出</button>
 			<button id="reset" class="btn btn-default" onclick="reset()">重置</button>
 			<button id="toSearch" class="btn btn-primary" onclick="searchByName()">查询</button>
-			<input type="date" id="searchTime" name="searchTime" class="form-control" value="${searchTime }"/>
-			<label class="seaName">入校年份:</label>
+			<%-- <input type="date" id="searchTime" name="searchTime" class="form-control" value="${searchTime }"/> --%>
+
+                <div  id="searchTimeDiv" class="input-group date form_date col-md-5" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    <input id="searchTime" class="form-control" size="16" type="text" value="${searchTime }" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+ 
+            <label class="seaName">入校年份:</label>	
+			<div id="nameDiv">
 			<input type="text" id="searchName" name="searchName" class="form-control" value="${searchName }"/>
 			<label class="seaName">专业:</label>
 			<c:if test='${openAuthor == "true"}'>
 				<input type="text" id="searchTName" name="searchTName" class="form-control" value="${searchTName }"/>
 				<label class="seaName">姓名:</label>
 			</c:if>
+			</div>
 		</div>
 		<div id="info">
 			<table class="table">
@@ -636,6 +669,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	<script src="lib/bootstrap/js/bootstrap.js"></script>
 	<script type="text/javascript">
+	$('.form_date').datetimepicker({
+		startView: 'decade',  
+        minView: 'decade',  
+        format: 'yyyy',  
+        maxViewMode: 2,  
+        minViewMode:2,  
+         autoclose: true  
+    });
 		Date.prototype.Format = function (fmt) { //author: meizz   
 	        var o = {  
 	            "M+": this.getMonth() + 1, //月份   
@@ -667,6 +708,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
     </script>
 
-
 </body>
 </html>
+			

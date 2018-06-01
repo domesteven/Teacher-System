@@ -1,5 +1,8 @@
 package cn.teacher.info.service.impl;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -870,8 +873,15 @@ public class infoServiceImpl implements infoServiceIfc {
 			if(bean.gettName()!=null && bean.gettName()!=""){
 				criteria.andTNameLike("%"+bean.gettName()+"%");
 			}
+			//时间
 			if(bean.getSchoolYear()!=null ){
-				criteria.andSchoolYearEqualTo(bean.getSchoolYear());
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getSchoolYear());	
+				int a = c.get(Calendar.YEAR)+1;
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Long time = sdf.parse(a+"-01-01").getTime();
+				Date b = new Date(time);
+				criteria.andSchoolYearBetween(bean.getSchoolYear(), b);
 			}
 			list = teacherMapper.selectByExample(example);
 		} catch (Exception e) {
@@ -899,8 +909,15 @@ public class infoServiceImpl implements infoServiceIfc {
 			if(bean.gettName()!=null && bean.gettName()!=""){
 				criteria.andTNameLike("%"+bean.gettName().trim()+"%");
 			}
+			//时间
 			if(bean.getSchoolYear()!=null ){
-				criteria.andSchoolYearEqualTo(bean.getSchoolYear());
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getSchoolYear());	
+				int a = c.get(Calendar.YEAR)+1;
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Long time = sdf.parse(a+"-01-01").getTime();
+				Date b = new Date(time);
+				criteria.andSchoolYearBetween(bean.getSchoolYear(), b);
 			}
 			list = teacherMapper.selectByExample(example);
 		} catch (Exception e) {
