@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -15,13 +16,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta name="description" content="">
 <meta name="author" content="">
 
+
+<script src="lib/jquery-1.11.1.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css"
+	href="lib/bootstrap/css/bootstrap-datetimepicker.min.css">
+<script type="text/javascript" src="lib/bootstrap/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700'
 	rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css"
 	href="lib/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css">
 
-<script src="lib/jquery-1.11.1.min.js" type="text/javascript"></script>
+
 
 <script src="lib/jQuery-Knob/js/jquery.knob.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -44,6 +51,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	<script type="text/javascript">
 		toastr.options.positionClass = 'toast-bottom-center';
+		
+		Date.prototype.Format = function (fmt) { //author: meizz   
+            var o = {  
+                "M+": this.getMonth() + 1, //月份   
+                "d+": this.getDate(), //日   
+                "h+": this.getHours(), //小时   
+                "m+": this.getMinutes(), //分   
+                "s+": this.getSeconds(), //秒   
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度   
+                "S": this.getMilliseconds() //毫秒   
+            };  
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));  
+            for (var k in o)  
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));  
+            return fmt;  
+        }  
         $(function() {
             var match = document.cookie.match(new RegExp('color=([^;]+)'));
             if(match) var color = match[1];
@@ -149,6 +172,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         function reset(){
         	$("#searchName").val("");
         	$("#searchTName").val("");
+        	$("#searchTime").val("");
+        	$("#searchType").val("");
         }
         function resetForm(){
         	document.getElementById("form1").reset();
@@ -156,11 +181,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         function searchByName(){
         	var name = $("#searchName").val();
         	var teacherName = $("#searchTName").val();
+			
+			
+        	
+        	/* var date = new Date(time); */ 
+        	var baseurl = "${pageContext.request.contextPath}/goTeachingTask.action?name="+encodeURI(encodeURI(name));
+        	
         	if(teacherName != undefined){
-        		window.location.href="${pageContext.request.contextPath}/goTeachingTask.action?name="+encodeURI(encodeURI(name))+"&tName="+encodeURI(encodeURI(teacherName));
-        	}else{
-        		window.location.href="${pageContext.request.contextPath}/goTeachingTask.action?name="+encodeURI(encodeURI(name));
+        		baseurl=baseurl+"&tName="+encodeURI(encodeURI(teacherName));
         	}
+        	
+        	var time = $("#searchTime").val();
+        	if(time != undefined && time != ""){
+        		time += "-01-01";
+        		baseurl += "&time="+encodeURI(encodeURI(time));
+        	}
+        	var type = $("#searchType").val();
+        	if(type!= undefined){
+        		baseurl += "&type="+encodeURI(encodeURI(type));
+        	}
+        	window.location.href=baseurl;
         	
         }
         function editTaskInfo(id){
@@ -182,6 +222,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 		$("#countMan").val(data.data.countMan);
                 		$("#assessmentMethod").val(data.data.assessmentMethod);
                 		$("#teachingSubject").val(data.data.teachingSubject);
+                		if(data.data.type == "1"){
+                			$("#isPublic_n").removeAttr("checked");
+                			$("#isPublic_y").attr("checked","checked");
+                		}else{
+                			$("#isPublic_n").attr("checked","checked");
+                		}
+                		var date = data.data.time;
+                		var time = new Date(date).Format("yyyy-MM-dd");    
+                		$("#time").attr("value",time);
                 		$('#myModal1').modal('show');   
                 	}
                 	
@@ -201,6 +250,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	var teacherName = $("#searchTName").val();
         	if(teacherName != null && teacherName != ""){
         		url += "&tName="+encodeURI(encodeURI(teacherName));
+        	}
+        	
+        	var time = $("#searchTime").val();
+        	if(time != undefined && time != ""){
+        		time += "-01-01";
+        		url += "&time="+encodeURI(encodeURI(time));
+        	}
+        	debugger
+        	var type = $("#searchType").val();
+        	if(type!= undefined){
+        		url += "&type="+encodeURI(encodeURI(type));
         	}
         	window.location.href = url;
         }
@@ -237,6 +297,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	width:100px;
 	float:right;
 }
+#searchType{
+	width:100px;
+	float:right;
+}
+#searchTimeDiv{
+	float:right;
+}
+#searchTime{
+	width:100px;
+	float:right;
+}
+
 #toSearch{
 	float:right;
 }
@@ -347,8 +419,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<button class="btn btn-default" onclick="excel()">导出</button>
 			<button id="reset" class="btn btn-default" onclick="reset()">重置</button>
 			<button id="toSearch" class="btn btn-primary" onclick="searchByName()">查询</button>
+			
+			<div  id="searchTimeDiv" class="input-group date form_date col-md-5" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    <input id="searchTime" class="form-control" size="16" type="text" value="${searchTime }" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+ 
+            <label class="seaName">入校年份:</label>	
+			
 			<input type="text" id="searchName" name="searchName" class="form-control" value="${searchName }"/>
 			<label class="seaName">课程名称:</label>
+			<select id="searchType" class="form-control">
+					<option disabled selected value></option>
+                    <option value="1">理论</option>
+                    <option value="2">实践</option>
+             </select>
+             <label class="seaName">类型:</label>
 			<c:if test='${openAuthor == "true"}'>
 				<input type="text" id="searchTName" name="searchTName" class="form-control" value="${searchTName }"/>
 				<label class="seaName">姓名:</label>
@@ -368,6 +455,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<th>人数</th>
 						<th>考核方式</th>
 						<th>所属教学改革课题</th>
+						<th>课程类型</th>
+						<th>时间</th>
 						<th style="width: 3.5em;"></th>
 					</tr>
 				</thead>
@@ -385,6 +474,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<td>${item.countMan}</td>
 							<td>${item.assessmentMethod}</td>
 							<td>${item.teachingSubject}</td>
+							<td>
+								<c:choose>  
+								    <c:when test="${item.type == 1}">理论</c:when>  
+								    <c:when test="${item.type == 2}">实践</c:when>  
+								</c:choose>  
+							</td>
+							<td><fmt:formatDate value="${item.time}" type="date" pattern="yyyy-MM-dd"/></td>
 							<td><a onclick="editTaskInfo(${item.id})"><i class="fa fa-pencil"></i></a> <a onclick="setRecordId(${item.id})"><i
 									class="fa fa-trash-o"></i></a></td>
 						</tr>
@@ -485,6 +581,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<td width="15%">所属教学改革课题<font color="FF0000">*</font></td>
 						<td><input id="teachingSubject" name="teachingSubject"
 							type="text" value="" /></td>
+						<td>类型<font color="FF0000">*</font></td>
+						<td><input id="isPublic_y" type="radio" name="type" value="1" >理论</input>
+							<input id="isPublic_n" type="radio" name="type" value="2"  checked="">实践</input></td>
+					</tr>
+					<tr>
+						<td width="15%">时间<font color="FF0000">*</font></td>
+						<td><input id="time" name="time"
+							type="date" value="" /></td>
 						
 					</tr>
 
@@ -508,6 +612,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	<script src="lib/bootstrap/js/bootstrap.js"></script>
 	<script type="text/javascript">
+		var a = ${searchType};
+		$("#searchType").children("option").each(function(){  
+	        var temp_value = $(this).val();  
+	       if(temp_value == a){  
+	             $(this).attr("selected","selected");  
+	       }  
+	  });  
+		$('.form_date').datetimepicker({
+			startView: 'decade',  
+	        minView: 'decade',  
+	        format: 'yyyy',  
+	        maxViewMode: 2,  
+	        minViewMode:2,  
+	         autoclose: true  
+	    });
 		$(".education").val("${userinfo.education}"); 
 		if("${userinfo.sex}" == "1"){
 			$("#male").click()

@@ -363,6 +363,16 @@ public class infoController {
 			if (bean.gettName() != null && bean.gettName() != "") {
 				modelAndView.addObject("searchTName", bean.gettName());
 			}
+			if (bean.getType() != null && bean.getType() != "") {
+				modelAndView.addObject("searchType", bean.getType());
+			}
+			//时间
+			if (bean.getTime() != null ) {
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getTime());
+				int searchTime = c.get(Calendar.YEAR);
+				modelAndView.addObject("searchTime", searchTime);
+			}
 			Teacher teacher = (Teacher) req.getSession().getAttribute(
 					"userinfo");
 			if (req.getSession().getAttribute("openAuthor") == "false"

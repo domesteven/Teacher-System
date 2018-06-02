@@ -126,6 +126,19 @@ public class infoServiceImpl implements infoServiceIfc {
 			if(bean.gettName()!=null && bean.gettName()!=""){
 				criteria.andTNameLike("%"+bean.gettName()+"%");
 			}
+			if(bean.getType()!=null && bean.getType()!=""){
+				criteria.andTypeEqualTo(bean.getType());
+			}
+			//时间
+			if(bean.getTime()!=null ){
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getTime());	
+				int a = c.get(Calendar.YEAR)+1;
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Long time = sdf.parse(a+"-01-01").getTime();
+				Date b = new Date(time);
+				criteria.andTimeBetween(bean.getTime(), b);
+			}
 			list = taskTeachingMapper.selectByExample(example);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -152,6 +165,19 @@ public class infoServiceImpl implements infoServiceIfc {
 			}
 			if(bean.gettName()!=null && bean.gettName()!=""){
 				criteria.andTNameLike("%"+bean.gettName()+"%");
+			}
+			if(bean.getType()!=null && bean.getType()!=""){
+				criteria.andTypeEqualTo(bean.getType());
+			}
+			//时间
+			if(bean.getTime()!=null ){
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getTime());	
+				int a = c.get(Calendar.YEAR)+1;
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Long time = sdf.parse(a+"-01-01").getTime();
+				Date b = new Date(time);
+				criteria.andTimeBetween(bean.getTime(), b);
 			}
 			list = taskTeachingMapper.selectByExample(example);
 		} catch (Exception e) {

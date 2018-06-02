@@ -19,6 +19,10 @@ public class TaskTeaching {
 
     private String hour;
 
+    private Date time;
+
+    private String type;
+
     private Integer countMan;
 
     private String assessmentMethod;
@@ -89,6 +93,22 @@ public class TaskTeaching {
 
     public void setHour(String hour) {
         this.hour = hour == null ? null : hour.trim();
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public Integer getCountMan() {
