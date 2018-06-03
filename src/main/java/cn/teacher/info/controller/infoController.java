@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.bean.Attach;
 import cn.bean.ProjectLecture;
 import cn.bean.ProjectPerson;
 import cn.bean.ProjectPublish;
@@ -47,6 +48,7 @@ import cn.bean.TaskTutor;
 import cn.bean.Teacher;
 import cn.tdog.utils.ExportExcelParam;
 import cn.tdog.utils.ExportExcelUtil;
+import cn.tdog.utils.FormatUtil;
 import cn.teacher.info.service.infoServiceIfc;
 
 @Controller
@@ -201,7 +203,9 @@ public class infoController {
 
 		try {
 			String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+			String uuid1 = UUID.randomUUID().toString().replaceAll("-", "");
 			taskTeaching.setCode(uuid);
+			taskTeaching.setAttach(uuid1);
 			infoService.insert(taskTeaching);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -216,7 +220,8 @@ public class infoController {
 			HttpServletResponse res) throws Exception {
 
 		try {
-
+			String uuid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
+			taskCompany.setAttach(uuid);
 			infoService.insert(taskCompany);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -231,7 +236,8 @@ public class infoController {
 			HttpServletResponse res) throws Exception {
 
 		try {
-
+			String uuid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
+			taskBean.setAttach(uuid);
 			infoService.insert(taskBean);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -563,6 +569,13 @@ public class infoController {
 			if (bean.gettName() != null && bean.gettName() != "") {
 				modelAndView.addObject("searchTName", bean.gettName());
 			}
+			//时间
+			if (bean.getTime() != null ) {
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getTime());
+				int searchTime = c.get(Calendar.YEAR);
+				modelAndView.addObject("searchTime", searchTime);
+			}
 			Teacher teacher = (Teacher) req.getSession().getAttribute(
 					"userinfo");
 			if (req.getSession().getAttribute("openAuthor") == "false"
@@ -631,25 +644,33 @@ public class infoController {
 
 	@RequestMapping(value = "/editTaskDirectortournament")
 	public String editTaskDirectortournament(
-			@RequestParam(value = "file", required = false) MultipartFile file,
+			@RequestParam(value = "file", required = false)  List<MultipartFile> file,
 			@Validated TaskDirectortournament taskBean,
 			BindingResult bindingResult, HttpServletRequest req,
 			HttpServletResponse res) throws Exception {
 		String fileName = null;
 		try {
-			if (!file.isEmpty()) {
+			if (file.size()>0) {
+				
+				TaskDirectortournament bean1 = infoService.selectTaskById(taskBean);
 				String path = myconfig.get("pic_download"); // request.getSession().getServletContext().getRealPath("upload");
-				fileName = file.getOriginalFilename();
-				File dir = new File(path, fileName);
-				if (!dir.exists()) {
-					dir.mkdirs();
+				for (int i = 0; i < file.size(); i++) {
+					fileName = file.get(i).getOriginalFilename();
+					File dir = new File(path, fileName);
+					if (!dir.exists()) {
+						dir.mkdirs();
+					}
+					// MultipartFile自带的解析方法
+					file.get(i).transferTo(dir);
+					Attach bean = new Attach();
+					bean.setInstanceId(bean1.getAttach());
+					bean.setFileName(file.get(i).getOriginalFilename());
+					bean.setType(file.get(i).getContentType());
+					infoService.insert(bean);
 				}
-				// MultipartFile自带的解析方法
-				file.transferTo(dir);
-				taskBean.setAttach(fileName);
 			}
 			infoService.update(taskBean);
-		} catch (Exception e) {
+			} catch (Exception e) {
 			// TODO: handle exception
 			log.info(e.getMessage());
 		}
@@ -658,22 +679,32 @@ public class infoController {
 
 	@RequestMapping(value = "/saveTaskDirectortournament")
 	public String saveTaskDirectortournament(
-			@RequestParam(value = "file", required = false) MultipartFile file,
+			@RequestParam(value = "file", required = false) List<MultipartFile> file,
 			@Validated TaskDirectortournament taskBean,
 			BindingResult bindingResult, HttpServletRequest req,
 			HttpServletResponse res) throws Exception {
 		String fileName = null;
 		try {
-			if (!file.isEmpty()) {
+			String uuid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
+			if (file.size()>0) {
+				
 				String path = myconfig.get("pic_download"); // request.getSession().getServletContext().getRealPath("upload");
-				fileName = file.getOriginalFilename();
-				File dir = new File(path, fileName);
-				if (!dir.exists()) {
-					dir.mkdirs();
+				for (int i = 0; i < file.size(); i++) {
+					fileName = file.get(i).getOriginalFilename();
+					File dir = new File(path, fileName);
+					if (!dir.exists()) {
+						dir.mkdirs();
+					}
+					// MultipartFile自带的解析方法
+					file.get(i).transferTo(dir);
+					Attach bean = new Attach();
+					bean.setInstanceId(uuid);
+					bean.setFileName(file.get(i).getOriginalFilename());
+					bean.setType(file.get(i).getContentType());
+					infoService.insert(bean);
 				}
-				// MultipartFile自带的解析方法
-				file.transferTo(dir);
-				taskBean.setAttach(fileName);
+				taskBean.setAttach(uuid);
+				
 			}
 			infoService.insert(taskBean);
 		} catch (Exception e) {
@@ -808,7 +839,8 @@ public class infoController {
 			HttpServletResponse res) throws Exception {
 		String fileName = null;
 		try {
-
+			String uuid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
+			taskBean.setAttach(uuid);
 			infoService.insert(taskBean);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -855,6 +887,13 @@ public class infoController {
 			}
 			if (bean.gettName() != null && bean.gettName() != "") {
 				modelAndView.addObject("searchTName", bean.gettName());
+			}
+			//时间
+			if (bean.getPublishTime() != null ) {
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getPublishTime());
+				int searchTime = c.get(Calendar.YEAR);
+				modelAndView.addObject("searchTime", searchTime);
 			}
 			Teacher teacher = (Teacher) req.getSession().getAttribute(
 					"userinfo");
@@ -942,7 +981,8 @@ public class infoController {
 			HttpServletResponse res) throws Exception {
 		String fileName = null;
 		try {
-
+			String uuid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
+			taskBean.setAttach(uuid);
 			infoService.insert(taskBean);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -997,6 +1037,12 @@ public class infoController {
 					|| teacher.getAuthorlever() == 2) {
 				int tId = teacher.gettId();
 				bean.settId(tId);
+			}
+			if (bean.getTime() != null ) {
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getTime());
+				int searchTime = c.get(Calendar.YEAR);
+				modelAndView.addObject("searchTime", searchTime);
 			}
 			// 每页显示条数
 			int pageSize = Integer.parseInt(myconfig.get("pageSize"));
@@ -1077,7 +1123,8 @@ public class infoController {
 			HttpServletResponse res) throws Exception {
 
 		try {
-
+			String uuid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
+			taskBean.setAttach(uuid);
 			infoService.insert(taskBean);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -1124,6 +1171,12 @@ public class infoController {
 			}
 			if (bean.gettName() != null && bean.gettName() != "") {
 				modelAndView.addObject("searchTName", bean.gettName());
+			}
+			if (bean.getTime() != null ) {
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getTime());
+				int searchTime = c.get(Calendar.YEAR);
+				modelAndView.addObject("searchTime", searchTime);
 			}
 			Teacher teacher = (Teacher) req.getSession().getAttribute(
 					"userinfo");
@@ -1213,7 +1266,8 @@ public class infoController {
 			BindingResult bindingResult, HttpServletRequest req,
 			HttpServletResponse res) throws Exception {
 		try {
-
+			String uuid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
+			taskBean.setAttach(uuid);
 			infoService.insert(taskBean);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -1263,6 +1317,13 @@ public class infoController {
 				if (bean.gettName() != null && bean.gettName() != "") {
 					modelAndView.addObject("searchTName", bean.gettName());
 				}
+				if (bean.getStartTime() != null ) {
+					Calendar c = Calendar.getInstance();
+					c.setTime( bean.getStartTime());
+					int searchTime = c.get(Calendar.YEAR);
+					modelAndView.addObject("searchTime", searchTime);
+				}
+
 				Teacher teacher = (Teacher) req.getSession().getAttribute(
 						"userinfo");
 				if (req.getSession().getAttribute("openAuthor") == "false"
@@ -1351,7 +1412,8 @@ public class infoController {
 				BindingResult bindingResult, HttpServletRequest req,
 				HttpServletResponse res) throws Exception {
 			try {
-
+				String uuid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
+				taskBean.setAttach(uuid);
 				infoService.insert(taskBean);
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -1622,7 +1684,7 @@ public class infoController {
 		item.add(new ExportExcelParam("指导老师姓名", "tName", 20 * 256));
 		item.add(new ExportExcelParam("学生姓名", "studentName", 20 * 256));
 		item.add(new ExportExcelParam("获奖荣誉", "attach", 20 * 256));
-		item.add(new ExportExcelParam("获奖时间", "time", 20 * 256));
+
 
 		try {
 			out = resp.getOutputStream();
@@ -2216,5 +2278,348 @@ public class infoController {
 		}
 		return data;
 	}
-	
+	@RequestMapping(value = "/selectAllAttach")
+	@ResponseBody
+	public Map selectAllAttach(
+			@Validated Attach taskBean,
+			BindingResult bindingResult, HttpServletRequest req,
+			HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		data.put("errcode", "-1");
+		data.put("errmsg", "失败");
+		try {
+			List<Attach> list = new ArrayList<Attach>();
+			if(taskBean.getInstanceId()!=""&&taskBean.getInstanceId()!=null){
+				list=infoService.selectAllTask(taskBean);
+			}
+			if(list.size()>0){
+				req.getSession().setAttribute("listAttach", list);
+			}else{
+				req.getSession().removeAttribute("listAttach");
+			}
+			
+			data.put("listAttach", list);
+			data.put("errcode", "0");
+			data.put("errmsg", "查询所有附件");
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return data;
+	}
+	@RequestMapping(value = "/uploadAttach1")
+	public String uploadAttach1(
+			@RequestParam(value = "file", required = false)  List<MultipartFile> file,Attach taskBean,
+			BindingResult bindingResult, HttpServletRequest req,
+			HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		data.put("errcode", "-1");
+		data.put("errmsg", "失败");
+		try {
+			String fileName;
+			if (file.size()>0) {
+				String path = myconfig.get("pic_download"); // request.getSession().getServletContext().getRealPath("upload");
+				for (int i = 0; i < file.size(); i++) {
+					fileName = file.get(i).getOriginalFilename();
+					File dir = new File(path, fileName);
+					if (!dir.exists()) {
+						dir.mkdirs();
+					}
+					// MultipartFile自带的解析方法
+					file.get(i).transferTo(dir);
+					Attach bean = new Attach();
+					bean.setInstanceId(taskBean.getInstanceId());
+					bean.setFileName(file.get(i).getOriginalFilename());
+					bean.setType(file.get(i).getContentType());
+					infoService.insert(bean);
+				}
+			}
+			data.put("errcode", "0");
+			data.put("errmsg", "附件上传成功");
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return "redirect:/goTeachingTask";
+	}
+	@RequestMapping(value = "/uploadAttach2")
+	public String uploadAttach2(
+			@RequestParam(value = "file", required = false)  List<MultipartFile> file,Attach taskBean,
+			BindingResult bindingResult, HttpServletRequest req,
+			HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		data.put("errcode", "-1");
+		data.put("errmsg", "失败");
+		try {
+			String fileName;
+			if (file.size()>0) {
+				String path = myconfig.get("pic_download"); // request.getSession().getServletContext().getRealPath("upload");
+				for (int i = 0; i < file.size(); i++) {
+					fileName = file.get(i).getOriginalFilename();
+					File dir = new File(path, fileName);
+					if (!dir.exists()) {
+						dir.mkdirs();
+					}
+					// MultipartFile自带的解析方法
+					file.get(i).transferTo(dir);
+					Attach bean = new Attach();
+					bean.setInstanceId(taskBean.getInstanceId());
+					bean.setFileName(file.get(i).getOriginalFilename());
+					bean.setType(file.get(i).getContentType());
+					infoService.insert(bean);
+				}
+			}
+			data.put("errcode", "0");
+			data.put("errmsg", "附件上传成功");
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return "redirect:/goTaskCompany";
+	}
+	@RequestMapping(value = "/uploadAttach3")
+	public String uploadAttach3(
+			@RequestParam(value = "file", required = false)  List<MultipartFile> file,Attach taskBean,
+			BindingResult bindingResult, HttpServletRequest req,
+			HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		data.put("errcode", "-1");
+		data.put("errmsg", "失败");
+		try {
+			String fileName;
+			if (file.size()>0) {
+				String path = myconfig.get("pic_download"); // request.getSession().getServletContext().getRealPath("upload");
+				for (int i = 0; i < file.size(); i++) {
+					fileName = file.get(i).getOriginalFilename();
+					File dir = new File(path, fileName);
+					if (!dir.exists()) {
+						dir.mkdirs();
+					}
+					// MultipartFile自带的解析方法
+					file.get(i).transferTo(dir);
+					Attach bean = new Attach();
+					bean.setInstanceId(taskBean.getInstanceId());
+					bean.setFileName(file.get(i).getOriginalFilename());
+					bean.setType(file.get(i).getContentType());
+					infoService.insert(bean);
+				}
+			}
+			data.put("errcode", "0");
+			data.put("errmsg", "附件上传成功");
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return "redirect:/goTaskGraduation";
+	}
+	@RequestMapping(value = "/uploadAttach4")
+	public String uploadAttach4(
+			@RequestParam(value = "file", required = false)  List<MultipartFile> file,Attach taskBean,
+			BindingResult bindingResult, HttpServletRequest req,
+			HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		data.put("errcode", "-1");
+		data.put("errmsg", "失败");
+		try {
+			String fileName;
+			if (file.size()>0) {
+				String path = myconfig.get("pic_download"); // request.getSession().getServletContext().getRealPath("upload");
+				for (int i = 0; i < file.size(); i++) {
+					fileName = file.get(i).getOriginalFilename();
+					File dir = new File(path, fileName);
+					if (!dir.exists()) {
+						dir.mkdirs();
+					}
+					// MultipartFile自带的解析方法
+					file.get(i).transferTo(dir);
+					Attach bean = new Attach();
+					bean.setInstanceId(taskBean.getInstanceId());
+					bean.setFileName(file.get(i).getOriginalFilename());
+					bean.setType(file.get(i).getContentType());
+					infoService.insert(bean);
+				}
+			}
+			data.put("errcode", "0");
+			data.put("errmsg", "附件上传成功");
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return "redirect:/goTaskDirectortournament";
+	}
+	@RequestMapping(value = "/uploadAttach5")
+	public String uploadAttach5(
+			@RequestParam(value = "file", required = false)  List<MultipartFile> file,Attach taskBean,
+			BindingResult bindingResult, HttpServletRequest req,
+			HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		data.put("errcode", "-1");
+		data.put("errmsg", "失败");
+		try {
+			String fileName;
+			if (file.size()>0) {
+				String path = myconfig.get("pic_download"); // request.getSession().getServletContext().getRealPath("upload");
+				for (int i = 0; i < file.size(); i++) {
+					fileName = file.get(i).getOriginalFilename();
+					File dir = new File(path, fileName);
+					if (!dir.exists()) {
+						dir.mkdirs();
+					}
+					// MultipartFile自带的解析方法
+					file.get(i).transferTo(dir);
+					Attach bean = new Attach();
+					bean.setInstanceId(taskBean.getInstanceId());
+					bean.setFileName(file.get(i).getOriginalFilename());
+					bean.setType(file.get(i).getContentType());
+					infoService.insert(bean);
+				}
+			}
+			data.put("errcode", "0");
+			data.put("errmsg", "附件上传成功");
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return "redirect:/goTaskTutor";
+	}
+	@RequestMapping(value = "/uploadAttach6")
+	public String uploadAttach6(
+			@RequestParam(value = "file", required = false)  List<MultipartFile> file,Attach taskBean,
+			BindingResult bindingResult, HttpServletRequest req,
+			HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		data.put("errcode", "-1");
+		data.put("errmsg", "失败");
+		try {
+			String fileName;
+			if (file.size()>0) {
+				String path = myconfig.get("pic_download"); // request.getSession().getServletContext().getRealPath("upload");
+				for (int i = 0; i < file.size(); i++) {
+					fileName = file.get(i).getOriginalFilename();
+					File dir = new File(path, fileName);
+					if (!dir.exists()) {
+						dir.mkdirs();
+					}
+					// MultipartFile自带的解析方法
+					file.get(i).transferTo(dir);
+					Attach bean = new Attach();
+					bean.setInstanceId(taskBean.getInstanceId());
+					bean.setFileName(file.get(i).getOriginalFilename());
+					bean.setType(file.get(i).getContentType());
+					infoService.insert(bean);
+				}
+			}
+			data.put("errcode", "0");
+			data.put("errmsg", "附件上传成功");
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return "redirect:/goProjectPublish";
+	}
+	@RequestMapping(value = "/uploadAttach7")
+	public String uploadAttach7(
+			@RequestParam(value = "file", required = false)  List<MultipartFile> file,Attach taskBean,
+			BindingResult bindingResult, HttpServletRequest req,
+			HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		data.put("errcode", "-1");
+		data.put("errmsg", "失败");
+		try {
+			String fileName;
+			if (file.size()>0) {
+				String path = myconfig.get("pic_download"); // request.getSession().getServletContext().getRealPath("upload");
+				for (int i = 0; i < file.size(); i++) {
+					fileName = file.get(i).getOriginalFilename();
+					File dir = new File(path, fileName);
+					if (!dir.exists()) {
+						dir.mkdirs();
+					}
+					// MultipartFile自带的解析方法
+					file.get(i).transferTo(dir);
+					Attach bean = new Attach();
+					bean.setInstanceId(taskBean.getInstanceId());
+					bean.setFileName(file.get(i).getOriginalFilename());
+					bean.setType(file.get(i).getContentType());
+					infoService.insert(bean);
+				}
+			}
+			data.put("errcode", "0");
+			data.put("errmsg", "附件上传成功");
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return "redirect:/goProjectPerson";
+	}
+	@RequestMapping(value = "/uploadAttach8")
+	public String uploadAttach8(
+			@RequestParam(value = "file", required = false)  List<MultipartFile> file,Attach taskBean,
+			BindingResult bindingResult, HttpServletRequest req,
+			HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		data.put("errcode", "-1");
+		data.put("errmsg", "失败");
+		try {
+			String fileName;
+			if (file.size()>0) {
+				String path = myconfig.get("pic_download"); // request.getSession().getServletContext().getRealPath("upload");
+				for (int i = 0; i < file.size(); i++) {
+					fileName = file.get(i).getOriginalFilename();
+					File dir = new File(path, fileName);
+					if (!dir.exists()) {
+						dir.mkdirs();
+					}
+					// MultipartFile自带的解析方法
+					file.get(i).transferTo(dir);
+					Attach bean = new Attach();
+					bean.setInstanceId(taskBean.getInstanceId());
+					bean.setFileName(file.get(i).getOriginalFilename());
+					bean.setType(file.get(i).getContentType());
+					infoService.insert(bean);
+				}
+			}
+			data.put("errcode", "0");
+			data.put("errmsg", "附件上传成功");
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return "redirect:/goProjectSocialservice";
+	}
+	@RequestMapping(value = "/uploadAttach9")
+	public String uploadAttach9(
+			@RequestParam(value = "file", required = false)  List<MultipartFile> file,Attach taskBean,
+			BindingResult bindingResult, HttpServletRequest req,
+			HttpServletResponse res) throws Exception {
+		Map data = new HashMap();
+		data.put("errcode", "-1");
+		data.put("errmsg", "失败");
+		try {
+			String fileName;
+			if (file.size()>0) {
+				String path = myconfig.get("pic_download"); // request.getSession().getServletContext().getRealPath("upload");
+				for (int i = 0; i < file.size(); i++) {
+					fileName = file.get(i).getOriginalFilename();
+					File dir = new File(path, fileName);
+					if (!dir.exists()) {
+						dir.mkdirs();
+					}
+					// MultipartFile自带的解析方法
+					file.get(i).transferTo(dir);
+					Attach bean = new Attach();
+					bean.setInstanceId(taskBean.getInstanceId());
+					bean.setFileName(file.get(i).getOriginalFilename());
+					bean.setType(file.get(i).getContentType());
+					infoService.insert(bean);
+				}
+			}
+			data.put("errcode", "0");
+			data.put("errmsg", "附件上传成功");
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info(e.getMessage());
+		}
+		return "redirect:/goProjectLecture";
+	}
 }

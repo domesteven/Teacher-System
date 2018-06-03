@@ -11,6 +11,8 @@ public class ProjectSocialservice {
 
     private String companyName;
 
+    private String attach;
+
     private String member;
 
     private String name;
@@ -19,9 +21,9 @@ public class ProjectSocialservice {
 
     private Integer money;
 
-    private Date startTime;
-
     private Date modifyTime;
+
+    private Date startTime;
 
     public Integer getId() {
         return id;
@@ -53,6 +55,14 @@ public class ProjectSocialservice {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName == null ? null : companyName.trim();
+    }
+
+    public String getAttach() {
+        return attach;
+    }
+
+    public void setAttach(String attach) {
+        this.attach = attach == null ? null : attach.trim();
     }
 
     public String getMember() {
@@ -87,19 +97,19 @@ public class ProjectSocialservice {
         this.money = money;
     }
 
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
     public Date getModifyTime() {
         return modifyTime;
     }
 
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 }

@@ -18,5 +18,15 @@ public class FormatUtil {
         SimpleDateFormat sdf = new SimpleDateFormat(format);  
         return sdf.format(new Date(Long.valueOf(seconds+"000")));  
     }  
+	
+	public static String formatUrl(String url) {  
+        String url1 = "";
+        if(url != "" && url != null){
+        	int a = url.indexOf("WEB-INF/jsp/");
+        	int b = url.indexOf(".");
+        	url1 = url.substring(a, b);
+        }
+        return url1;
+    }
 
 }

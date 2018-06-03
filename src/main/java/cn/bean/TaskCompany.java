@@ -11,6 +11,8 @@ public class TaskCompany {
 
     private String name;
 
+    private String attach;
+
     private String phone;
 
     private String place;
@@ -47,6 +49,14 @@ public class TaskCompany {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getAttach() {
+        return attach;
+    }
+
+    public void setAttach(String attach) {
+        this.attach = attach == null ? null : attach.trim();
     }
 
     public String getPhone() {

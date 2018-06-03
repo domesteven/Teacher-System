@@ -11,6 +11,10 @@ public class ProjectPublish {
 
     private String name;
 
+    private String attach;
+
+    private Date modifyTime;
+
     private String pressCompany;
 
     private Date publishTime;
@@ -18,8 +22,6 @@ public class ProjectPublish {
     private String issn;
 
     private String type;
-
-    private Date modifyTime;
 
     public Integer getId() {
         return id;
@@ -53,6 +55,22 @@ public class ProjectPublish {
         this.name = name == null ? null : name.trim();
     }
 
+    public String getAttach() {
+        return attach;
+    }
+
+    public void setAttach(String attach) {
+        this.attach = attach == null ? null : attach.trim();
+    }
+
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
+    }
+
     public String getPressCompany() {
         return pressCompany;
     }
@@ -83,13 +101,5 @@ public class ProjectPublish {
 
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
-    }
-
-    public Date getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
     }
 }

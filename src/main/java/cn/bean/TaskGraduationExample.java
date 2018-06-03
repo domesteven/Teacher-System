@@ -10,11 +10,11 @@ public class TaskGraduationExample {
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
+ private int startRow;
     
-    private int startRow;
     private int pageSize;
-    
-	public int getStartRow() {
+
+    public int getStartRow() {
 		return startRow;
 	}
 
@@ -381,6 +381,76 @@ public class TaskGraduationExample {
 
         public Criteria andNameNotBetween(String value1, String value2) {
             addCriterion("name not between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachIsNull() {
+            addCriterion("attach is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachIsNotNull() {
+            addCriterion("attach is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachEqualTo(String value) {
+            addCriterion("attach =", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachNotEqualTo(String value) {
+            addCriterion("attach <>", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachGreaterThan(String value) {
+            addCriterion("attach >", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachGreaterThanOrEqualTo(String value) {
+            addCriterion("attach >=", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachLessThan(String value) {
+            addCriterion("attach <", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachLessThanOrEqualTo(String value) {
+            addCriterion("attach <=", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachLike(String value) {
+            addCriterion("attach like", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachNotLike(String value) {
+            addCriterion("attach not like", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachIn(List<String> values) {
+            addCriterion("attach in", values, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachNotIn(List<String> values) {
+            addCriterion("attach not in", values, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachBetween(String value1, String value2) {
+            addCriterion("attach between", value1, value2, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachNotBetween(String value1, String value2) {
+            addCriterion("attach not between", value1, value2, "attach");
             return (Criteria) this;
         }
 

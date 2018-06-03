@@ -201,6 +201,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	}
         	window.location.href = url;
         }
+        function downfile(filename){
+        	debugger
+        	window.location.href = "${pageContext.request.contextPath}/down.action"+"?attach="+encodeURI(encodeURI(filename));
+        }
+
+function listAttach(id){
+        	$("#instanceId").val(id);
+        	$.ajax({
+                type: "post",
+                url: "${pageContext.request.contextPath}/selectAllAttach.do", 
+                data: {instanceId:id},
+                dataType: "json",
+                success: function(data){
+                	if(data.errcode == "-1"){
+                		toastr.error(data.errmsg);
+                	}else{
+						console.log(data.listAttach);
+						$("#listAttach").html("");
+						for(var a=0;a<data.listAttach.length;a++){
+							$("#listAttach").append("<tr><td>"+data.listAttach[a].fileName+"</td><td>"+data.listAttach[a].type+"</td><td>"+"<a onclick='downfile(&quot;"+data.listAttach[a].fileName+"&quot;)'><i  class='glyphicon glyphicon-save'></i></a>"+"</td></tr>");
+							/* "<tr><td>"+${item1.fileName}+"</td><td>"+${item1.type}+'</td><td><a  onclick="downfile(&quot;${item1.fileName}&quot;)"><i  class="glyphicon glyphicon-save"></i></a></td></tr>') */
+						}
+                		$('#myModal2').modal('show');   
+                	}
+                	
+                }
+            });
+        	
+        }
     </script>
 	<style type="text/css">
 #main {
@@ -365,7 +394,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<td>${item.phone}</td>
 							<td>${item.place}</td>
 							<td><a onclick="editTaskInfo(${item.id})"><i class="fa fa-pencil"></i></a> <a onclick="setRecordId(${item.id})"><i
-									class="fa fa-trash-o"></i></a></td>
+									class="fa fa-trash-o"></i></a><a onclick="listAttach(&quot;${item.attach}&quot;);">&nbsp;&nbsp;<i class="glyphicon glyphicon-paperclip"></i></a></td>
 						</tr>
 					</c:forEach>
 	
@@ -471,7 +500,55 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</div>
 	</div>
+	<!-- 模态框（Modal） -->
+	<div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+					<h3 id="myModalLabel">所有附件</h3>
+				</div>
+				<div class="modal-body" >
+					<table class="table" >
+				<thead>
+				<form id="form2" action="${pageContext.request.contextPath}/uploadAttach2.action" method="post" enctype="multipart/form-data">
+					<tr>
+						<td><input id="attach1" name="file"
+							type="file" value="" multiple=”multiple”/>
+						</td>
+						<td>
+							<input id="instanceId" name="instanceId" value="" type="hidden"/>
+							
+							<button class="btn btn-primary" type="submit">保存</button>
+						</td>
 
+					</tr>
+				</form>
+					<tr>
+						<th >文件名</th>
+						<th>类型</th>
+						
+						<th style="width: 3.5em;"></th>
+					</tr>
+				</thead>
+				<tbody id="listAttach">
+	
+					
+	
+				</tbody>
+			</table>
+				</div>
+				<!-- <div class="modal-footer">
+					<button class="btn btn-default" data-dismiss="modal"
+						aria-hidden="true">取消</button>
+					<button class="btn btn-danger" onclick="delRecord()">删除</button>
+				</div> -->
+				
+			</div>
+		</div>
+	</div>
 	<script src="lib/bootstrap/js/bootstrap.js"></script>
 	<script type="text/javascript">
 		$(".education").val("${userinfo.education}"); 

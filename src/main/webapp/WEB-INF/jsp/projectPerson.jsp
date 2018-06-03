@@ -16,13 +16,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta name="description" content="">
 <meta name="author" content="">
 
+<script src="lib/jquery-1.11.1.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css"
+	href="lib/bootstrap/css/bootstrap-datetimepicker.min.css">
+<script type="text/javascript" src="lib/bootstrap/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700'
 	rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css"
 	href="lib/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css">
 
-<script src="lib/jquery-1.11.1.min.js" type="text/javascript"></script>
+
 
 <script src="lib/jQuery-Knob/js/jquery.knob.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -149,6 +154,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         function reset(){
         	$("#searchName").val("");
         	$("#searchTName").val("");
+        	$("#searchTime").val("");
         }
         function resetForm(){
         	document.getElementById("form1").reset();
@@ -157,11 +163,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         function searchByName(){
         	var name = $("#searchName").val();
         	var teacherName = $("#searchTName").val();
+        	var url = baseurl+"?name="+encodeURI(encodeURI(name));
         	if(teacherName != undefined){
-        		window.location.href=baseurl+"?name="+encodeURI(encodeURI(name))+"&tName="+encodeURI(encodeURI(teacherName));
-        	}else{
-        		window.location.href=baseurl+"?name="+encodeURI(encodeURI(name));
+        		url=url+"&tName="+encodeURI(encodeURI(teacherName));
         	}
+        	var time = $("#searchTime").val();
+        	if(time != undefined && time != ""){
+        		time += "-01-01";
+        		url =url+ "&time="+encodeURI(encodeURI(time));
+        	}
+			
+        	window.location.href=url;
+        	
         	
         }
         
@@ -225,7 +238,41 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	if(teacherName != null && teacherName != ""){
         		url += "&tName="+encodeURI(encodeURI(teacherName));
         	}
+        	var time = $("#searchTime").val();
+        	if(time != undefined && time != ""){
+        		time += "-01-01";
+        		url =url+ "&time="+encodeURI(encodeURI(time));
+        	}
         	window.location.href = url;
+        }
+        function downfile(filename){
+        	debugger
+        	window.location.href = "${pageContext.request.contextPath}/down.action"+"?attach="+encodeURI(encodeURI(filename));
+        }
+
+function listAttach(id){
+        	$("#instanceId").val(id);
+        	$.ajax({
+                type: "post",
+                url: "${pageContext.request.contextPath}/selectAllAttach.do", 
+                data: {instanceId:id},
+                dataType: "json",
+                success: function(data){
+                	if(data.errcode == "-1"){
+                		toastr.error(data.errmsg);
+                	}else{
+						console.log(data.listAttach);
+						$("#listAttach").html("");
+						for(var a=0;a<data.listAttach.length;a++){
+							$("#listAttach").append("<tr><td>"+data.listAttach[a].fileName+"</td><td>"+data.listAttach[a].type+"</td><td>"+"<a onclick='downfile(&quot;"+data.listAttach[a].fileName+"&quot;)'><i  class='glyphicon glyphicon-save'></i></a>"+"</td></tr>");
+							/* "<tr><td>"+${item1.fileName}+"</td><td>"+${item1.type}+'</td><td><a  onclick="downfile(&quot;${item1.fileName}&quot;)"><i  class="glyphicon glyphicon-save"></i></a></td></tr>') */
+						}
+                		$('#myModal2').modal('show');   
+                	}
+                	
+                }
+            });
+        	
         }
     </script>
 	<style type="text/css">
@@ -270,6 +317,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	font-size:16px;
 	margin-top:5px;
 	margin-right:10px;
+	float:right;
+}
+
+#searchTimeDiv{
+	float:right;
+}
+#searchTime{
+	width:100px;
 	float:right;
 }
 
@@ -361,6 +416,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<button class="btn btn-default" onclick="excel()">导出</button>
 			<button id="reset" class="btn btn-default" onclick="reset()">重置</button>
 			<button id="toSearch" class="btn btn-primary" onclick="searchByName()">查询</button>
+			<div  id="searchTimeDiv" class="input-group date form_date col-md-5" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    <input id="searchTime" class="form-control" size="16" type="text" value="${searchTime }" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+ 
+            <label class="seaName">时间:</label>
+			
 			<input type="text" id="searchName" name="searchName" class="form-control" value="${searchName }"/>
 			<label class="seaName">项目名:</label>
 			<c:if test='${openAuthor == "true"}'>
@@ -388,7 +451,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<td>${item.studentName}</td>
 							<td><fmt:formatDate value="${item.time}" type="date" pattern="yyyy-MM-dd"/></td>
 							<td><a onclick="editTaskInfo(${item.id})"><i class="fa fa-pencil"></i></a> <a onclick="setRecordId(${item.id})"><i
-									class="fa fa-trash-o"></i></a></td>
+									class="fa fa-trash-o"></i></a><a onclick="listAttach(&quot;${item.attach}&quot;);">&nbsp;&nbsp;<i class="glyphicon glyphicon-paperclip"></i></a></td>
 						</tr>
 					</c:forEach>
 	
@@ -504,10 +567,66 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</div>
 	</div>
+<!-- 模态框（Modal） -->
+	<div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+					<h3 id="myModalLabel">所有附件</h3>
+				</div>
+				<div class="modal-body" >
+					<table class="table" >
+				<thead>
+				<form id="form2" action="${pageContext.request.contextPath}/uploadAttach7.action" method="post" enctype="multipart/form-data">
+					<tr>
+						<td><input id="attach1" name="file"
+							type="file" value="" multiple=”multiple”/>
+						</td>
+						<td>
+							<input id="instanceId" name="instanceId" value="" type="hidden"/>
+							
+							<button class="btn btn-primary" type="submit">保存</button>
+						</td>
+
+					</tr>
+				</form>
+					<tr>
+						<th >文件名</th>
+						<th>类型</th>
+						
+						<th style="width: 3.5em;"></th>
+					</tr>
+				</thead>
+				<tbody id="listAttach">
+	
+					
+	
+				</tbody>
+			</table>
+				</div>
+				<!-- <div class="modal-footer">
+					<button class="btn btn-default" data-dismiss="modal"
+						aria-hidden="true">取消</button>
+					<button class="btn btn-danger" onclick="delRecord()">删除</button>
+				</div> -->
+				
+			</div>
+		</div>
+	</div>
 
 	<script src="lib/bootstrap/js/bootstrap.js"></script>
 	<script type="text/javascript">
-		
+	$('.form_date').datetimepicker({
+		startView: 'decade',  
+        minView: 'decade',  
+        format: 'yyyy',  
+        maxViewMode: 2,  
+        minViewMode:2,  
+         autoclose: true  
+    });
 		if("${userinfo.sex}" == "1"){
 			$("#male").click()
 		}else{

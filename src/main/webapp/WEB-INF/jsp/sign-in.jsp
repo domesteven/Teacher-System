@@ -22,7 +22,23 @@
     <link href="stylesheets/toastr.min.css" rel="stylesheet" />
 	<script src="js/toastr.min.js"></script>
     
-	
+	<style type="text/css">
+        #line-chart {
+            height:300px;
+            width:800px;
+            margin: 0px auto;
+            margin-top: 1em;
+        }
+       	.dialog{
+       		margin-right:50px;
+       	}
+        .navbar-default .navbar-brand, .navbar-default .navbar-brand:hover { 
+            color: #fff;
+        }
+        body{ 
+		  background: url("./images/timg.jpg") no-repeat fixed left;
+		 }
+    </style>
 </head>
 <body class=" theme-blue">
 
@@ -65,17 +81,7 @@
         }
         
     </script>
-    <style type="text/css">
-        #line-chart {
-            height:300px;
-            width:800px;
-            margin: 0px auto;
-            margin-top: 1em;
-        }
-        .navbar-default .navbar-brand, .navbar-default .navbar-brand:hover { 
-            color: #fff;
-        }
-    </style>
+    
 
     <script type="text/javascript">
         $(function() {
@@ -119,6 +125,7 @@
 
 
         <div class="dialog">
+        
     <div class="panel panel-default">
         <p class="panel-heading no-collapse">登录</p>
         <div class="panel-body">

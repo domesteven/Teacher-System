@@ -29,7 +29,7 @@ public class MyGen {
         List<String> warnings = new ArrayList<String>();
         boolean overwrite = true;
         
-        File configFile = new File("D:/workspace4/Teacher-System/src/main/resources/genreatorConfig.xml");
+        File configFile = new File("E:/MyWorkSpace/Teacher-System/src/main/resources/genreatorConfig.xml");
         ConfigurationParser cp = new ConfigurationParser(warnings);
         Configuration config = cp.parseConfiguration(configFile);
         DefaultShellCallback callback = new DefaultShellCallback(overwrite);

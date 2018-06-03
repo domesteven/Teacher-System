@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import cn.bean.Attach;
+import cn.bean.AttachExample;
 import cn.bean.ProjectLecture;
 import cn.bean.ProjectLectureExample;
 import cn.bean.ProjectPerson;
@@ -27,6 +29,7 @@ import cn.bean.TaskTutor;
 import cn.bean.TaskTutorExample;
 import cn.bean.Teacher;
 import cn.bean.TeacherExample;
+import cn.mapper.AttachMapper;
 import cn.mapper.ProjectLectureMapper;
 import cn.mapper.ProjectPersonMapper;
 import cn.mapper.ProjectPublishMapper;
@@ -69,6 +72,9 @@ public class infoServiceImpl implements infoServiceIfc {
 	
 	@Autowired
 	private ProjectLectureMapper projectLectureMapper;
+	
+	@Autowired
+	private AttachMapper attachMapper;
 	
 	
 	@Override
@@ -402,6 +408,16 @@ public class infoServiceImpl implements infoServiceIfc {
 			if(bean.gettName()!=null && bean.gettName()!=""){
 				criteria.andTNameLike("%"+bean.gettName()+"%");
 			}
+			//时间
+			if(bean.getTime()!=null ){
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getTime());	
+				int a = c.get(Calendar.YEAR)+1;
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Long time = sdf.parse(a+"-01-01").getTime();
+				Date b = new Date(time);
+				criteria.andTimeBetween(bean.getTime(), b);
+			}
 			list = taskDirectortournamentMapper.selectByExample(example);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -428,6 +444,16 @@ public class infoServiceImpl implements infoServiceIfc {
 			}
 			if(bean.gettName()!=null && bean.gettName()!=""){
 				criteria.andTNameLike("%"+bean.gettName()+"%");
+			}
+			//时间
+			if(bean.getTime()!=null ){
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getTime());	
+				int a = c.get(Calendar.YEAR)+1;
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Long time = sdf.parse(a+"-01-01").getTime();
+				Date b = new Date(time);
+				criteria.andTimeBetween(bean.getTime(), b);
 			}
 			list = taskDirectortournamentMapper.selectByExample(example);
 		} catch (Exception e) {
@@ -568,6 +594,15 @@ public class infoServiceImpl implements infoServiceIfc {
 			if(bean.gettName()!=null && bean.gettName()!=""){
 				criteria.andTNameLike("%"+bean.gettName()+"%");
 			}
+			if(bean.getPublishTime()!=null ){
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getPublishTime());	
+				int a = c.get(Calendar.YEAR)+1;
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Long time = sdf.parse(a+"-01-01").getTime();
+				Date b = new Date(time);
+				criteria.andPublishTimeBetween(bean.getPublishTime(), b);
+			}
 			list = projectPublishMapper.selectByExample(example);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -593,6 +628,15 @@ public class infoServiceImpl implements infoServiceIfc {
 			}
 			if(bean.gettName()!=null && bean.gettName()!=""){
 				criteria.andTNameLike("%"+bean.gettName()+"%");
+			}
+			if(bean.getPublishTime()!=null ){
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getPublishTime());	
+				int a = c.get(Calendar.YEAR)+1;
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Long time = sdf.parse(a+"-01-01").getTime();
+				Date b = new Date(time);
+				criteria.andPublishTimeBetween(bean.getPublishTime(), b);
 			}
 			list = projectPublishMapper.selectByExample(example);
 		} catch (Exception e) {
@@ -650,6 +694,15 @@ public class infoServiceImpl implements infoServiceIfc {
 			if(bean.gettName()!=null && bean.gettName()!=""){
 				criteria.andTNameLike("%"+bean.gettName()+"%");
 			}
+			if(bean.getTime()!=null ){
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getTime());	
+				int a = c.get(Calendar.YEAR)+1;
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Long time = sdf.parse(a+"-01-01").getTime();
+				Date b = new Date(time);
+				criteria.andTimeBetween(bean.getTime(), b);
+			}
 			list = projectPersonMapper.selectByExample(example);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -675,6 +728,15 @@ public class infoServiceImpl implements infoServiceIfc {
 			}
 			if(bean.gettName()!=null && bean.gettName()!=""){
 				criteria.andTNameLike("%"+bean.gettName()+"%");
+			}
+			if(bean.getTime()!=null ){
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getTime());	
+				int a = c.get(Calendar.YEAR)+1;
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Long time = sdf.parse(a+"-01-01").getTime();
+				Date b = new Date(time);
+				criteria.andTimeBetween(bean.getTime(), b);
 			}
 			list = projectPersonMapper.selectByExample(example);
 		} catch (Exception e) {
@@ -733,6 +795,15 @@ public class infoServiceImpl implements infoServiceIfc {
 			if(bean.gettName()!=null && bean.gettName()!=""){
 				criteria.andTNameLike("%"+bean.gettName()+"%");
 			}
+			if(bean.getStartTime()!=null ){
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getStartTime());	
+				int a = c.get(Calendar.YEAR)+1;
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Long time = sdf.parse(a+"-01-01").getTime();
+				Date b = new Date(time);
+				criteria.andStartTimeBetween(bean.getStartTime(), b);
+			}
 			list = projectSocialserviceMapper.selectByExample(example);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -759,6 +830,15 @@ public class infoServiceImpl implements infoServiceIfc {
 			}
 			if(bean.gettName()!=null && bean.gettName()!=""){
 				criteria.andTNameLike("%"+bean.gettName()+"%");
+			}
+			if(bean.getStartTime()!=null ){
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getStartTime());	
+				int a = c.get(Calendar.YEAR)+1;
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Long time = sdf.parse(a+"-01-01").getTime();
+				Date b = new Date(time);
+				criteria.andStartTimeBetween(bean.getStartTime(), b);
 			}
 			list = projectSocialserviceMapper.selectByExample(example);
 		} catch (Exception e) {
@@ -816,6 +896,15 @@ public class infoServiceImpl implements infoServiceIfc {
 			if(bean.gettName()!=null && bean.gettName()!=""){
 				criteria.andTNameLike("%"+bean.gettName()+"%");
 			}
+			if(bean.getTime()!=null ){
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getTime());	
+				int a = c.get(Calendar.YEAR)+1;
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Long time = sdf.parse(a+"-01-01").getTime();
+				Date b = new Date(time);
+				criteria.andTimeBetween(bean.getTime(), b);
+			}
 			list = projectLectureMapper.selectByExample(example);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -842,6 +931,15 @@ public class infoServiceImpl implements infoServiceIfc {
 			}
 			if(bean.gettName()!=null && bean.gettName()!=""){
 				criteria.andTNameLike("%"+bean.gettName()+"%");
+			}
+			if(bean.getTime()!=null ){
+				Calendar c = Calendar.getInstance();
+				c.setTime( bean.getTime());	
+				int a = c.get(Calendar.YEAR)+1;
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Long time = sdf.parse(a+"-01-01").getTime();
+				Date b = new Date(time);
+				criteria.andTimeBetween(bean.getTime(), b);
 			}
 			list = projectLectureMapper.selectByExample(example);
 		} catch (Exception e) {
@@ -978,6 +1076,29 @@ public class infoServiceImpl implements infoServiceIfc {
 	public void update(Teacher taskBean) {
 		// TODO Auto-generated method stub
 		teacherMapper.updateByPrimaryKeySelective(taskBean);
+	}
+
+	@Override
+	public void insert(Attach bean) {
+		// TODO Auto-generated method stub
+		attachMapper.insert(bean);
+	}
+
+	@Override
+	public List<Attach> selectAllTask(Attach bean) {
+		// TODO Auto-generated method stub
+		List<Attach> list = null;
+		try {
+			AttachExample example = new AttachExample();
+			AttachExample.Criteria criteria = example.createCriteria();
+			if(bean.getInstanceId()!=null && bean.getInstanceId()!=""){
+				criteria.andInstanceIdEqualTo(bean.getInstanceId());
+			}
+			list = attachMapper.selectByExample(example);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
 	}
 	
 	

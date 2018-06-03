@@ -17,11 +17,13 @@ public class TaskTeaching {
 
     private String property;
 
+    private String attach;
+
     private String hour;
 
-    private Date time;
-
     private String type;
+
+    private Date time;
 
     private Integer countMan;
 
@@ -87,6 +89,14 @@ public class TaskTeaching {
         this.property = property == null ? null : property.trim();
     }
 
+    public String getAttach() {
+        return attach;
+    }
+
+    public void setAttach(String attach) {
+        this.attach = attach == null ? null : attach.trim();
+    }
+
     public String getHour() {
         return hour;
     }
@@ -95,20 +105,20 @@ public class TaskTeaching {
         this.hour = hour == null ? null : hour.trim();
     }
 
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
     }
 
     public Integer getCountMan() {

@@ -9,6 +9,8 @@ public class TaskTutor {
 
     private String tName;
 
+    private String attach;
+
     private String studentName;
 
     private String studentClass;
@@ -39,6 +41,14 @@ public class TaskTutor {
 
     public void settName(String tName) {
         this.tName = tName == null ? null : tName.trim();
+    }
+
+    public String getAttach() {
+        return attach;
+    }
+
+    public void setAttach(String attach) {
+        this.attach = attach == null ? null : attach.trim();
     }
 
     public String getStudentName() {

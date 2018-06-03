@@ -11,7 +11,7 @@ public class TaskTeachingExample {
 
     protected List<Criteria> oredCriteria;
     
-private int startRow;
+    private int startRow;
     
     private int pageSize;
 
@@ -30,6 +30,7 @@ private int startRow;
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
+
 
     public TaskTeachingExample() {
         oredCriteria = new ArrayList<Criteria>();
@@ -595,6 +596,76 @@ private int startRow;
             return (Criteria) this;
         }
 
+        public Criteria andAttachIsNull() {
+            addCriterion("attach is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachIsNotNull() {
+            addCriterion("attach is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachEqualTo(String value) {
+            addCriterion("attach =", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachNotEqualTo(String value) {
+            addCriterion("attach <>", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachGreaterThan(String value) {
+            addCriterion("attach >", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachGreaterThanOrEqualTo(String value) {
+            addCriterion("attach >=", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachLessThan(String value) {
+            addCriterion("attach <", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachLessThanOrEqualTo(String value) {
+            addCriterion("attach <=", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachLike(String value) {
+            addCriterion("attach like", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachNotLike(String value) {
+            addCriterion("attach not like", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachIn(List<String> values) {
+            addCriterion("attach in", values, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachNotIn(List<String> values) {
+            addCriterion("attach not in", values, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachBetween(String value1, String value2) {
+            addCriterion("attach between", value1, value2, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachNotBetween(String value1, String value2) {
+            addCriterion("attach not between", value1, value2, "attach");
+            return (Criteria) this;
+        }
+
         public Criteria andHourIsNull() {
             addCriterion("hour is null");
             return (Criteria) this;
@@ -665,66 +736,6 @@ private int startRow;
             return (Criteria) this;
         }
 
-        public Criteria andTimeIsNull() {
-            addCriterion("time is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeIsNotNull() {
-            addCriterion("time is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeEqualTo(Date value) {
-            addCriterion("time =", value, "time");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeNotEqualTo(Date value) {
-            addCriterion("time <>", value, "time");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeGreaterThan(Date value) {
-            addCriterion("time >", value, "time");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("time >=", value, "time");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeLessThan(Date value) {
-            addCriterion("time <", value, "time");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeLessThanOrEqualTo(Date value) {
-            addCriterion("time <=", value, "time");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeIn(List<Date> values) {
-            addCriterion("time in", values, "time");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeNotIn(List<Date> values) {
-            addCriterion("time not in", values, "time");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeBetween(Date value1, Date value2) {
-            addCriterion("time between", value1, value2, "time");
-            return (Criteria) this;
-        }
-
-        public Criteria andTimeNotBetween(Date value1, Date value2) {
-            addCriterion("time not between", value1, value2, "time");
-            return (Criteria) this;
-        }
-
         public Criteria andTypeIsNull() {
             addCriterion("type is null");
             return (Criteria) this;
@@ -792,6 +803,66 @@ private int startRow;
 
         public Criteria andTypeNotBetween(String value1, String value2) {
             addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeIsNull() {
+            addCriterion("time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeIsNotNull() {
+            addCriterion("time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeEqualTo(Date value) {
+            addCriterion("time =", value, "time");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeNotEqualTo(Date value) {
+            addCriterion("time <>", value, "time");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeGreaterThan(Date value) {
+            addCriterion("time >", value, "time");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("time >=", value, "time");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeLessThan(Date value) {
+            addCriterion("time <", value, "time");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeLessThanOrEqualTo(Date value) {
+            addCriterion("time <=", value, "time");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeIn(List<Date> values) {
+            addCriterion("time in", values, "time");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeNotIn(List<Date> values) {
+            addCriterion("time not in", values, "time");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeBetween(Date value1, Date value2) {
+            addCriterion("time between", value1, value2, "time");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeNotBetween(Date value1, Date value2) {
+            addCriterion("time not between", value1, value2, "time");
             return (Criteria) this;
         }
 

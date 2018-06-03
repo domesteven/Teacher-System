@@ -343,7 +343,8 @@ public class LoginController{
 	@ResponseBody
 	public HttpServletResponse down(String attach,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		try {
-			String path = myconfig.get("pic_download")+ attach.trim();
+			
+			String path = myconfig.get("pic_download")+ URLDecoder.decode(attach,"UTF-8");
             // path是指欲下载的文件的路径。
             File file = new File(path);
             // 取得文件名。
@@ -359,7 +360,13 @@ public class LoginController{
             // 清空response
             response.reset();
             // 设置response的Header
-            response.addHeader("Content-Disposition", "attachment;filename=" + new String(filename.getBytes()));
+            String userAgent = request.getHeader("User-Agent");  
+            byte[] bytes = userAgent.contains("MSIE") ? filename.getBytes()  
+                    : filename.getBytes("UTF-8"); // fileName.getBytes("UTF-8")处理safari的乱码问题  
+            filename = new String(bytes, "ISO-8859-1");
+            
+            //response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(filename, "utf-8"));
+            response.setHeader("Content-disposition",  String.format("attachment; filename=\"%s\"", filename));
             response.addHeader("Content-Length", "" + file.length());
             OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
             response.setContentType("application/octet-stream");

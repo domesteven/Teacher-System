@@ -9,13 +9,15 @@ public class ProjectPerson {
 
     private String tName;
 
+    private String attach;
+
     private String name;
 
     private String studentName;
 
-    private Date time;
-
     private Date modifyTime;
+
+    private Date time;
 
     public Integer getId() {
         return id;
@@ -41,6 +43,14 @@ public class ProjectPerson {
         this.tName = tName == null ? null : tName.trim();
     }
 
+    public String getAttach() {
+        return attach;
+    }
+
+    public void setAttach(String attach) {
+        this.attach = attach == null ? null : attach.trim();
+    }
+
     public String getName() {
         return name;
     }
@@ -57,19 +67,19 @@ public class ProjectPerson {
         this.studentName = studentName == null ? null : studentName.trim();
     }
 
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
     public Date getModifyTime() {
         return modifyTime;
     }
 
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
     }
 }

@@ -11,10 +11,11 @@ public class ProjectPublishExample {
 
     protected List<Criteria> oredCriteria;
     
-    private int startRow;
-    private int pageSize;
+private int startRow;
     
-	public int getStartRow() {
+    private int pageSize;
+
+    public int getStartRow() {
 		return startRow;
 	}
 
@@ -384,6 +385,136 @@ public class ProjectPublishExample {
             return (Criteria) this;
         }
 
+        public Criteria andAttachIsNull() {
+            addCriterion("attach is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachIsNotNull() {
+            addCriterion("attach is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachEqualTo(String value) {
+            addCriterion("attach =", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachNotEqualTo(String value) {
+            addCriterion("attach <>", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachGreaterThan(String value) {
+            addCriterion("attach >", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachGreaterThanOrEqualTo(String value) {
+            addCriterion("attach >=", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachLessThan(String value) {
+            addCriterion("attach <", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachLessThanOrEqualTo(String value) {
+            addCriterion("attach <=", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachLike(String value) {
+            addCriterion("attach like", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachNotLike(String value) {
+            addCriterion("attach not like", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachIn(List<String> values) {
+            addCriterion("attach in", values, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachNotIn(List<String> values) {
+            addCriterion("attach not in", values, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachBetween(String value1, String value2) {
+            addCriterion("attach between", value1, value2, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachNotBetween(String value1, String value2) {
+            addCriterion("attach not between", value1, value2, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTimeIsNull() {
+            addCriterion("modify_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTimeIsNotNull() {
+            addCriterion("modify_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTimeEqualTo(Date value) {
+            addCriterion("modify_time =", value, "modifyTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTimeNotEqualTo(Date value) {
+            addCriterion("modify_time <>", value, "modifyTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTimeGreaterThan(Date value) {
+            addCriterion("modify_time >", value, "modifyTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("modify_time >=", value, "modifyTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTimeLessThan(Date value) {
+            addCriterion("modify_time <", value, "modifyTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTimeLessThanOrEqualTo(Date value) {
+            addCriterion("modify_time <=", value, "modifyTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTimeIn(List<Date> values) {
+            addCriterion("modify_time in", values, "modifyTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTimeNotIn(List<Date> values) {
+            addCriterion("modify_time not in", values, "modifyTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTimeBetween(Date value1, Date value2) {
+            addCriterion("modify_time between", value1, value2, "modifyTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTimeNotBetween(Date value1, Date value2) {
+            addCriterion("modify_time not between", value1, value2, "modifyTime");
+            return (Criteria) this;
+        }
+
         public Criteria andPressCompanyIsNull() {
             addCriterion("press_company is null");
             return (Criteria) this;
@@ -651,66 +782,6 @@ public class ProjectPublishExample {
 
         public Criteria andTypeNotBetween(String value1, String value2) {
             addCriterion("type not between", value1, value2, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andModifyTimeIsNull() {
-            addCriterion("modify_time is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andModifyTimeIsNotNull() {
-            addCriterion("modify_time is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andModifyTimeEqualTo(Date value) {
-            addCriterion("modify_time =", value, "modifyTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andModifyTimeNotEqualTo(Date value) {
-            addCriterion("modify_time <>", value, "modifyTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andModifyTimeGreaterThan(Date value) {
-            addCriterion("modify_time >", value, "modifyTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andModifyTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("modify_time >=", value, "modifyTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andModifyTimeLessThan(Date value) {
-            addCriterion("modify_time <", value, "modifyTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andModifyTimeLessThanOrEqualTo(Date value) {
-            addCriterion("modify_time <=", value, "modifyTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andModifyTimeIn(List<Date> values) {
-            addCriterion("modify_time in", values, "modifyTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andModifyTimeNotIn(List<Date> values) {
-            addCriterion("modify_time not in", values, "modifyTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andModifyTimeBetween(Date value1, Date value2) {
-            addCriterion("modify_time between", value1, value2, "modifyTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andModifyTimeNotBetween(Date value1, Date value2) {
-            addCriterion("modify_time not between", value1, value2, "modifyTime");
             return (Criteria) this;
         }
     }

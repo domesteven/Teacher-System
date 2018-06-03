@@ -11,10 +11,11 @@ public class ProjectSocialserviceExample {
 
     protected List<Criteria> oredCriteria;
     
-    private int startRow;
-    private int pageSize;
+private int startRow;
     
-	public int getStartRow() {
+    private int pageSize;
+
+    public int getStartRow() {
 		return startRow;
 	}
 
@@ -29,7 +30,6 @@ public class ProjectSocialserviceExample {
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
-
 
     public ProjectSocialserviceExample() {
         oredCriteria = new ArrayList<Criteria>();
@@ -385,6 +385,76 @@ public class ProjectSocialserviceExample {
             return (Criteria) this;
         }
 
+        public Criteria andAttachIsNull() {
+            addCriterion("attach is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachIsNotNull() {
+            addCriterion("attach is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachEqualTo(String value) {
+            addCriterion("attach =", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachNotEqualTo(String value) {
+            addCriterion("attach <>", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachGreaterThan(String value) {
+            addCriterion("attach >", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachGreaterThanOrEqualTo(String value) {
+            addCriterion("attach >=", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachLessThan(String value) {
+            addCriterion("attach <", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachLessThanOrEqualTo(String value) {
+            addCriterion("attach <=", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachLike(String value) {
+            addCriterion("attach like", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachNotLike(String value) {
+            addCriterion("attach not like", value, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachIn(List<String> values) {
+            addCriterion("attach in", values, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachNotIn(List<String> values) {
+            addCriterion("attach not in", values, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachBetween(String value1, String value2) {
+            addCriterion("attach between", value1, value2, "attach");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachNotBetween(String value1, String value2) {
+            addCriterion("attach not between", value1, value2, "attach");
+            return (Criteria) this;
+        }
+
         public Criteria andMemberIsNull() {
             addCriterion("member is null");
             return (Criteria) this;
@@ -645,66 +715,6 @@ public class ProjectSocialserviceExample {
             return (Criteria) this;
         }
 
-        public Criteria andStartTimeIsNull() {
-            addCriterion("start_time is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStartTimeIsNotNull() {
-            addCriterion("start_time is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStartTimeEqualTo(Date value) {
-            addCriterion("start_time =", value, "startTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andStartTimeNotEqualTo(Date value) {
-            addCriterion("start_time <>", value, "startTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andStartTimeGreaterThan(Date value) {
-            addCriterion("start_time >", value, "startTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andStartTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("start_time >=", value, "startTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andStartTimeLessThan(Date value) {
-            addCriterion("start_time <", value, "startTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andStartTimeLessThanOrEqualTo(Date value) {
-            addCriterion("start_time <=", value, "startTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andStartTimeIn(List<Date> values) {
-            addCriterion("start_time in", values, "startTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andStartTimeNotIn(List<Date> values) {
-            addCriterion("start_time not in", values, "startTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andStartTimeBetween(Date value1, Date value2) {
-            addCriterion("start_time between", value1, value2, "startTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andStartTimeNotBetween(Date value1, Date value2) {
-            addCriterion("start_time not between", value1, value2, "startTime");
-            return (Criteria) this;
-        }
-
         public Criteria andModifyTimeIsNull() {
             addCriterion("modify_time is null");
             return (Criteria) this;
@@ -762,6 +772,66 @@ public class ProjectSocialserviceExample {
 
         public Criteria andModifyTimeNotBetween(Date value1, Date value2) {
             addCriterion("modify_time not between", value1, value2, "modifyTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartTimeIsNull() {
+            addCriterion("start_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartTimeIsNotNull() {
+            addCriterion("start_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartTimeEqualTo(Date value) {
+            addCriterion("start_time =", value, "startTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartTimeNotEqualTo(Date value) {
+            addCriterion("start_time <>", value, "startTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartTimeGreaterThan(Date value) {
+            addCriterion("start_time >", value, "startTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("start_time >=", value, "startTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartTimeLessThan(Date value) {
+            addCriterion("start_time <", value, "startTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartTimeLessThanOrEqualTo(Date value) {
+            addCriterion("start_time <=", value, "startTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartTimeIn(List<Date> values) {
+            addCriterion("start_time in", values, "startTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartTimeNotIn(List<Date> values) {
+            addCriterion("start_time not in", values, "startTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartTimeBetween(Date value1, Date value2) {
+            addCriterion("start_time between", value1, value2, "startTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartTimeNotBetween(Date value1, Date value2) {
+            addCriterion("start_time not between", value1, value2, "startTime");
             return (Criteria) this;
         }
     }

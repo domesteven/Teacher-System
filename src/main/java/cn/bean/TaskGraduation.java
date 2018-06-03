@@ -11,6 +11,8 @@ public class TaskGraduation {
 
     private String name;
 
+    private String attach;
+
     private String studentName;
 
     private String isPublic;
@@ -49,6 +51,14 @@ public class TaskGraduation {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getAttach() {
+        return attach;
+    }
+
+    public void setAttach(String attach) {
+        this.attach = attach == null ? null : attach.trim();
     }
 
     public String getStudentName() {

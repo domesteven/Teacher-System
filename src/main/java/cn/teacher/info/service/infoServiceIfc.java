@@ -2,6 +2,7 @@ package cn.teacher.info.service;
 
 import java.util.List;
 
+import cn.bean.Attach;
 import cn.bean.ProjectLecture;
 import cn.bean.ProjectPerson;
 import cn.bean.ProjectPublish;
@@ -146,6 +147,10 @@ public interface infoServiceIfc {
 	void delTask(Teacher taskBean);
 
 	void update(Teacher taskBean);
+
+	void insert(Attach bean);
+
+	List<Attach> selectAllTask(Attach taskBean);
 
 	
 }
