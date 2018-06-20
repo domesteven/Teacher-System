@@ -373,7 +373,7 @@ public class LoginController{
             toClient.write(buffer);
             toClient.flush();
             toClient.close();
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return response;
