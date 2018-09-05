@@ -17,19 +17,12 @@
 		<property name="user" value="zwdt" />
 		<property name="password" value="123456" />
 	</bean> -->
-	
-	<!-- <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl" value="jdbc:mysql://39.108.106.88:3306/teacherSys" />
-		<property name="user" value="teacherSys" />
-		<property name="password" value="FtN6ZkaiLr" />
-	</bean> -->
-	
+
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/teacherSys" />
-		<property name="user" value="root" />
-		<property name="password" value="root" />
+		<property name="driverClass" value="${jdbc.driver}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
 	</bean>
 
 	<!-- 3.配置SqlSessionFactory对象 -->

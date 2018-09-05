@@ -26,8 +26,42 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
+		<!-- jetty容器插件 -->
+        <plugins>
+            <plugin>
+              <groupId>org.eclipse.jetty</groupId>
+              <artifactId>jetty-maven-plugin</artifactId>
+              <version>9.2.10.v20150310</version>
+            </plugin>
+
+			<plugin>  
+            <groupId>org.apache.maven.plugins</groupId>  
+            <artifactId>maven-compiler-plugin</artifactId>  
+            <configuration>  
+                <source>1.7</source>  
+                <target>1.7</target>  
+            </configuration>  
+        	</plugin>  
+
+        </plugins>
 	</build>
 	
+
+	<!-- 使用阿里 maven 库 -->
+    <repositories>
+        <repository>
+            <id>ali-maven</id>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </snapshots>
+        </repository>
+    </repositories>
 	
 	<dependencies>
 		<!--spring AOP jar -->
@@ -107,12 +141,7 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.39</version>
 		</dependency>
-		<!-- 添加oracle jdbc driver -->
-		<dependency>
-			<groupId>ojdbc</groupId>
-			<artifactId>ojdbc</artifactId>
-			<version>14</version>
-		</dependency>
+		
 		<!--简单日志门面(Facade)SLF4J是为（日志包） http://blog.csdn.net/maohoo/article/details/52523858 -->
 		<dependency>
 			<groupId>org.slf4j</groupId>

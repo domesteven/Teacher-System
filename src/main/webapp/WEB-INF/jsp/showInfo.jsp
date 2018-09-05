@@ -14,6 +14,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta name="description" content="">
 <meta name="author" content="">
 
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700'
 	rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css"
