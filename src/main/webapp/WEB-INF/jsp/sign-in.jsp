@@ -35,9 +35,7 @@
         .navbar-default .navbar-brand, .navbar-default .navbar-brand:hover { 
             color: #fff;
         }
-        body{ 
-		  background: url("./images/timg.jpg") no-repeat fixed left;
-		 }
+        
     </style>
 </head>
 <body class=" theme-blue">
