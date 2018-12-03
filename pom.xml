@@ -28,20 +28,44 @@
         </resources>
 		<!-- jetty容器插件 -->
         <plugins>
-            <plugin>
-              <groupId>org.eclipse.jetty</groupId>
-              <artifactId>jetty-maven-plugin</artifactId>
-              <version>9.2.10.v20150310</version>
-            </plugin>
+		<!-- jetty插件 -->
+		<plugin>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty-maven-plugin</artifactId>
+			<version>7.6.14.v20131031</version>
+			<configuration>
+				<stopKey>exit</stopKey>
+				<stopPort>9090</stopPort>
+				<connectors>
+					<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+						<port>8080</port>
+					</connector>
+				</connectors>
+				<webAppConfig>
+					<contextPath>/</contextPath>
+				</webAppConfig>
+				<systemProperties>
+					<systemProperty>
+						<name>org.mortbay.util.URI.charset</name>
+						<value>${project.build.sourceEncoding}</value>
+					</systemProperty>
+				</systemProperties>
+			</configuration>
+		</plugin>
+            <!--<plugin>-->
+              <!--<groupId>org.eclipse.jetty</groupId>-->
+              <!--<artifactId>jetty-maven-plugin</artifactId>-->
+              <!--<version>9.2.10.v20150310</version>-->
+            <!--</plugin>-->
 
-			<plugin>  
-            <groupId>org.apache.maven.plugins</groupId>  
-            <artifactId>maven-compiler-plugin</artifactId>  
-            <configuration>  
-                <source>1.7</source>  
-                <target>1.7</target>  
-            </configuration>  
-        	</plugin>  
+			<!--<plugin>  -->
+            <!--<groupId>org.apache.maven.plugins</groupId>  -->
+            <!--<artifactId>maven-compiler-plugin</artifactId>  -->
+            <!--<configuration>  -->
+                <!--<source>1.7</source>  -->
+                <!--<target>1.7</target>  -->
+            <!--</configuration>  -->
+        	<!--</plugin>  -->
 
         </plugins>
 	</build>
@@ -139,7 +163,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.39</version>
+			<version>8.0.11</version>
 		</dependency>
 		
 		<!--简单日志门面(Facade)SLF4J是为（日志包） http://blog.csdn.net/maohoo/article/details/52523858 -->
